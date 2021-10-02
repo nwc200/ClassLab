@@ -18,10 +18,9 @@
             $testClass->addStudentQuizRecord(1, 5, 1, 1);
             $testClass->addStudentQuizRecord(2, 5, 1, 1);
             $score = $testClass->calculateTotalMarksScored();
-            $correctscore = 10;
+            $correctScore = 10;
 
-            $this->assertSame($score, $correctscore);
+            $this->assertSame($score, $correctScore);
         }
     }
-
 ?>
