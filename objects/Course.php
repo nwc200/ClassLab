@@ -14,7 +14,7 @@
         } 
 
         public function addClass1($newClass1){
-            $this->Class1[] = new $newClass1; //newClass1 is a Class1 class
+            $this->Class1[] = $newClass1; //newClass1 is a Class1 class
         }
 
         public function getClass1(){
@@ -62,7 +62,7 @@
         }   
 
         public function addSection($newSection){
-            $this->Section[] = new Section($newSection); //newSection is a Section class
+            $this->Section[] = $newSection; //newSection is a Section class
         }
 
         public function getSection(){
