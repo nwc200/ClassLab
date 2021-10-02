@@ -13,9 +13,8 @@
             $this->CourseDescription = $CourseDescription;
         } 
 
-        public function addClass1($newClass1){
-            $this->Class1[] = $newClass1; //newClass1 is a Class1 class
-        }
+        public function addClass1($ClassID, $ClassSize, $TrainerUserName, $StartDate, $EndDate, $StartTime, $EndTime, $SelfEnrollmentStart, $SelfEnrollmentEnd){
+            $this->Class1[] = new Class1($ClassID, $ClassSize, $TrainerUserName, $StartDate, $EndDate, $StartTime, $EndTime, $SelfEnrollmentStart, $SelfEnrollmentEnd); 
 
         public function getClass1(){
             return $this->Class1;
@@ -61,8 +60,8 @@
             $this->SelfEnrollmentEnd = $SelfEnrollmentEnd;
         }   
 
-        public function addSection($newSection){
-            $this->Section[] = $newSection; //newSection is a Section class
+        public function addSection($SectionNum, $SectionName){
+            $this->Section[] = new Section($SectionNum, $SectionName); 
         }
 
         public function getSection(){
@@ -129,8 +128,8 @@
             $this->PassingMark = $PassingMark;
         }   
 
-        public function addQuizQuestion($newQuestion){  //newQuestion is a QuizQuestion class
-            $this->QuizQuestion[] = $newQuestion;
+        public function addQuizQuestion($QuestionNum, $Question, $QuestionType, $Marks){  
+            $this->QuizQuestion[] = new QuizQuestion($QuestionNum, $Question, $QuestionType, $Marks);
         }
 
         public function getQuizQuestion(){
