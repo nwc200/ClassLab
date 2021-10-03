@@ -14,7 +14,7 @@
         } 
 
         public function addClass1($ClassID, $ClassSize, $TrainerUserName, $StartDate, $EndDate, $StartTime, $EndTime, $SelfEnrollmentStart, $SelfEnrollmentEnd){
-            $this->Class1[] = new Class1($ClassID, $ClassSize, $TrainerUserName, $StartDate, $EndDate, $StartTime, $EndTime, $SelfEnrollmentStart, $SelfEnrollmentEnd); //newClass1 is a Class1 class
+            $this->Class1[] = new Class1($ClassID, $ClassSize, $TrainerUserName, $StartDate, $EndDate, $StartTime, $EndTime, $SelfEnrollmentStart, $SelfEnrollmentEnd); 
         }
 
         public function updateClass($newClass1){ //newClass1 is a Class1 class, used for adding new section
@@ -72,7 +72,7 @@
         }   
 
         public function addSection($SectionNum, $SectionName){
-            $this->Section[] = new Section($SectionNum, $SectionName); //newSection is a Section class
+            $this->Section[] = new Section($SectionNum, $SectionName); 
         }
 
         public function getSection(){
