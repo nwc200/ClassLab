@@ -23,7 +23,7 @@
                 if($Class1->getClassID() == $newClass1->getClassID()){
                     $this->Class1[$count] = $newClass1;
                 }
-                $count = $count+=1;
+                $count = $count+1;
             }
         }
 
@@ -89,7 +89,7 @@
                 if($Section->getSectionNum() == $newSection->getSectionNum()){
                     $this->Section[$count] = $newSection;
                 }
-                $count = $count+=1;
+                $count = $count+1;
             }
         }
     }
@@ -171,7 +171,7 @@
                 if($Question->getQuestionNum() == $newQuizQuestion->getQuestionNum()){
                     $this->QuizQuestion[$count] = $newQuizQuestion;
                 }
-                $count = $count+=1;
+                $count = $count+1;
             }
         }
     }
