@@ -17,16 +17,6 @@
             $this->Class1[] = new Class1($ClassID, $ClassSize, $TrainerUserName, $StartDate, $EndDate, $StartTime, $EndTime, $SelfEnrollmentStart, $SelfEnrollmentEnd); 
         }
 
-        public function updateClass($newClass1){ //newClass1 is a Class1 class, used for adding new section
-            $count = 0;
-            foreach($this->Class1 as $Class1){
-                if($Class1->getClassID() == $newClass1->getClassID()){
-                    $this->Class1[$count] = $newClass1;
-                }
-                $count = $count+1;
-            }
-        }
-
         public function getClass1(){
             return $this->Class1;
         }
@@ -38,6 +28,7 @@
         public function getCoursePrereq(){
             return $this->CoursePrereq;
         }
+
     }
 
     class CoursePrereq{
@@ -83,15 +74,6 @@
             return $this->ClassID;
         }
 
-        public function updateSection($newSection){ //newSection is a Section class, used for adding new section
-            $count = 0;
-            foreach($this->Section as $Section){
-                if($Section->getSectionNum() == $newSection->getSectionNum()){
-                    $this->Section[$count] = $newSection;
-                }
-                $count = $count+1;
-            }
-        }
     }
 
     class Section{
@@ -165,15 +147,6 @@
             return $this->QuizQuestion;
         }
 
-        public function updateQuizQuestion($newQuizQuestion){ //newQuizQuestion is a QuizQuestion class
-            $count = 0;
-            foreach($this->QuizQuestion as $Question){
-                if($Question->getQuestionNum() == $newQuizQuestion->getQuestionNum()){
-                    $this->QuizQuestion[$count] = $newQuizQuestion;
-                }
-                $count = $count+1;
-            }
-        }
     }
 
     class QuizQuestion{

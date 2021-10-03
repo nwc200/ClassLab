@@ -1,5 +1,5 @@
 <?php 
-    require_once "../objects/autoload.php";
+    require_once "objects/autoload.php";
 
     $username = "Yu Hao";
 
