@@ -29,6 +29,10 @@
             return $this->CoursePrereq;
         }
 
+        public function getCourseID(){
+            return $this->CourseID;
+        }
+
     }
 
     class CoursePrereq{
