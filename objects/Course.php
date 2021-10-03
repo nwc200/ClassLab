@@ -17,10 +17,10 @@
             $this->Class1[] = new Class1($ClassID, $ClassSize, $TrainerUserName, $StartDate, $EndDate, $StartTime, $EndTime, $SelfEnrollmentStart, $SelfEnrollmentEnd); //newClass1 is a Class1 class
         }
 
-        public function updateClass($ClassID, $newClass1){ //newClass1 is a Class1 class, used for adding new section
+        public function updateClass($newClass1){ //newClass1 is a Class1 class, used for adding new section
             $count = 0;
             foreach($this->Class1 as $Class1){
-                if($Class1->getClassID() == $ClassID){
+                if($Class1->getClassID() == $newClass1->getClassID()){
                     $this->Class1[$count] = $newClass1;
                 }
                 $count = $count+=1;
@@ -83,10 +83,10 @@
             return $this->ClassID;
         }
 
-        public function updateSection($SectionNum, $newSection){ //newSection is a Section class, used for adding new section
+        public function updateSection($newSection){ //newSection is a Section class, used for adding new section
             $count = 0;
             foreach($this->Section as $Section){
-                if($Section->getSectionNum() == $SectionNum){
+                if($Section->getSectionNum() == $newSection->getSectionNum()){
                     $this->Section[$count] = $newSection;
                 }
                 $count = $count+=1;
@@ -165,10 +165,10 @@
             return $this->QuizQuestion;
         }
 
-        public function updateQuizQuestion($QuestionNum, $newQuizQuestion){ //newQuizQuestion is a QuizQuestion class
+        public function updateQuizQuestion($newQuizQuestion){ //newQuizQuestion is a QuizQuestion class
             $count = 0;
             foreach($this->QuizQuestion as $Question){
-                if($Question->getQuestionNum() == $QuestionNum){
+                if($Question->getQuestionNum() == $newQuizQuestion->getQuestionNum()){
                     $this->QuizQuestion[$count] = $newQuizQuestion;
                 }
                 $count = $count+=1;
