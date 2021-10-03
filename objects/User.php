@@ -5,7 +5,7 @@
         private $EmailAddr;
         private $Department;
         private $Designation;
-        private $Roles
+        private $Roles;
     
         public function __construct($UserName, $Name, $EmailAddr, $Department, $Designation, $Roles){
             $this->UserName = $UserName;
