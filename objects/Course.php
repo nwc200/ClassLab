@@ -1,5 +1,5 @@
 <?php
-    class Course{
+    class Course implements JsonSerializable{
         private $CourseID;
         private $CourseName;
         private $CourseDescription;
@@ -29,17 +29,45 @@
             return $this->CoursePrereq;
         }
 
+        public function getCourseID(){
+            return $this->CourseID;
+        }
+
+        public function getCourseName(){
+            return $this->CourseName;
+        }
+
+        public function getCourseDescription(){ 
+            return $this->CourseDescription;
+        }
+
+        public function jsonSerialize(){
+            return [
+                $this->CourseID,
+                $this->CourseName,
+                $this->CourseDescription,
+                $this->Class1,
+                $this->CoursePrereq
+            ];
+        }
+
     }
 
-    class CoursePrereq{
+    class CoursePrereq implements JsonSerializable{
         private $CoursePrereq; 
 
         public function __construct($CoursePrereq){
             $this->CoursePrereq = $CoursePrereq;
         } 
+
+        public function jsonSerialize(){
+            return [
+                $this->CoursePrereq
+            ];
+        }
     }
 
-    class Class1{
+    class Class1 implements JsonSerializable{
         private $ClassID;
         private $ClassSize;
         private $TrainerUserName;
@@ -56,6 +84,7 @@
             $this->ClassSize = $ClassSize;
             $this->TrainerUserName = $TrainerUserName;
             $this->StartDate = $StartDate;
+            $this->EndDate = $EndDate;
             $this->StartTime = $StartTime;
             $this->EndTime = $EndTime;
             $this->SelfEnrollmentStart = $SelfEnrollmentStart;
@@ -74,9 +103,23 @@
             return $this->ClassID;
         }
 
+        public function jsonSerialize(){
+            return [
+                $this->ClassID,
+                $this->ClassSize,
+                $this->TrainerUserName,
+                $this->StartDate,
+                $this->EndDate,
+                $this->SelfEnrollmentStart,
+                $this->SelfEnrollmentEnd,
+                $this->Section
+                ]
+            ;
+        }
+
     }
 
-    class Section{
+    class Section implements JsonSerializable{
         private $SectionNum;
         private $SectionName;
         private $SectionMaterial = array();
@@ -106,10 +149,19 @@
         public function getSectionNum(){
             return $this->SectionNum;
         }
+
+        public function jsonSerialize(){
+            return [
+                $this->SectionNum,
+                $this->SectionName,
+                $this->SectionMaterial,
+                $this->Quiz
+            ];
+        }
     } 
 
 
-    class SectionMaterial{
+    class SectionMaterial implements JsonSerializable{
         private $MaterialNum;
         private $MaterialType;
         private $Link;
@@ -119,9 +171,17 @@
             $this->MaterialType = $MaterialType;
             $this->Link = $Link;
         }   
+
+        public function jsonSerialize(){
+            return [
+                $this->MaterialNum,
+                $this->MaterialType,
+                $this->Link,
+            ];
+        }
     }
 
-    class Quiz{
+    class Quiz implements JsonSerializable{
         private $QuizID;
         private $QuizName;
         private $QuizNum;
@@ -147,9 +207,21 @@
             return $this->QuizQuestion;
         }
 
+        public function jsonSerialize(){
+            return [
+                $this->QuizID,
+                $this->QuizName,
+                $this->QuizNum,
+                $this->QuizDuration,
+                $this->Type,
+                $this->PassingMark,
+                $this->QuizQuestion
+            ];
+        }
+
     }
 
-    class QuizQuestion{
+    class QuizQuestion implements JsonSerializable{
         private $QuestionNum;
         private $Question;
         private $QuestionType;
@@ -174,9 +246,19 @@
         public function getQuestionNum(){
             return $this->QuestionNum;
         }
+
+        public function jsonSerialize(){
+            return [
+                $this->QuestionNum,
+                $this->Question,
+                $this->QuestionType,
+                $this->Marks,
+                $this->QuizAnswer
+            ];
+        }
     }
 
-    class QuizAnswer{
+    class QuizAnswer implements JsonSerializable{
         private $AnswerNum;
         private $Answer;
         private $Correct;
@@ -186,5 +268,13 @@
             $this->Answer = $Answer;
             $this->Correct = $Correct;
         } 
+
+        public function jsonSerialize(){
+            return [
+                $this->AnswerNum,
+                $this->Answer,
+                $this->Correct,
+            ];
+        }
     }
 ?>

@@ -46,6 +46,12 @@ values (1, 1, "Intro to Xerox WorkCentre");
 insert into section
 values (2, 1, "Final Quiz");
 
+insert into section
+values (1, 2, "Intro to Xerox WorkCentre");
+
+insert into section
+values (2, 2, "Final Quiz");
+
 /* Section Material */
 insert into sectionMaterial
 values (1, 1, 1, "Hyperlink", "https://www.office.xerox.com/en-us/multifunction-printers/workcentre-7800-series/specifications");
