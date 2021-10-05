@@ -110,6 +110,8 @@
                 $this->TrainerUserName,
                 $this->StartDate,
                 $this->EndDate,
+                $this->StartTime,
+                $this->EndTime,
                 $this->SelfEnrollmentStart,
                 $this->SelfEnrollmentEnd,
                 $this->Section

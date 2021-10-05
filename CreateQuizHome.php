@@ -30,10 +30,10 @@
                 <h4>Your Class Information</h4>
                 <b>ClassID:</b> {{class1[0]}}<br>
                 <b>ClassSize:</b> {{classstudentnum}} out of {{class1[1]}} <br>
-                <b>Date:</b> {{class1[3]}} to {{class1[4]}} <br>
-                <b>Time:</b> {{class1[5]}} to {{class1[6]}} <br>
+                <b>Class Start:</b> {{class1[3]}}, {{getDate()}} <br>
+                <b>Class End:</b> {{class1[4]}}, {{getDate2()}} <br>
                 <hr>
-                <div v-for="(sectioninfo, index1) in class1[7]"> 
+                <div v-for="(sectioninfo, index1) in class1[9]"> 
                     <b>Section Number:</b> {{sectioninfo[0]}} <br>
                     <b>Section Name:</b> {{sectioninfo[1]}}
                     <table class="table">
@@ -54,9 +54,14 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div v-for="(quizinfo,index) in sectioninfo[3]">
+                        <div v-if="quizinfo[4]=='Graded'">
+                            {{changeChecker()}}
+                        </div>
+                    </div>
                     <hr>
                     <a class="btn btn-primary" v-bind:href="'../CreateUngradedQuiz.php?classid='+class1[0]+'&sectionnum='+sectioninfo[0]+'&quiznum=' + (sectioninfo[3].length+1)" role="button">Add Ungraded Quiz</a>
-                    <a class="btn btn-primary" v-if="index1 == class1[7].length-1" v-bind:href="'../CreateGradedQuiz.php?classid='+class1[0]+'&sectionnum='+sectioninfo[0]+'&quiznum=' + (sectioninfo[3].length+1)" >Add Graded Quiz</a>
+                    <a class="btn btn-primary" v-if="index1 == class1[9].length-1 && checker ==0" v-bind:href="'../CreateGradedQuiz.php?classid='+class1[0]+'&sectionnum='+sectioninfo[0]+'&quiznum=' + (sectioninfo[3].length+1)" >Add Graded Quiz</a>
                     <br><br>
                 </div>
                 <br><br><br>
@@ -73,8 +78,20 @@
                 class1: <?php print json_encode($class1)?>,
                 username: <?php print json_encode($username)?>,
                 counter:0,
-                classstudentnum: <?php print json_encode($classstudentnum)?>
+                classstudentnum: <?php print json_encode($classstudentnum)?>,
+                checker:0
                 
+            },
+            methods:{
+                getDate: function(){
+                    return this.class1[5].substring(0,5) 
+                },
+                getDate2: function(){
+                    return this.class1[6].substring(0,5) 
+                },
+                changeChecker: function(){
+                    this.checker =1
+                }
             }
         })
         

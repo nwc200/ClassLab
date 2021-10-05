@@ -17,7 +17,7 @@
 
     //$test = $dao->getQuizID(1,1,1,"Ungraded");
     //$test = $dao->addGradedQuiz(1,2,"test",5,10,"Graded",10);
-    var_dump($test);
+    //var_dump($test);
 
 
 ?>
