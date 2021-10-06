@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '51e407b64fa382ddf3fd3482a4350f9824a8194a',
+        'reference' => '497457c8a8288372c668b4047d4bac8d36235b3a',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '51e407b64fa382ddf3fd3482a4350f9824a8194a',
+            'reference' => '497457c8a8288372c668b4047d4bac8d36235b3a',
             'dev_requirement' => false,
         ),
         'doctrine/instantiator' => array(
@@ -299,6 +299,15 @@
             'install_path' => __DIR__ . '/../sebastian/version',
             'aliases' => array(),
             'reference' => 'c6c1022351a901512170118436c764e473f6de8c',
+            'dev_requirement' => true,
+        ),
+        'squizlabs/php_codesniffer' => array(
+            'pretty_version' => '3.6.0',
+            'version' => '3.6.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../squizlabs/php_codesniffer',
+            'aliases' => array(),
+            'reference' => 'ffced0d2c8fa8e6cdc4d695a743271fab6c38625',
             'dev_requirement' => true,
         ),
         'symfony/polyfill-ctype' => array(
