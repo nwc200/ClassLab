@@ -25,7 +25,6 @@
             //return list of class1 classes storing the class information
             return $courseIDAarr; 
         }
-
         //GET LEARNER COURSENAME
         public function getLearnerCourseName($courseID)
         {
@@ -111,12 +110,39 @@
 
             $materialNum = [];
             if ($row = $stmt->fetch()) {
+         
                 $materialNum[] = $row['materialNum'];
             }
             $stmt = null; 
             $pdo = null; 
             //return list of class1 classes storing the class information
             return $materialNum; 
+        }
+
+        //retrieve user enrolments
+        public function retrieveUserApprovedEnrolment($userName, $enrolmentStatus)
+        {
+            $conn_manager = new ConnectionManager();
+            $pdo = $conn_manager->getConnection("enrolment");
+    
+            $sql = "select * from enrolment where userName=:userName and enrolmentStatus=:enrolmentStatus";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":userName", $userName);
+            $stmt->bindParam(":enrolmentStatus", $enrolmentStatus);
+            $stmt->execute();
+    
+    
+            $enrolment = [];
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            while ($row = $stmt->fetch()) {
+                // var_dump($row);
+                $enrol = new Enrollment($row["enrolmentID"], $row["enrolmentStatus"], $row["selfEnrol"], $row["dateTimeEnrolled"], $row["courseID"], $row["completed"], $row["userName"]);
+                $enrolment[] = $enrol;
+            }
+    
+            $stmt = null;
+            $pdo = null;
+            return $enrolment;
         }
 
     }

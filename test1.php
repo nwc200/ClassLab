@@ -20,7 +20,13 @@ foreach ($enrolments as $enrol) {
   $courseName = $courses->getCourseName();
   $classID = $enrolDAO->getLearnerClassID($courseID, $username);
   $sectionIDs = $enrolDAO->retrieveClassSection($classID); //get section ids
+  // var_dump($sectionIDs);
 
+  //courseid, coursename, classid, sections-array, 
+  // $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs];
+
+  // $all = $userCourses->$counter;
+  
   $arraySecName = [];
   foreach($sectionIDs as $sec){
     $sectionNames = $enrolDAO->retrieveClassSectionName($classID, $sec); //get section name
