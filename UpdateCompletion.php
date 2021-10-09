@@ -1,13 +1,14 @@
 <?php
-    require 'objects/autoload.php';
+require 'objects/autoload.php';
 
-    $enrolDAO = new SectionDAO();
+$_SESSION['username'] = "Yu Hao";
+$username = $_SESSION['username'];
 
-    if(isset($_SESSION['username'])){
-        $classID = $_REQUEST['classID'];
-        $sectionNum = $_REQUEST['sectionNum'];
-        $materialNum = $_REQUEST['materialNum'];
-        $get = $enrolDAO->updateMaterialProgress($classID, $sectionNum, $materialNum);
-        var_dump($get);
-    }
+$enrolDAO = new SectionDAO();
+$classID = $_GET['classID'];
+$sectionNum = $_GET['sectionNum'];
+$materialNum = $_GET['materialNum'];
+$get = $enrolDAO->updateMaterialProgress($classID, $sectionNum, $materialNum);
+var_dump($get);
+
 ?>

@@ -213,7 +213,7 @@ $completedPercent = $percent . '%';
 
 
     <div class='container-fluid' style="margin:50px; padding: 20px">
-      <form method='POST' action='completionProgress.php'>
+      <form method='POST' action='UpdateCompletion.php'>
         <table class="table">
           <thead>
             <tr>
@@ -394,10 +394,6 @@ $completedPercent = $percent . '%';
         },
 
         complete: function(classID, sectionNum, materialNum) {
-          // axios.get("http://localhost/SPM-Proj/UpdateCompletion.php")
-          // .then(response => {
-
-          // })
           this.selected = [parseInt(classID), sectionNum, materialNum]
           // console.log(this.selected)
           axios.post("http://localhost/SPM-Proj/UpdateCompletion.php"),{
@@ -405,6 +401,7 @@ $completedPercent = $percent . '%';
             sectionNum: this.selected[1],
             materialNum: this.selected[2]
           }
+          console.log(this.selected)
         }
 
       }
