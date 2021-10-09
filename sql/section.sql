@@ -54,10 +54,24 @@ values (2, 2, "Final Quiz");
 
 /* Section Material */
 insert into sectionMaterial
-values (1, 1, 1, "Hyperlink", "https://www.office.xerox.com/en-us/multifunction-printers/workcentre-7800-series/specifications");
+values (1, 1, 1, "Hyperlink", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
 
 insert into sectionMaterial
 values (1, 1, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
+
+insert into sectionMaterial
+values (2, 1, 1, "Hyperlink", "./materials/week2/Week2-SWDevProcess-G45.pdf");
+
+insert into sectionMaterial
+values (2, 1, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
+
+insert into sectionMaterial
+values (2, 2, 1, "Hyperlink", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
+
+insert into sectionMaterial
+values (2, 2, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
+
+
 
 /* Material Progress */
 insert into materialProgress

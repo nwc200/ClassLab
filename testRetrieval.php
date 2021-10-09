@@ -1,4 +1,4 @@
-<!-- <?php 
+<?php 
     require_once "objects/autoload.php";
 
     // $username = "Yu Hao";
@@ -19,22 +19,6 @@
     $userName = "Mei Lan";
     $status = 'Approved';
     // Get user information
-    $dao3 = new EnrolmentDAO();
-    // $enrol = $dao3->retrieveEnrolment($username);
-    // var_dump($enrol);
-
-    $getClass = $dao3->getLearnerCourse($userName, $status);
-    var_dump($getClass);
-
-    
-
-    // $dao4 = new SectionDAO();
-    // $getSection = $dao4->getLearnerSection($userName,$status);
-    // var_dump($getSection);
-
-    // $username =  "Wei Cheng";
-    // $dao = new QuizDAO();
-    // $course = $dao->getTrainerCourse($username);
-    // var_dump($course);
-
-?> -->
+    $dao3 = new SectionDAO();
+    var_dump($dao3->updateMaterialProgress(1, 1, 2))
+?> 

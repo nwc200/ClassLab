@@ -181,6 +181,9 @@
                 $this->Link,
             ];
         }
+        public function getMaterialNum(){
+            return $this->MaterialNum;
+        }
     }
 
     class Quiz implements JsonSerializable{
