@@ -80,7 +80,6 @@
                 counter:0,
                 classstudentnum: <?php print json_encode($classstudentnum)?>,
                 checker:0
-                
             },
             methods:{
                 getDate: function(){

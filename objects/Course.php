@@ -60,7 +60,6 @@ class Course implements JsonSerializable
             $this->CoursePrereq
         ];
     }
-
 }
 
 class CoursePrereq implements JsonSerializable
@@ -121,6 +120,46 @@ class Class1 implements JsonSerializable
         return $this->ClassID;
     }
 
+    public function getClassSize()
+    {
+        return $this->ClassSize;
+    }
+
+    public function getTrainerUserName()
+    {
+        return $this->TrainerUserName;
+    }
+    
+    public function getStartDate()
+    {
+        return $this->StartDate;
+    }
+
+    public function getEndDate()
+    {
+        return $this->EndDate;
+    }
+
+    public function getStartTime()
+    {
+        return $this->StartTime;
+    }
+
+    public function getEndTime()
+    {
+        return $this->EndTime;
+    }
+
+    public function getSelfEnrollmentStart()
+    {
+        return $this->SelfEnrollmentStart;
+    }
+
+    public function getSelfEnrollmentEnd()
+    {
+        return $this->SelfEnrollmentEnd;
+    }
+
     public function jsonSerialize()
     {
         return [
@@ -134,8 +173,7 @@ class Class1 implements JsonSerializable
             $this->SelfEnrollmentStart,
             $this->SelfEnrollmentEnd,
             $this->Section
-            ]
-        ;
+            ];
     }
 }
 
@@ -154,7 +192,7 @@ class Section implements JsonSerializable
 
     public function addSectionMaterial($newSectionMaterial)
     {
-        $this->SectionMaterial[] = $newSectionMaterial;//newSectionMaterial is a SectionMaterial class
+        $this->SectionMaterial[] = $newSectionMaterial;  //newSectionMaterial is a SectionMaterial class
     }
 
     public function getSectionMaterial()
@@ -177,6 +215,11 @@ class Section implements JsonSerializable
         return $this->SectionNum;
     }
 
+    public function getSectionName()
+    {
+        return $this->SectionName;
+    }
+
     public function jsonSerialize()
     {
         return [
@@ -187,7 +230,8 @@ class Section implements JsonSerializable
         ];
     }
 }
-    
+
+
 class SectionMaterial implements JsonSerializable
 {
     private $MaterialNum;
@@ -208,6 +252,10 @@ class SectionMaterial implements JsonSerializable
             $this->MaterialType,
             $this->Link,
         ];
+    }
+    public function getMaterialNum()
+    {
+        return $this->MaterialNum;
     }
 }
 
@@ -241,6 +289,11 @@ class Quiz implements JsonSerializable
         return $this->QuizQuestion;
     }
 
+    public function getQuizDuration()
+    {
+        return $this->QuizDuration;
+    }
+
     public function jsonSerialize()
     {
         return [
@@ -253,6 +306,7 @@ class Quiz implements JsonSerializable
             $this->QuizQuestion
         ];
     }
+
 }
 
 class QuizQuestion implements JsonSerializable
@@ -280,7 +334,7 @@ class QuizQuestion implements JsonSerializable
     {
         return $this->QuizQuestion;
     }
-        
+    
     public function getQuestionNum()
     {
         return $this->QuestionNum;
@@ -320,4 +374,3 @@ class QuizAnswer implements JsonSerializable
         ];
     }
 }
-?>

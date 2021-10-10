@@ -1,1 +1,1 @@
-{"version":1,"defects":{"TestStudentQuizAttempt::testCalculateTotalMarksScored":3},"times":{"TestStudentQuizAttempt::testCalculateTotalMarksScored":0.13}}
+{"version":1,"defects":{"TestStudentQuizAttempt::testCalculateTotalMarksScored":3,"TestUpdateProgress::testCalculateTotalMarksScored":4},"times":{"TestStudentQuizAttempt::testCalculateTotalMarksScored":0.085,"TestUpdateProgress::testCalculateTotalMarksScored":0.038}}

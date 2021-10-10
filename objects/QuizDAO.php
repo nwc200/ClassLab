@@ -293,6 +293,109 @@ class QuizDAO
         $pdo = null;
         return $status;
     }
+
+    public function getQuiz($quizid)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+        $sql = "select * from quiz where quizid=:quizid";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":quizid", $quizid);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $quiz=null;
+        if ($row = $stmt->fetch()) {
+            $quiz = new Quiz($row['quizID'], $row["quizName"], $row["quizNum"], $row["quizDuration"], $row["type"], $row["passingMark"]);
+        }
+
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+        $sql = "select * from quizquestion where quizid=:quizid";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":quizid", $quizid);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        while ($row = $stmt->fetch()) {
+            $quiz->addQuizQuestion($row["questionNum"], $row["question"], $row["questionType"], $row["marks"]);
+        }
+
+        foreach ($quiz->getQuizQuestion() as $question) {
+            $questionnum = $question->getQuestionNum();
+            $conn_manager = new ConnectionManager();
+            $pdo = $conn_manager->getConnection("quiz");
+            $sql = "select * from quizanswer where quizid=:quizid and questionnum=:questionnum";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":quizid", $quizid);
+            $stmt->bindParam(":questionnum", $questionnum);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            while ($row = $stmt->fetch()) {
+                $question->addQuizAnswer($row["answerNum"], $row["answer"], $row["correct"]);
+            }
+        }
+        $stmt = null;
+        $pdo = null;
+        return $quiz;
+    }
+
+    public function getAttemptNo($quizid, $username)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+        $sql = "select * from studentquizattempt where quizid=:quizid and username=:username";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":quizid", $quizid);
+        $stmt->bindParam(":username", $username);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $attemptno = 0;
+        while ($row = $stmt->fetch()) {
+            $attemptno += 1;
+        }
+        $stmt = null;
+        $pdo = null;
+        return $attemptno;
+    }
+
+    public function addStudentQuizAttempt($username, $quizid, $attemptno, $passfail)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+        
+        $sql = "insert into studentquizattempt (username, quizid, attemptno, passfail) 
+        values (:username, :quizid, :attemptno, :passfail)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":quizid", $quizid);
+        $stmt->bindParam(":attemptno", $attemptno);
+        $stmt->bindParam(":passfail", $passfail);
+        $status = $stmt->execute();
+
+        $stmt = null;
+        $pdo = null;
+        return $status;
+    }
+
+    public function addStudentQuizRecord($username, $quizid, $marks, $attemptno, $questionnum, $studentansnum)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+        
+        $sql = "insert into studentquizrecord (username, quizid, marks, attemptno, questionnum, studentansnum) 
+        values (:username, :quizid, :marks, :attemptno, :questionnum, :studentansnum)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":quizid", $quizid);
+        $stmt->bindParam(":marks", $marks);
+        $stmt->bindParam(":attemptno", $attemptno);
+        $stmt->bindParam(":questionnum", $questionnum);
+        $stmt->bindParam(":studentansnum", $studentansnum);
+        $status = $stmt->execute();
+
+        $stmt = null;
+        $pdo = null;
+        return $status;
+    }
 }
 
 ?>
