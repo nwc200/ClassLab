@@ -241,6 +241,11 @@ class Quiz implements JsonSerializable
         return $this->QuizQuestion;
     }
 
+    public function getQuizDuration()
+    {
+        return $this->QuizDuration;
+    }
+
     public function jsonSerialize()
     {
         return [
