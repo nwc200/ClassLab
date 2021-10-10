@@ -153,6 +153,10 @@ class Course implements JsonSerializable
             return $this->SectionNum;
         }
 
+        public function getSectionName(){
+            return $this->SectionName;
+        }
+
         public function jsonSerialize(){
             return [
                 $this->SectionNum,
