@@ -194,4 +194,25 @@ class SectionDAO
         $pdo = null;
         return $status;
     }
+
+    public function retrieveClassQuiz($classID, $sectionNum)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+
+        $sql = "select * from quiz where classID=:classID and sectionNum=:sectionNum";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":classID", $classID);
+        $stmt->bindParam(":sectionNum", $sectionNum);
+        $stmt->execute();
+
+        $quiz = [];
+        while ($row = $stmt->fetch()) {
+            $quiz = new Quiz($row["quizID"], $row["classID"], $row["quizName"], $row["quizNum"], $row["quizDuration"], $row["type"], $row["passingMark"]);
+        }
+        // var_dump($quiz);
+        $stmt = null;
+        $pdo = null;
+        return $quiz;
+    }
 }

@@ -9,9 +9,14 @@ $status = 'Approved';
 
 $enrolDAO = new SectionDAO();
 $enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); //return user approved enrolments
+
+// $quizDAO = new QuizDAO();
+
 $userCourses = (object)[];
 $counter = 0;
 $zero = 0;
+// $classQuizzes = (object)[];
+
 
 foreach ($enrolments as $enrol) {
   $courseID = $enrol->getCourseID();
@@ -25,12 +30,15 @@ foreach ($enrolments as $enrol) {
   $materialNumArr = [];
   $getMaterialsNum = [];
   $getCompletedArr = [];
+  // $retrieveQuiz = [];
+
   foreach ($sectionIDs as $sec) { //$sec is individual section num
     $sectionNames = $enrolDAO->retrieveClassSectionName($classID, $sec); //get section name
     array_push($arraySecName, $sectionNames);
 
     $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
     array_push($arrayMaterials, $materials);
+
     // var_dump($materials);
     $material = [];
     $completed = [];
@@ -41,6 +49,7 @@ foreach ($enrolments as $enrol) {
 
       $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, $materialNum); //get completed
       array_push($completed, $getCompleted);
+
 
       // echo "<br>";
     }
@@ -55,7 +64,7 @@ foreach ($enrolments as $enrol) {
   $counter++;
 }
 // var_dump($userCourses);
-
+// var_dump($retrieveQuiz);
 
 $firstpage = $userCourses->$zero;
 $firstpageNoOfSec = count($firstpage[5]);
@@ -268,7 +277,12 @@ $completedPercent = $percent . '%';
               </td>
               <td v-if="firstpage[7][i][(firstpage[7][i].length)-1] == 1">
                 <a href=''>
-                  Quiz {{i+1}}
+                  <p v-if="i+1 != getNoOfSections">
+                    Quiz {{i+1}}
+                  </p>
+                  <p v-else>
+                    Final Quiz
+                  </p>
                 </a>
               </td>
               <td v-else>
@@ -320,13 +334,17 @@ $completedPercent = $percent . '%';
 
               <td v-if="getUserCourses[7][i][(getUserCourses[7][i].length)-1] == 1">
                 <a href=''>
-                  Quiz {{i+1}}
+                  <p v-if="i+1 != getNoOfSections">
+                    Quiz {{i+1}}
+                  </p>
+                  <p v-else>
+                    Final Quiz
+                  </p>
                 </a>
               </td>
               <td v-else>
 
               </td>
-
 
             </tr>
           </tbody>
@@ -345,7 +363,7 @@ $completedPercent = $percent . '%';
         firstpage: <?php print json_encode($firstpage) ?>,
         coursename: '',
         getUserCourses: '',
-        getNoOfSections: '',
+        getNoOfSections: <?php print json_encode($firstpageNoOfSec) ?>,
         percentage: <?php print json_encode($percent) ?>,
         wSection: <?php print json_encode($whichSection) ?>,
         completedPercent: <?php print json_encode($completedPercent) ?>,
@@ -396,7 +414,7 @@ $completedPercent = $percent . '%';
         complete: function(classID, sectionNum, materialNum) {
           this.selected = [parseInt(classID), sectionNum, materialNum]
           // console.log(this.selected)
-          axios.post("http://localhost/SPM-Proj/UpdateCompletion.php"),{
+          axios.post("http://localhost/SPM-Proj/UpdateCompletion.php"), {
             classID: this.selected[0],
             sectionNum: this.selected[1],
             materialNum: this.selected[2]

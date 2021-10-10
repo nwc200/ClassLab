@@ -25,8 +25,6 @@ foreach ($enrolments as $enrol) {
     $getMaterialsNum = [];
     $getCompletedArr = [];
     foreach ($sectionIDs as $sec) { //$sec is individual section num
-
-
         $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
         array_push($arrayMaterials, $materials);
         // var_dump($materials);
@@ -59,12 +57,11 @@ $quiz = [];
 
 // var_dump($firstpageNoOfSec);
 for ($j = 0; $j < $firstpageNoOfSec; $j++) {
-    $count = count($firstpage[6][$j])-1 ;
-    if (count($firstpage[6][$j]) != 0 && ($firstpage[6][$j][$count]) == 1){
+    $count = count($firstpage[6][$j]) - 1;
+    if (count($firstpage[6][$j]) != 0 && ($firstpage[6][$j][$count]) == 1) {
         $quizlink = 'https://www.youtube.com/watch?v=AndFYq7u7-M';
         array_push($quiz, $quizlink);
-    } 
-    else {
+    } else {
         array_push($quiz, "");
     }
 }
