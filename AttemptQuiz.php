@@ -60,7 +60,7 @@
                         <br><br>
                     </div>
                     <br><br>
-                    <button name='submit' type="submit" class="btn btn-primary btn-block">Submit</button>
+                    <button id='submit' name='submit' type="submit" class="btn btn-primary btn-block">Submit</button>
                 </form>
             </div>
         </div>
@@ -91,7 +91,8 @@
         document.getElementById("time").innerHTML = minutes + ":" + seconds;
         time--;
         if (time == 0) {
-            window.location.href = "ProcessAttemptQuiz.php";
+            document.getElementById("submit").click();
+            document.getElementById('submit').trigger('click');
         }
         }, 1000);
     </script>
