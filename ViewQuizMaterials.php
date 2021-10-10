@@ -20,14 +20,12 @@ foreach ($enrolments as $enrol) {
     $classID = $enrolDAO->getLearnerClassID($courseID, $username); //get class id
     $sectionIDs = $enrolDAO->retrieveClassSection($classID); //get section ids
 
-    $arraySecName = [];
     $arrayMaterials = [];
     $materialNumArr = [];
     $getMaterialsNum = [];
     $getCompletedArr = [];
     foreach ($sectionIDs as $sec) { //$sec is individual section num
-        $sectionNames = $enrolDAO->retrieveClassSectionName($classID, $sec); //get section name
-        array_push($arraySecName, $sectionNames);
+
 
         $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
         array_push($arrayMaterials, $materials);
@@ -37,20 +35,16 @@ foreach ($enrolments as $enrol) {
         for ($i = 0; $i < count($materials); $i++) {
             $materialNum = $materials[$i]->getMaterialNum(); //get materials id by section num
             array_push($material, $materialNum);
-            // $getMaterials = [$classID, $sec, $materialNum]; //array of materialnum with classid & section num
 
             $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, $materialNum); //get completed
             array_push($completed, $getCompleted);
-
-            // echo "<br>";
         }
         array_push($getMaterialsNum, $material);
         array_push($getCompletedArr, $completed);
     }
-    // var_dump($getCompletedArr);
-    // var_dump($getMaterialsNum);
 
-    $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $arraySecName, $arrayMaterials, $getMaterialsNum, $getCompletedArr];
+
+    $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $arrayMaterials, $getMaterialsNum, $getCompletedArr];
 
     $counter++;
 }
@@ -58,39 +52,23 @@ foreach ($enrolments as $enrol) {
 
 
 $firstpage = $userCourses->$zero;
-$firstpageNoOfSec = count($firstpage[5]);
-// var_dump($firstpage[6][0][0]); // get material num of section 1
-// var_dump($firstpage[7]);
+$firstpageNoOfSec = count($firstpage[3]);
+// $noOfMaterials = count($firstpage[6]);
+$quiz = [];
+// var_dump($noOfMaterials);
 
-$whichSection = '';
-$whichMaterial = '';
-$noOfMaterials = 0;
-
-for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sections
-    for ($k = 0; $k < count($firstpage[7][$j]); $k++) { //completed inside the sections
-        // var_dump($firstpage[7][$j][$k]);
-        $noOfMaterials = count($firstpage[7][$j]);
-        // echo"$noOfMaterials";
-        if ($noOfMaterials > 0) {
-            if (($firstpage[7][$j][$k]) == 0) {  //knows which section arr, which material is not completed
-                $whichSection = $j + 1;
-                $whichMaterial = $k;
-                // echo $j, $k; 
-                break;
-            } else {
-                $whichSection = $k + 1;
-                $whichMaterial = 0;
-            }
-        } else {
-            $whichSection = $j;
-            $whichMaterial = 0;
-        }
+// var_dump($firstpageNoOfSec);
+for ($j = 0; $j < $firstpageNoOfSec; $j++) {
+    $count = count($firstpage[6][$j])-1 ;
+    if (count($firstpage[6][$j]) != 0 && ($firstpage[6][$j][$count]) == 1){
+        $quizlink = 'https://www.youtube.com/watch?v=AndFYq7u7-M';
+        array_push($quiz, $quizlink);
+    } 
+    else {
+        array_push($quiz, "");
     }
 }
-
-// echo $whichSection;
-$percent = ($whichMaterial / ($noOfMaterials) * 100);
-$completedPercent = $percent . '%';
+// var_dump($quiz);
 
 ?>
 
@@ -132,7 +110,6 @@ $completedPercent = $percent . '%';
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Courses Enrolled
                         </a>
-                        <!-- hello{{counter}} -->
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <div v-for="(each, i) in usercourses">
                                 <a class="dropdown-item" :value="i" @click='test([i])'> {{usercourses[i][1]}} - Class {{usercourses[i][2]}}</a>
@@ -169,44 +146,63 @@ $completedPercent = $percent . '%';
         </div>
 
         <div class='container-fluid' style="margin:50px; padding: 20px">
-            <form method='POST' action='completionProgress.php'>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td>Section</td>
-                            <td>Quiz</td>
-                            <td>Attempts</td>
-                            <td>Scores</td>
-                            <td>View Attempt</td>
-                        </tr>
-                    </thead>
+            <!-- <form method='POST' action='completionProgress.php'> -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Section</td>
+                        <td>Quiz</td>
+                        <td>Attempts</td>
+                        <td>Pass/Failed</td>
+                        <td>View Attempt</td>
+                    </tr>
+                </thead>
 
-                    <tbody>
-                        <tr v-for="(each, i) in getNoOfSections">
-                            <td>
-                                <b>Section {{i+1}}</b>
-                            </td>
-                            <td >
-                                <a class="quiz" href=''>Quiz {{i+1}}</a><br>
-                            </td>
+                <tbody>
+                    <tr v-for="(each, i) in getNoOfSections">
+                        <td>
+                            <b>Section {{i+1}}</b>
+                        </td>
+                        <td>
+                            <div v-if="quiz[i] != ''">
+                                <a class="quiz" :href="quiz[i]">Attempt Quiz {{i+1}}</a><br>
+                            </div>
+                            <div v-else>
+                            </div>
+                        </td>
 
-                            <td>
-                                <p>Attempt 1</p>
-                            </td>
+                        <td>
+                            <div v-if="quiz[i] != ''">
 
-                            <td>
-                                <p>4 / 10</p>
-                            </td>
+                            </div>
+                            <div v-else>
 
-                            <td>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div v-if="quiz[i] != ''">
+
+                            </div>
+                            <div v-else>
+
+                            </div>
+                        </td>
+                        <td>
+                            <div v-if="quiz[i] != ''">
                                 <button type="button" class="btn btn-outline-primary btn1" style="margin:1px;">View</button> <br>
-                            </td>
-                        </tr>
+                            </div>
+                            <div v-else>
 
-                    </tbody>
+                            </div>
+                        </td>
 
-                </table>
-            </form>
+                    </tr>
+
+                </tbody>
+
+            </table>
+            <!-- </form> -->
         </div>
     </div>
 
@@ -219,14 +215,35 @@ $completedPercent = $percent . '%';
                 usercourses: <?php print json_encode($userCourses) ?>,
                 firstpage: <?php print json_encode($firstpage) ?>,
                 coursename: '',
-                getUserCourses: '',
-                getNoOfSections: <?php print json_encode($firstpage[5]) ?>,
+                getCurrentCourse: '',
+                getNoOfSections: <?php print json_encode($firstpage[3]) ?>,
+                getNoOfMaterials: '',
+                quiz: <?php print json_encode($quiz) ?>,
+                // sec: [],
+
             },
             methods: {
                 test: function(i) {
                     this.coursename = this.usercourses[i][1]
-                    this.getUserCourses = this.usercourses[i]
-                    this.getNoOfSections = this.usercourses[i][5].length //currently only retrieve the 1st section materials 
+                    this.getCurrentCourse = this.usercourses[i]
+                    this.getNoOfSections = this.usercourses[i][3].length //
+                    this.getNoOfMaterials = this.getCurrentCourse[6] // 
+
+                    // console.log(this.getNoOfMaterials)
+                    this.quiz = []
+                    this.sec = []
+                    for (j = 0; j < this.getNoOfSections; j++) {
+                        // console.log(this.getNoOfMaterials[j])
+                        if (this.getNoOfMaterials[j] != 0 && this.getNoOfMaterials[j][this.getNoOfMaterials[j].length - 1] == 1) { //materials not 0 & completed all materials
+                            this.quizlink = 'https://www.youtube.com/watch?v=AndFYq7u7-M'
+                            this.quiz.push(this.quizlink)
+                            // this.sec.push(j)
+                        } else {
+                            this.quiz.push('')
+                            // this.sec.push(j)
+                        }
+                    }
+                    // console.log(this.quiz)
                 }
 
             }
