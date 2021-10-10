@@ -99,11 +99,11 @@
                                         echo "</div>
                                             <div class='col-2'>";
                 
-                                        $assignEngineerHref = "AssignLearnerToClass.php?courseid=$courseid&classid={$class->getClassID()}";
+                                            $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
                                         if ($remainingSlot == 0) {
                                             echo "<button type='button' class='btn btn-secondary' disabled>Assign</button>";
                                         } else {
-                                            echo "<a class='btn btn-success' href='$assignEngineerHref' role='button'>Enrol</a>";
+                                            echo "<a class='btn btn-success' href='$enrolPageHref' role='button'>Enrol</a>";
                                         }
                                         echo "</div>
                                             </div>
