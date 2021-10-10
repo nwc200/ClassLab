@@ -42,6 +42,9 @@
                     <div class="col-auto">
                         <button type="submit" class="btn btn-primary mb-3">Search</button>
                     </div>
+                    <div class="col-auto">
+                        <a href="ViewCourseByEligibility.php" button type="filter" class="btn btn-secondary mb-3">Filter</a>
+                    </div>
                 </div>
 
                 <?php
