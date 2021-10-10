@@ -120,6 +120,46 @@ class Class1 implements JsonSerializable
         return $this->ClassID;
     }
 
+    public function getClassSize()
+    {
+        return $this->ClassSize;
+    }
+
+    public function getTrainerUserName()
+    {
+        return $this->TrainerUserName;
+    }
+    
+    public function getStartDate()
+    {
+        return $this->StartDate;
+    }
+
+    public function getEndDate()
+    {
+        return $this->EndDate;
+    }
+
+    public function getStartTime()
+    {
+        return $this->StartTime;
+    }
+
+    public function getEndTime()
+    {
+        return $this->EndTime;
+    }
+
+    public function getSelfEnrollmentStart()
+    {
+        return $this->SelfEnrollmentStart;
+    }
+
+    public function getSelfEnrollmentEnd()
+    {
+        return $this->SelfEnrollmentEnd;
+    }
+
     public function jsonSerialize()
     {
         return [
