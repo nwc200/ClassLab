@@ -41,7 +41,7 @@
                     <hr>
                 </div>
                 <br><br><br>
-                <form action="ProcessAttemptQuiz.php" method="POST">
+                <form action="../ProcessAttemptQuiz.php" method="POST">
                     <input type="hidden" name="username" value="<?php echo $username;?>">
                     <input type="hidden" name="quizid" v-bind:value="quiz[0]">
                     <input type="hidden" name="passingmark" v-bind:value="quiz[5]">
