@@ -67,3 +67,21 @@ insert into permissions
 values ("Alexandra", 1, "Trainer");
 insert into permissions
 values ("Alexandra", 3, "Learner");
+
+
+insert into permissions
+values ("Wei Cheng", 5, "Learner");
+insert into permissions
+values ("Alexandra", 3, "Learner");
+insert into permissions
+values ("Xi Hwee", 1, "Learner");
+insert into permissions
+values ("Xi Hwee", 3, "Learner");
+insert into permissions
+values ("Xi Hwee", 5, "Learner");
+insert into permissions
+values ("Yu Hao", 1, "Learner");
+insert into permissions
+values ("Yu Hao", 3, "Learner");
+
+
