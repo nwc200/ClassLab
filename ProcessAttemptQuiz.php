@@ -16,10 +16,13 @@ $quiz = $dao->getQuiz($quizid);
 $markarr=[];
 $ansarr = [];
 $corrarr=[];
+$questionarr=[];
 foreach ($_POST as $key => $value) {
     if (strpos($key, "mark")) {
         $questionmark = substr($key, -1);
+        $questionnum = substr($key, 0, 1);
         array_push($markarr, $questionmark);
+        array_push($questionarr, $questionnum);
     }
     if (strpos($value, "corr")) {
         $ansnum = substr($value, 0, 1);
@@ -50,9 +53,9 @@ if ($marks >= $passingmark) {
 
 for ($i=0; $i<count($markarr); $i++) {
     if ($corrarr[$i] == 0) {
-        $dao->addStudentQuizRecord($username, $quizid, 0, $attemptno, $i+1, $ansarr[$i]);
+        $dao->addStudentQuizRecord($username, $quizid, 0, $attemptno, $questionnum[$i], $ansarr[$i]);
     } elseif ($corrarr[$i] == 1) {
-        $dao->addStudentQuizRecord($username, $quizid, $markarr[$i], $attemptno, $i+1, $ansarr[$i]);
+        $dao->addStudentQuizRecord($username, $quizid, $markarr[$i], $attemptno, $questionnum[$i], $ansarr[$i]);
         $marks += $markarr[$i];
     }
 }
