@@ -34,6 +34,7 @@ foreach ($_POST as $key => $value) {
 var_dump($markarr);
 var_dump($ansarr);
 var_dump($corrarr);
+var_dump($questionarr);
 
 $marks = 0;
 //check correct
@@ -53,9 +54,9 @@ if ($marks >= $passingmark) {
 
 for ($i=0; $i<count($markarr); $i++) {
     if ($corrarr[$i] == 0) {
-        $dao->addStudentQuizRecord($username, $quizid, 0, $attemptno, $questionnum[$i], $ansarr[$i]);
+        $dao->addStudentQuizRecord($username, $quizid, 0, $attemptno, $questionarr[$i], $ansarr[$i]);
     } elseif ($corrarr[$i] == 1) {
-        $dao->addStudentQuizRecord($username, $quizid, $markarr[$i], $attemptno, $questionnum[$i], $ansarr[$i]);
+        $dao->addStudentQuizRecord($username, $quizid, $markarr[$i], $attemptno, $questionarr[$i], $ansarr[$i]);
         $marks += $markarr[$i];
     }
 }
