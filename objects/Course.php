@@ -292,4 +292,3 @@ class QuizAnswer implements JsonSerializable
         ];
     }
 }
-?>
