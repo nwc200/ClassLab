@@ -19,14 +19,16 @@ $corrarr=[];
 $questionarr=[];
 foreach ($_POST as $key => $value) {
     if (strpos($key, "mark")) {
-        $questionmark = substr($key, -1);
-        $questionnum = substr($key, 0, 1);
+        $pieces = explode("mark", $key);
+        $questionmark = $pieces[1];
+        $questionnum = $pieces[0];
         array_push($markarr, $questionmark);
         array_push($questionarr, $questionnum);
     }
     if (strpos($value, "corr")) {
-        $ansnum = substr($value, 0, 1);
-        $anscorr = substr($value, -1);
+        $pieces = explode("corr", $value);
+        $ansnum = $pieces[0];
+        $anscorr = $pieces[1];
         array_push($ansarr, $ansnum);
         array_push($corrarr, $anscorr);
     }
