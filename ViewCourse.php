@@ -1,4 +1,4 @@
-@@ -0,0 +1,93 @@
+
 <?php
     require_once "objects/autoload.php";
 
