@@ -44,6 +44,69 @@ class CourseDAO
         $pdo = null;
         return $courses;
     }
+    
+    public function getEligibleCourseID($username) 
+    { 
+        $conn_manager = new ConnectionManager(); 
+        $pdo = $conn_manager->getConnection("user"); 
+        //get courseid that user is learner for 
+        $sql = "select courseid from permissions where username=:username and usertype='Learner'"; 
+        $stmt = $pdo->prepare($sql); 
+        $stmt->bindParam(":username", $username); 
+        $stmt->execute(); 
+        $stmt->setFetchMode(PDO::FETCH_ASSOC); 
+        $courseidarr =[]; 
+        while ($row = $stmt->fetch()) { 
+            $courseidarr[] = $row["courseid"]; 
+        } 
+         
+        $conn_manager = new ConnectionManager(); 
+        $pdo = $conn_manager->getConnection("enrolment"); 
+        //check if completed course 
+        $coursecompleted = []; 
+        foreach ($courseidarr as $courseid) { 
+            $sql = "select courseid from enrolment where courseid=:courseid and completed=true"; 
+            $stmt = $pdo->prepare($sql); 
+            $stmt->bindParam(":courseid", $courseid); 
+            $stmt->execute(); 
+            $stmt->setFetchMode(PDO::FETCH_ASSOC); 
+            while ($row = $stmt->fetch()) { 
+                $coursecompleted[] = $row["courseID"]; 
+            } 
+        } 
+ 
+        //remove from courseidarr if already finish course 
+        $courseideligible = array_diff($courseidarr, $coursecompleted); 
+ 
+        $conn_manager = new ConnectionManager(); 
+        $pdo = $conn_manager->getConnection("course"); 
+        //get prereq for all course eligible for 
+        $courseprereqarr =[]; 
+        foreach ($courseideligible as $courseid) { 
+            $sql = "select courseprereq from courseprereq where courseid=:courseid"; 
+            $stmt = $pdo->prepare($sql); 
+            $stmt->bindParam(":courseid", $courseid); 
+            $stmt->execute(); 
+            $stmt->setFetchMode(PDO::FETCH_ASSOC); 
+            while ($row = $stmt->fetch()) { 
+                $courseprereqarr[] = [$courseid, $row['courseID']]; 
+            } 
+        } 
+ 
+        //compare prereq to courses ive completed and get those i fail req 
+        $failcourseid = []; 
+        foreach ($courseprereqarr as $prereq) { 
+            if (!in_array($prereq[1], $coursecompleted)) { 
+                $failcourseid[] = $prereq[0]; 
+            } 
+        } 
+ 
+        $result = array_diff($courseideligible, $failcourseid); 
+     
+        $stmt = null; 
+        $pdo = null; 
+        return $result; 
+    }
 
     // Retrieve course prerequisite
     public function setPrerequisite($courseID, $course)
@@ -112,6 +175,9 @@ class CourseDAO
         $pdo = null;
         return $courseClass;
     }
+    
+    
+    
 
     // Update enrolment period for a course class
     public function updateEnrolmentPeriod($courseID, $classID, $startDate, $endDate)
