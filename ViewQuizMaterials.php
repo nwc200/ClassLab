@@ -162,7 +162,7 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
                         </td>
                         <td>
                             <div v-if="quiz[i] != ''">
-                                <a class="quiz" :href="quiz[i]">Attempt Quiz {{i+1}}</a><br>
+                                <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Quiz {{i+1}}</a><br>
                             </div>
                             <div v-else>
                             </div>

@@ -73,6 +73,7 @@ foreach ($enrolments as $enrol) {
 
 $firstpage = $userCourses->$zero;
 $firstpageNoOfSec = count($firstpage[5]);
+$classID = $firstpage[2];
 // var_dump($firstpage[6][0][0]); // get material num of section 1
 // var_dump($firstpage[7]);
 
@@ -241,12 +242,12 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
                   </label>
                 </p>
                 <p v-else-if='firstpage[7][i][1] == 0'>
-                  <button type="button" class="btn btn-outline-primary">Complete</button>
+                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
                 </p>
               </td>
 
               <td v-if="firstpage[7][i][(firstpage[7][i].length)-1] == 1">
-                <a href='AttemptQuiz.php'>
+                <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)">
                   <p v-if="i+1 != getNoOfSections">
                     Quiz {{i+1}}
                   </p>
@@ -291,12 +292,12 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
                   </label>
                 </p>
                 <p v-else-if='getUserCourses[7][i][1] == 0'>
-                  <button type="button" class="btn btn-outline-primary">Complete</button>
+                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
                 </p>
               </td>
 
               <td v-if="getUserCourses[7][i][(getUserCourses[7][i].length)-1] == 1">
-                <a href=''>
+                <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)">
                   <p v-if="i+1 != getNoOfSections">
                     Quiz {{i+1}}
                   </p>
@@ -332,8 +333,8 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
         completedPercent: <?php print json_encode($completedPercent) ?>,
         wMaterial: <?php print json_encode($whichMaterial) ?>,
         noOfMaterials: <?php print json_encode($noOfMaterials) ?>,
-        noMat: [],
-        selected: [],
+        classID: <?php print json_encode($classID) ?>,
+ 
       },
       methods: {
         test: function(i) {
@@ -343,6 +344,7 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
           this.wSection = 0
           this.percentage = 0
           this.completedPercent = '0%'
+          this.classID = this.getUserCourses[2]
 
           for (j = 0; j < this.getNoOfSections; j++) { //can alr know got how many sections
             for (k = 0; k < this.getUserCourses[7][j].length; k++) { //completed inside the sections

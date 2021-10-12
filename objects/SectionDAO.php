@@ -215,4 +215,29 @@ class SectionDAO
         $pdo = null;
         return $quiz;
     }
+
+    public function insertProgress($classID, $sectionNum, $materialNum, $userName, $completed)
+    {
+        // get course of class
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("section");
+
+        $sql = "INSERT INTO `materialprogress` 
+                WHERE classID=:classID AND sectionNum=:sectionNum AND materialNum=:materialNum
+                AND userName=:userName AND completed=:completed
+                ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":classID", $classID);
+        $stmt->bindParam(":sectionNum", $sectionNum);
+        $stmt->bindParam(":materialNum", $materialNum);
+        $stmt->bindParam(":userName", $userName);
+        $stmt->bindParam(":completed", $completed);
+        $status = $stmt->execute();
+
+
+        $stmt = null;
+        $pdo = null;
+        return $status;
+    }
 }
