@@ -9,9 +9,14 @@ $status = 'Approved';
 
 $enrolDAO = new SectionDAO();
 $enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); //return user approved enrolments
+
+// $quizDAO = new QuizDAO();
+
 $userCourses = (object)[];
 $counter = 0;
 $zero = 0;
+// $classQuizzes = (object)[];
+
 
 foreach ($enrolments as $enrol) {
   $courseID = $enrol->getCourseID();
@@ -25,12 +30,20 @@ foreach ($enrolments as $enrol) {
   $materialNumArr = [];
   $getMaterialsNum = [];
   $getCompletedArr = [];
+  // $retrieveQuiz = [];
+
   foreach ($sectionIDs as $sec) { //$sec is individual section num
     $sectionNames = $enrolDAO->retrieveClassSectionName($classID, $sec); //get section name
     array_push($arraySecName, $sectionNames);
 
     $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
     array_push($arrayMaterials, $materials);
+
+    // $quizzez = [];
+    // $getQuiz = $enrolDAO->retrieveClassQuiz($classID, $sec);  // retrieve quiz information for the section
+    // array_push($retrieveQuiz, $getQuiz);
+    // var_dump($getQuiz);
+
     // var_dump($materials);
     $material = [];
     $completed = [];
@@ -41,6 +54,7 @@ foreach ($enrolments as $enrol) {
 
       $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, $materialNum); //get completed
       array_push($completed, $getCompleted);
+
 
       // echo "<br>";
     }
@@ -55,42 +69,35 @@ foreach ($enrolments as $enrol) {
   $counter++;
 }
 // var_dump($userCourses);
-
+// var_dump($retrieveQuiz);
 
 $firstpage = $userCourses->$zero;
 $firstpageNoOfSec = count($firstpage[5]);
+$classID = $firstpage[2];
 // var_dump($firstpage[6][0][0]); // get material num of section 1
 // var_dump($firstpage[7]);
 
-$whichSection = '';
+$whichSection = 0;
 $whichMaterial = '';
 $noOfMaterials = 0;
+$percent = 0;
+$completedPercent = $percent . '%';
 
 for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sections
   for ($k = 0; $k < count($firstpage[7][$j]); $k++) { //completed inside the sections
-    // var_dump($firstpage[7][$j][$k]);
     $noOfMaterials = count($firstpage[7][$j]);
-    // echo"$noOfMaterials";
     if ($noOfMaterials > 0) {
-      if (($firstpage[7][$j][$k]) == 0) {  //knows which section arr, which material is not completed
+      if (($firstpage[7][$j][$k]) == 1) {  //knows which section arr, which material is not completed
         $whichSection = $j + 1;
-        $whichMaterial = $k;
-        // echo $j, $k; 
+        $percent = number_format(($whichSection / ($firstpageNoOfSec) * 100), 2, '.', '');
+        $completedPercent = $percent . '%';
         break;
-      } else {
-        $whichSection = $k + 1;
-        $whichMaterial = 0;
       }
-    } else {
-      $whichSection = $j;
-      $whichMaterial = 0;
     }
   }
 }
-
 // echo $whichSection;
-$percent = ($whichMaterial / ($noOfMaterials) * 100);
-$completedPercent = $percent . '%';
+
 
 ?>
 
@@ -154,25 +161,14 @@ $completedPercent = $percent . '%';
       <div>
         <br>
         <div v-if='percentage != 100'>
-          <p style="margin:2px;"><b> Section {{wSection}} Progress - {{coursename}}</b></p>
+          <p style="margin:2px;"><b>Course Progress </b></p>
           <div class="col progress">
             <div class="progress-bar progress-bar-striped" role="progressbar" v-bind:style="{width: completedPercent}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-              {{percentage}}%
+              {{completedPercent}}
             </div>
           </div>
           <h6 style="text-align:center;margin:5px">
-            {{percentage}}% of Section {{wSection }} Completed
-          </h6>
-        </div>
-        <div v-else>
-          <p style="margin:2px;"><b>Section {{wSection}} - Progress</b></p>
-          <div class="col progress">
-            <div class="progress-bar progress-bar-striped" role="progressbar" v-bind:style="{width:'0%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-              {{0}}%
-            </div>
-          </div>
-          <h6 style="text-align:center;margin:5px">
-            {{0}}% of Section {{wSection}} Completed
+            {{completedPercent}} of Course Completed
           </h6>
         </div>
       </div>
@@ -187,25 +183,14 @@ $completedPercent = $percent . '%';
       <div class="container">
         <br>
         <div v-if='percentage != 100'>
-          <p style="margin:2px;"><b>Section {{wSection}} Progress - {{usercourses[0][1]}}</b></p>
+          <p style="margin:2px;"><b>Course Progress</b></p>
           <div class="col progress">
             <div class="progress-bar progress-bar-striped" role="progressbar" v-bind:style="{width: completedPercent}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
               {{percentage}}%
             </div>
           </div>
           <h6 style="text-align:center;margin:5px">
-            {{percentage}}% of Section {{wSection}} Completed
-          </h6>
-        </div>
-        <div v-else>
-          <p style="margin:2px;"><b>Section {{wSection+1}} Progress - {{usercourses[0][1]}}</b></p>
-          <div class="col progress">
-            <div class="progress-bar progress-bar-striped" role="progressbar" v-bind:style="{width:'0%'}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-              {{0}}%
-            </div>
-          </div>
-          <h6 style="text-align:center;margin:5px">
-            {{0}}% of Section {{wSection+1}} Completed
+            {{percentage}}% of Course Completed
           </h6>
         </div>
       </div>
@@ -251,31 +236,29 @@ $completedPercent = $percent . '%';
               </td>
 
               <td>
-                <div v-for="(each, j) in firstpage[7][i]">
-                  <p v-if='firstpage[7][i][j] == 0'>
-                    <input class="form-check-input-group" type="checkbox" :model="selected" :name="[firstpage[2], i+1, j+1]" :value="[firstpage[2], i+1, j+1]" id="flexCheckIndeterminate" @change='complete(firstpage[2], i+1, j+1)'>
-                    <label class="form-check-label" for="flexCheckIndeterminate">
-                      Complete
-                    </label>
+                <p v-if='firstpage[7][i][1] == 1'>
+                  <label class="form-check-label" for="flexCheckIndeterminate">
+                    Completed
+                  </label>
+                </p>
+                <p v-else-if='firstpage[7][i][1] == 0'>
+                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
+                </p>
+              </td>
+
+              <td v-if="firstpage[7][i][(firstpage[7][i].length)-1] == 1">
+                <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)">
+                  <p v-if="i+1 != getNoOfSections">
+                    Quiz {{i+1}}
                   </p>
                   <p v-else>
-                    <label class="form-check-label" for="flexCheckIndeterminate">
-                      Completed
-                    </label>
+                    Final Quiz
                   </p>
-                </div>
-
-              </td>
-              <td v-if="firstpage[7][i][(firstpage[7][i].length)-1] == 1">
-                <a href=''>
-                  Quiz {{i+1}}
                 </a>
               </td>
               <td v-else>
 
               </td>
-
-
             </tr>
           </tbody>
 
@@ -303,30 +286,29 @@ $completedPercent = $percent . '%';
               </td>
 
               <td>
-                <div v-for="(each, j) in getUserCourses[7][i]">
-                  <p v-if='getUserCourses[7][i][j] == 0'>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
-                    <label class="form-check-label" for="flexCheckIndeterminate">
-                      Complete
-                    </label>
-                  </p>
-                  <p v-else>
-                    <label class="form-check-label" for="flexCheckIndeterminate">
-                      Completed
-                    </label>
-                  </p>
-                </div>
+                <p v-if='getUserCourses[7][i][1] == 1'>
+                  <label class="form-check-label" for="flexCheckIndeterminate">
+                    Completed
+                  </label>
+                </p>
+                <p v-else-if='getUserCourses[7][i][1] == 0'>
+                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
+                </p>
               </td>
 
               <td v-if="getUserCourses[7][i][(getUserCourses[7][i].length)-1] == 1">
-                <a href=''>
-                  Quiz {{i+1}}
+                <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)">
+                  <p v-if="i+1 != getNoOfSections">
+                    Quiz {{i+1}}
+                  </p>
+                  <p v-else>
+                    Final Quiz
+                  </p>
                 </a>
               </td>
               <td v-else>
 
               </td>
-
 
             </tr>
           </tbody>
@@ -345,65 +327,42 @@ $completedPercent = $percent . '%';
         firstpage: <?php print json_encode($firstpage) ?>,
         coursename: '',
         getUserCourses: '',
-        getNoOfSections: '',
+        getNoOfSections: <?php print json_encode($firstpageNoOfSec) ?>,
         percentage: <?php print json_encode($percent) ?>,
         wSection: <?php print json_encode($whichSection) ?>,
         completedPercent: <?php print json_encode($completedPercent) ?>,
         wMaterial: <?php print json_encode($whichMaterial) ?>,
         noOfMaterials: <?php print json_encode($noOfMaterials) ?>,
-        noMat: [],
-        selected: [],
+        classID: <?php print json_encode($classID) ?>,
+ 
       },
       methods: {
         test: function(i) {
           this.coursename = this.usercourses[i][1]
           this.getUserCourses = this.usercourses[i]
           this.getNoOfSections = this.getUserCourses[7].length //retrieve no of sections
+          this.wSection = 0
+          this.percentage = 0
+          this.completedPercent = '0%'
+          this.classID = this.getUserCourses[2]
 
-          for (j = 0; j < this.getNoOfSections; j++) {
-            if (this.getUserCourses[7][j].length != 0) {
-
-              for (k = 0; k < this.getUserCourses[7][j].length; k++) { //find which material is completed
-                if (this.getUserCourses[7][j][k] == 0) { // 0 = not completed
-                  this.wMaterial = k // k is the position
-                  this.wSection = j + 1 // j is section
-
-                  if (k != 0) {
-                    this.percentage = (k / this.getUserCourses[7][j].length) * 100
-                    this.completedPercent = this.percentage + '%'
-
-                  } else {
-                    this.percentage = 0
-                    this.completedPercent = this.percentage + '%'
-                    this.wSection = j + 1
-
-                    break
-                  }
+          for (j = 0; j < this.getNoOfSections; j++) { //can alr know got how many sections
+            for (k = 0; k < this.getUserCourses[7][j].length; k++) { //completed inside the sections
+              this.noOfMaterials = this.getUserCourses[7][j].length
+              if (this.noOfMaterials > 0) {
+                if (this.getUserCourses[7][j][k] == 1) { //knows which section arr, which material is not completed
+                  this.wSection = j + 1;
+                  this.calculate = (this.wSection / this.getNoOfSections) * 100
+                  this.percent = parseFloat(this.calculate).toFixed(2)
+                  this.completedPercent = this.percent + '%';
+                  break
                 }
               }
-            } else {
-              this.wMaterial = 0
-              this.wSection = j + 1
-              this.percentage = 0
-              this.completedPercent = this.percentage + '%'
-
-              break
             }
-            break
           }
-        },
-
-        complete: function(classID, sectionNum, materialNum) {
-          this.selected = [parseInt(classID), sectionNum, materialNum]
-          // console.log(this.selected)
-          axios.post("http://localhost/SPM-Proj/UpdateCompletion.php"),{
-            classID: this.selected[0],
-            sectionNum: this.selected[1],
-            materialNum: this.selected[2]
-          }
-          console.log(this.selected)
+          // console.log(this.percent)
+          // console.log(this.completedPercent)
         }
-
       }
 
     })
