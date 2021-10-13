@@ -64,8 +64,8 @@ for ($i=0; $i<count($markarr); $i++) {
 }
 
 
-//header('Location: QuizSuccess.html');
-//exit;
+header('Location: ViewQuizMaterials.php');
+exit;
 
 
 
