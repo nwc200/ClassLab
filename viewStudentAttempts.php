@@ -1,15 +1,17 @@
 <?php
-    require_once "objects/autoload.php";
-    $username = $_SESSION['username'];
-    $quizid = $_GET['quizid'];
-    $dao = new QuizDAO();
-    $quiz = $dao->getTrainerCourse("Wei Cheng");
-    $quiz = $dao->getQuiz($quizid);
-    $quizduration = $quiz->getQuizDuration();
+require_once "objects/autoload.php";
+$username = $_SESSION['username'];
+$quizid = $_GET['quizid'];
+$dao = new QuizDAO();
+$quiz = $dao->getTrainerCourse("Wei Cheng");
+$quiz = $dao->getQuiz($quizid);
+
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,17 +23,10 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
+
 <body>
-    
-    <div class="timer fixed-top navbar navbar-light bg-light" onload="timer(1800)">
-        <div class="time navbar-brand">
-            <strong>Time left: <span id="time">Loading...</span></strong>
-        </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="container" id="app">
+
+<div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
                 <div class="text-center"> 
@@ -39,6 +34,7 @@
                     <h4>Type: {{quiz[4]}}</h4>
                     <h4>Passing Mark: {{quiz[5]}}</h4>
                     <hr>
+
                 </div>
                 <br><br><br>
                 <form action="ProcessAttemptQuiz.php" method="POST">
@@ -60,45 +56,28 @@
                         <br><br>
                     </div>
                     <br><br>
-                    <button id='submit' name='submit' type="submit" class="btn btn-primary btn-block">Submit</button>
+                    <button id='submit' name='submit' type="submit" class="btn btn-primary btn-block">Close</button>
                 </form>
             </div>
         </div>
     </div>
 
 
+
+
+
     <script>
         var app = new Vue({
             el: "#app",
-            data:{
-                quiz: <?php print json_encode($quiz)?>
+            data: {
+                quiz: <?php print json_encode($quiz) ?>
             }
         })
-        
     </script>
-    
-    <script>
-        var duration = <?php echo json_encode($quizduration) ?>;
-        var time = duration * 60;
-        setInterval(function() {
-        var seconds = time % 60;
-        var minutes = (time - seconds) / 60;
-        if (seconds.toString().length == 1) {
-            seconds = "0" + seconds;
-        }
-        if (minutes.toString().length == 1) {
-            minutes = "0" + minutes;
-        }
-        document.getElementById("time").innerHTML = minutes + ":" + seconds;
-        time--;
-        if (time == 0) {
-            document.getElementById("submit").click();
-            document.getElementById('submit').trigger('click');
-        }
-        }, 1000);
-    </script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
+
 </html>

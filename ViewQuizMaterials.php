@@ -1,7 +1,5 @@
 <?php
 
-use SebastianBergmann\CodeCoverage\Percentage;
-
 require_once "objects/autoload.php";
 
 $_SESSION['username'] = "Yu Hao";
@@ -14,7 +12,8 @@ $userCourses = (object)[];
 $counter = 0;
 $zero = 0;
 
-// var_dump($enrolments);
+$quizDAO = new QuizDAO();
+
 
 foreach ($enrolments as $enrol) {
     $courseID = $enrol->getCourseID();
@@ -23,8 +22,16 @@ foreach ($enrolments as $enrol) {
     $classID = $enrolDAO->getLearnerClassID($courseID, $username); //get class id
     $sectionIDs = $enrolDAO->retrieveClassSection($classID); //get section ids
 
-    $getCompletedArr = [];
+    $getQuizzes = $quizDAO->retrieveClassQuiz($classID);            //get quizes for that classid 
+
     $quizAttempts = [];
+    foreach ($getQuizzes as $getQuiz) {
+        $quizid = $getQuiz[0];
+        $attempts = $enrolDAO->studentQuizAttemptRetrieve($username, $quizid);
+        array_push($quizAttempts, $attempts);
+    }
+
+    $getCompletedArr = [];
     $arrayMaterials = [];
 
     foreach ($sectionIDs as $sec) { //$sec is individual section num
@@ -32,13 +39,10 @@ foreach ($enrolments as $enrol) {
         $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, 1); //get completed
         array_push($getCompletedArr, $getCompleted);
 
-        $attempts = $enrolDAO->studentQuizAttemptRetrieve($username, $sec);
-        array_push($quizAttempts, $attempts);
-
         $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
         array_push($arrayMaterials, $materials);
     }
-    $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $getCompletedArr, $quizAttempts, $arrayMaterials];
+    $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $getCompletedArr, $quizAttempts, $arrayMaterials, $getQuizzes];
 
     $counter++;
 }
@@ -52,13 +56,20 @@ $quiz = [];
 $getQuizAttempts = $firstpage[5];
 $getMaterials = $firstpage[6];
 $isCompleted = $firstpage[4];
+$quizInformation = $firstpage[7];
+// var_dump($getQuizAttempts);
 
-for ($j = 0; $j < $firstpageNoOfSec; $j++) {
-    for ($k = 0; $k < count($getQuizAttempts[$j]); $k++) {
-        if ($getQuizAttempts[$j][$k][2] == 1) {  //section 1 done, section 2 done
-            $totalPercentage =  number_format((($j + 1) / $firstpageNoOfSec) * 100, 2, '.', '');
-            $percentage = $totalPercentage . '%';
-            break;
+if (count($quizInformation) != 0) {
+    if (count($getQuizAttempts) != 0) {
+        // var_dump($getQuizAttempts);
+        for ($i = 0; $i < count($getQuizAttempts); $i++) {
+            for ($k = 0; $k < count($getQuizAttempts[$i]); $k++) {
+                if ($getQuizAttempts[$i][$k][2] == 1) {
+                    $totalPercentage =  number_format((($i + 1) / $firstpageNoOfSec) * 100, 2, '.', '');
+                    $percentage = $totalPercentage . '%';
+                    break;
+                }
+            }
         }
     }
 }
@@ -151,26 +162,25 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
                 </thead>
 
                 <tbody>
-                    <tr v-for="(each, i) in isCompleted">
+                    <!-- if there is no quiz1 for that course -->
+                    <tr v-if="quizInformation.length == 0">
+
+                    </tr>
+
+                    <!-- if there is a quiz list for that course -->
+                    <tr v-for="(each, i) in isCompleted" v-else>
                         <td v-if="isCompleted[i] == 1">
                             <b>Section {{i+1}}
                         </td>
 
                         <td v-if="isCompleted[i] == 1">
-
-                            <p v-if="i+1 != getNoOfSections">
-                                <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Quiz {{i+1}}</a><br>
-                            </p>
-                            <p v-else>
-                                <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Final Quiz </a><br>
-                            </p>
-                            <!-- <p v-if= "i == getNoOfSections.length">
-                                <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Quiz {{i+1}}</a><br>
-                            </p>
-                            <p v-else>
-                                Final Quiz
-                            </p> -->
-                            <!-- {{getNoOfSections.length}} -->
+                            <div v-for="(each, j) in quizInformation">
+                                <div v-if="quizInformation[j][1] == i+1">
+                                    <a :href="'AttemptQuiz.php?quizid='+ parseInt(quizInformation[j][0])">
+                                        {{quizInformation[j][2]}}
+                                    </a>
+                                </div>
+                            </div>
                         </td>
 
                         <td v-if="isCompleted[i] == 1">
@@ -194,7 +204,9 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
 
                         <td v-if="isCompleted[i] == 1">
                             <div v-for="(each, j) in quizAttempts[i]">
-                                <button type="button" class="btn btn-outline-primary btn1" style="margin:1px;">View Attempt {{j+1}} </button>
+                                <p>
+                                    <a :href="'viewStudentAttempts.php?quizid='+parseInt(i+1)" class="btn btn-outline-primary">View Attempt {{j+1}} </a>
+                                </p>
                             </div>
                         </td>
 
@@ -217,12 +229,12 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
                 coursename: '',
                 getCurrentCourse: '',
                 getNoOfSections: <?php print json_encode($firstpageNoOfSec) ?>,
-
                 totalPercentage: <?php print json_encode($totalPercentage) ?>,
                 percentage: <?php print json_encode($percentage) ?>,
                 quizAttempts: <?php print json_encode($getQuizAttempts) ?>,
                 getMaterials: <?php print json_encode($getMaterials) ?>,
                 isCompleted: <?php print json_encode($isCompleted) ?>,
+                quizInformation: <?php print json_encode($quizInformation) ?>,
             },
             methods: {
                 test: function(i) {
@@ -235,18 +247,24 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
                     this.quizAttempts = this.getCurrentCourse[5]
                     this.getMaterials = this.getCurrentCourse[6]
                     this.isCompleted = this.getCurrentCourse[4]
+                    this.quizInformation = this.getCurrentCourse[7]
 
-                    for (j = 0; j < this.getNoOfSections; j++) {
-                        if (this.getMaterials[j].length != 0) {
-                            for (k = 0; k < this.quizAttempts[j].length; k++) {
-                                if (this.quizAttempts[j][k][2] == 1) { //section 1 done, section 2 done
-                                    this.totalPercentage = parseFloat(((j + 1) / this.getNoOfSections) * 100).toFixed(2)
-                                    this.percentage = this.totalPercentage + '%'
-                                    break
+                    if (this.quizInformation.length != 0) {
+                        if (this.quizAttempts.length != 0) {
+                            for (j = 0; j < this.getNoOfSections; j++) {
+                                if (this.getMaterials[j].length != 0) {
+                                    for (k = 0; k < this.quizAttempts[j].length; k++) {
+                                        if (this.quizAttempts[j][k][2] == 1) { //section 1 done, section 2 done
+                                            this.totalPercentage = parseFloat(((j + 1) / this.getNoOfSections) * 100).toFixed(2)
+                                            this.percentage = this.totalPercentage + '%'
+                                            break
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
+
                 }
 
             }

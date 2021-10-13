@@ -262,6 +262,7 @@ class SectionMaterial implements JsonSerializable
 class Quiz implements JsonSerializable
 {
     private $QuizID;
+    private $SectionNum;
     private $QuizName;
     private $QuizNum;
     private $QuizDuration;
