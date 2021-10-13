@@ -16,11 +16,13 @@
     // var_dump($course);
     $enrolDAO = new SectionDAO();
     // $getQuiz = $enrolDAO->retrieveClassQuiz(1);
-    var_dump($getQuiz);
+    // var_dump($getQuiz);
 
     $userName = "Mei Lan";
     $status = 'Approved';
     // Get user information
     $dao3 = new SectionDAO();
     // var_dump($dao3->updateMaterialProgress(1, 1, 2))
+
+    var_dump($dao3->insertProgress(1, 2, 1, $userName, true));
 ?> 

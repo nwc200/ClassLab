@@ -30,6 +30,16 @@ class StudentQuizAttempt
         $this->PassFail = $PassFail;
     }
 
+    public function jsonSerialize()
+    {
+        return [
+            $this->User,
+            $this->Quiz,
+            $this->AttemptNo,
+            $this->PassFail
+        ];
+    }
+
     public function addStudentQuizRecord($QuizRecord, $Marks, $QuestionNum, $StudentAns)
     {
         $this->StudentQuizRecord[] = new StudentQuizRecord($QuizRecord, $Marks, $QuestionNum, $StudentAns);

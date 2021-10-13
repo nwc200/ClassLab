@@ -223,10 +223,8 @@ class SectionDAO
         $pdo = $conn_manager->getConnection("section");
 
         $sql = "INSERT INTO `materialprogress` 
-                WHERE classID=:classID AND sectionNum=:sectionNum AND materialNum=:materialNum
-                AND userName=:userName AND completed=:completed
-                ";
-
+                values (:classID, :sectionNum, :materialNum, :userName,:completed)";
+        
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":classID", $classID);
         $stmt->bindParam(":sectionNum", $sectionNum);
@@ -240,4 +238,30 @@ class SectionDAO
         $pdo = null;
         return $status;
     }
+
+
+    public function studentQuizAttemptRetrieve($userName, $quizID)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+
+        $sql = "select * from studentQuizAttempt where userName=:userName and quizID=:quizID";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":userName", $userName);
+        $stmt->bindParam(":quizID", $quizID);
+        $stmt->execute();
+
+
+        $attempts = [];
+        while ($row = $stmt->fetch()) {
+            // var_dump($row);
+            $attempts[] = [$row['quizID'], $row['attemptNo'], $row['passFail']];
+        }
+
+        // var_dump($attempts);
+        $stmt = null;
+        $pdo = null;
+        return $attempts;
+    }
+
 }

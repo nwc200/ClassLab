@@ -31,6 +31,8 @@ foreach ($enrolments as $enrol) {
   $getMaterialsNum = [];
   $getCompletedArr = [];
   // $retrieveQuiz = [];
+  $quizAttempts = [];
+
 
   foreach ($sectionIDs as $sec) { //$sec is individual section num
     $sectionNames = $enrolDAO->retrieveClassSectionName($classID, $sec); //get section name
@@ -50,32 +52,27 @@ foreach ($enrolments as $enrol) {
     for ($i = 0; $i < count($materials); $i++) {
       $materialNum = $materials[$i]->getMaterialNum(); //get materials id by section num
       array_push($material, $materialNum);
-      // $getMaterials = [$classID, $sec, $materialNum]; //array of materialnum with classid & section num
-
       $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, $materialNum); //get completed
       array_push($completed, $getCompleted);
-
-
-      // echo "<br>";
     }
+    $attempts = $enrolDAO->studentQuizAttemptRetrieve($username, $sec);
+    // var_dump($attempts);
     array_push($getMaterialsNum, $material);
     array_push($getCompletedArr, $completed);
+    array_push($quizAttempts, $attempts);
   }
-  // var_dump($getCompletedArr);
-  // var_dump($getMaterialsNum);
 
-  $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $arraySecName, $arrayMaterials, $getMaterialsNum, $getCompletedArr];
+
+  $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $arraySecName, $arrayMaterials, $getMaterialsNum, $getCompletedArr, $quizAttempts];
 
   $counter++;
 }
 // var_dump($userCourses);
-// var_dump($retrieveQuiz);
-
 $firstpage = $userCourses->$zero;
 $firstpageNoOfSec = count($firstpage[5]);
 $classID = $firstpage[2];
-// var_dump($firstpage[6][0][0]); // get material num of section 1
-// var_dump($firstpage[7]);
+$getQuizAttempts = $firstpage[8];
+// var_dump($getQuizAttempts);
 
 $whichSection = 0;
 $whichMaterial = '';
@@ -87,16 +84,27 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
   for ($k = 0; $k < count($firstpage[7][$j]); $k++) { //completed inside the sections
     $noOfMaterials = count($firstpage[7][$j]);
     if ($noOfMaterials > 0) {
-      if (($firstpage[7][$j][$k]) == 1) {  //knows which section arr, which material is not completed
-        $whichSection = $j + 1;
-        $percent = number_format(($whichSection / ($firstpageNoOfSec) * 100), 2, '.', '');
-        $completedPercent = $percent . '%';
-        break;
+      //can alr know got how many sections
+      for ($c = 0; $c < count($getQuizAttempts[$j]); $c++) {
+        if ($getQuizAttempts[$j][$c][2] == 1) {
+          $whichSection = $j + 1;
+          $percent = number_format(($whichSection / ($firstpageNoOfSec) * 100), 2, '.', '');
+          $completedPercent = $percent . '%';
+        }
       }
     }
   }
 }
-// echo $whichSection;
+
+// for ($j = 0; $j < $firstpageNoOfSec; $j++) { //can alr know got how many sections
+//   for ($c = 0; $c < count($getQuizAttempts[$j]); $c++) {
+//     if ($getQuizAttempts[$j][$c][2] == 1) {
+//       $whichSection = $j+1;
+//       $percent = number_format(($whichSection / ($firstpageNoOfSec) * 100), 2, '.', '');
+//       $completedPercent = $percent . '%';
+//     }
+//   }
+// }
 
 
 ?>
@@ -154,13 +162,18 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
     <br>
 
     <!-- nav click -->
-    <div class="container" v-if="coursename !='' ">
-      <h4 style="text-align:center">
+    <div class="container">
+      <h4 style="text-align:center" v-if="coursename !='' ">
         {{coursename}}
       </h4>
+
+      <h4 style="text-align:center" v-else>
+        {{usercourses[0][1]}}
+      </h4>
+
       <div>
         <br>
-        <div v-if='percentage != 100'>
+        <div>
           <p style="margin:2px;"><b>Course Progress </b></p>
           <div class="col progress">
             <div class="progress-bar progress-bar-striped" role="progressbar" v-bind:style="{width: completedPercent}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
@@ -169,28 +182,6 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
           </div>
           <h6 style="text-align:center;margin:5px">
             {{completedPercent}} of Course Completed
-          </h6>
-        </div>
-      </div>
-    </div>
-
-    <!-- first time -->
-    <div v-else>
-      <h4 style="text-align:center">
-        {{usercourses[0][1]}}
-      </h4>
-
-      <div class="container">
-        <br>
-        <div v-if='percentage != 100'>
-          <p style="margin:2px;"><b>Course Progress</b></p>
-          <div class="col progress">
-            <div class="progress-bar progress-bar-striped" role="progressbar" v-bind:style="{width: completedPercent}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-              {{percentage}}%
-            </div>
-          </div>
-          <h6 style="text-align:center;margin:5px">
-            {{percentage}}% of Course Completed
           </h6>
         </div>
       </div>
@@ -212,47 +203,43 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
 
           <!-- first time -->
           <tbody v-if="coursename ==''">
-            <tr v-for="(each, i) in firstpage[3]">
-              <td>
-                <b>Section {{firstpage[3][i]}}</b>
+            <tr v-if="firstpage[5][0].length != 0 ">
+              <td> <b>Section 1</b>
                 <br>
-                {{firstpage[4][i]}}
+                {{firstpage[4][0]}}
               </td>
 
               <td>
-                <p v-for="(each, j) in firstpage[5][i]">
+                <p v-for="(each, j) in firstpage[5][0]">
                   <i class="fas fa-file-pdf"></i>
-                  <a v-bind:href="firstpage[5][i][j][2]">Lecture Note {{i+1}}.{{j}}</a>
+                  <a v-bind:href="firstpage[5][0][j][2]">Lecture Note {{1}}.{{j}}</a>
                 </p>
               </td>
 
               <td>
-                <p v-for="(each, j) in firstpage[5][i]">
+                <p v-for="(each, j) in firstpage[5][0]">
                   <i class="fa fa-download"></i>
-                  <a v-bind:href="firstpage[5][i][j][2]" download="LectureNote">
+                  <a v-bind:href="firstpage[5][0][j][2]" download="LectureNote">
                     Download
                   </a>
                 </p>
               </td>
 
               <td>
-                <p v-if='firstpage[7][i][1] == 1'>
+                <p v-if='firstpage[7][0][1] == 1'>
                   <label class="form-check-label" for="flexCheckIndeterminate">
                     Completed
                   </label>
                 </p>
-                <p v-else-if='firstpage[7][i][1] == 0'>
+                <p v-else-if='firstpage[7][0][1] == 0'>
                   <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
                 </p>
               </td>
 
-              <td v-if="firstpage[7][i][(firstpage[7][i].length)-1] == 1">
-                <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)">
-                  <p v-if="i+1 != getNoOfSections">
-                    Quiz {{i+1}}
-                  </p>
-                  <p v-else>
-                    Final Quiz
+              <td v-if="firstpage[7][0][(firstpage[7][0].length)-1] == 1">
+                <a :href="'AttemptQuiz.php?quizid='+ parseInt(1)">
+                  <p>
+                    Quiz 1
                   </p>
                 </a>
               </td>
@@ -260,56 +247,204 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
 
               </td>
             </tr>
+
+            <tr v-for="(each, i) in getNoOfSections-1">
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length !=0">
+                    <p v-if="quizAttempts[i][j][2] == 1">
+                      <b>Section {{i+2}}</b>
+                      <br>
+                      {{firstpage[4][i+1]}}
+                    </p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length !=0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <p v-for="(each, j) in firstpage[5][i+1]">
+                        <i class="fas fa-file-pdf"></i>
+                        <a v-bind:href="firstpage[5][i+1][j][2]">Lecture Note {{i+2}}.{{j}}</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length !=0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <p v-for="(each, j) in firstpage[5][i+1]">
+                        <i class="fa fa-download"></i>
+                        <a v-bind:href="firstpage[5][i+1][j][2]" download="LectureNote">
+                          Download
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length !=0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <p v-if='firstpage[7][i+1][1] == 1'>
+                        <label class="form-check-label" for="flexCheckIndeterminate">
+                          Completed
+                        </label>
+                      </p>
+                      <p v-else-if='firstpage[7][i+1][1] == 0'>
+                        <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length != 0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <div v-if="firstpage[7][i+1][(firstpage[7][i+1].length)-1] == 1">
+                        <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+2)">
+                          <p v-if="i+1 == getNoOfSections">
+                            Quiz {{i+2}}
+                          </p>
+                          <p v-else>
+                            Final Quiz
+                          </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+            </tr>
           </tbody>
 
           <!-- nav click -->
           <tbody v-else>
-            <tr v-for="(each, i) in getUserCourses[3]">
-              <td>
-                <b>Section {{getUserCourses[3][i]}}</b>
+            <tr v-if="getUserCourses[5][0].length != 0 ">
+              <td> <b>Section 1</b>
                 <br>
-                {{getUserCourses[4][i]}}
+                {{getUserCourses[4][0]}}
               </td>
+
               <td>
-                <p v-for="(each, j) in getUserCourses[5][i]">
+                <p v-for="(each, j) in getUserCourses[5][0]">
                   <i class="fas fa-file-pdf"></i>
-                  <a v-bind:href="getUserCourses[5][i][j][2]">Lecture Note {{i+1}}.{{j}}</a>
+                  <a v-bind:href="getUserCourses[5][0][j][2]">Lecture Note {{1}}.{{j}}</a>
                 </p>
               </td>
+
               <td>
-                <p v-for="(each, j) in getUserCourses[5][i]">
+                <p v-for="(each, j) in getUserCourses[5][0]">
                   <i class="fa fa-download"></i>
-                  <a v-bind:href="getUserCourses[5][i][j][2]" download="LectureNote">
+                  <a v-bind:href="getUserCourses[5][0][j][2]" download="LectureNote">
                     Download
                   </a>
                 </p>
               </td>
 
               <td>
-                <p v-if='getUserCourses[7][i][1] == 1'>
+                <p v-if='getUserCourses[7][0][1] == 1'>
                   <label class="form-check-label" for="flexCheckIndeterminate">
                     Completed
                   </label>
                 </p>
-                <p v-else-if='getUserCourses[7][i][1] == 0'>
+                <p v-else-if='getUserCourses[7][0][1] == 0'>
                   <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
                 </p>
               </td>
 
-              <td v-if="getUserCourses[7][i][(getUserCourses[7][i].length)-1] == 1">
-                <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)">
-                  <p v-if="i+1 != getNoOfSections">
-                    Quiz {{i+1}}
-                  </p>
-                  <p v-else>
-                    Final Quiz
+              <td v-if="getUserCourses[7][0][(firstpage[7][0].length)-1] == 1">
+                <a :href="'AttemptQuiz.php?quizid='+ parseInt(1)">
+                  <p>
+                    Quiz 1
                   </p>
                 </a>
               </td>
               <td v-else>
 
               </td>
+            </tr>
 
+            <tr v-for="(each, i) in getNoOfSections-1">
+              <td v-if="getUserCourses[5][i+1].length != 0 ">
+                <b>
+                  Section {{i+2}}
+                </b>
+                <br>
+                {{getUserCourses[4][i+1]}}
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length !=0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <p v-for="(each, j) in getUserCourses[5][i+1]">
+                        <i class="fas fa-file-pdf"></i>
+                        <a v-bind:href="getUserCourses[5][i+1][j][2]">Lecture Note {{i+2}}.{{j}}</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length !=0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <p v-for="(each, j) in getUserCourses[5][i+1]">
+                        <i class="fa fa-download"></i>
+                        <a v-bind:href="getUserCourses[5][i+1][j][2]" download="LectureNote">
+                          Download
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length !=0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <p v-if='getUserCourses[7][i+1][1] == 1'>
+                        <label class="form-check-label" for="flexCheckIndeterminate">
+                          Completed
+                        </label>
+                      </p>
+                      <p v-else-if='getUserCourses[7][i+1][1] == 0'>
+                        <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(wSection+1)+'&materialNum='+noOfMaterials" class="btn btn-primary">Complete</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div v-for="(each, j) in quizAttempts">
+                  <div v-if="quizAttempts[i].length != 0">
+                    <div v-if="quizAttempts[i][j][2] == 1">
+                      <div v-if="getUserCourses[7][i+1][(getUserCourses[7][i+1].length)-1] == 1">
+                        <a :href="'AttemptQuiz.php?quizid='+ parseInt(i+2)">
+                          <p v-if="i+1 == getNoOfSections">
+                            Quiz {{i+2}}
+                          </p>
+                          <p v-else>
+                            Final Quiz
+                          </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -334,7 +469,8 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
         wMaterial: <?php print json_encode($whichMaterial) ?>,
         noOfMaterials: <?php print json_encode($noOfMaterials) ?>,
         classID: <?php print json_encode($classID) ?>,
- 
+        quizAttempts: <?php print json_encode($getQuizAttempts) ?>,
+
       },
       methods: {
         test: function(i) {
@@ -345,16 +481,20 @@ for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sect
           this.percentage = 0
           this.completedPercent = '0%'
           this.classID = this.getUserCourses[2]
+          this.quizAttempts = this.getUserCourses[8]
 
           for (j = 0; j < this.getNoOfSections; j++) { //can alr know got how many sections
             for (k = 0; k < this.getUserCourses[7][j].length; k++) { //completed inside the sections
               this.noOfMaterials = this.getUserCourses[7][j].length
               if (this.noOfMaterials > 0) {
                 if (this.getUserCourses[7][j][k] == 1) { //knows which section arr, which material is not completed
-                  this.wSection = j + 1;
-                  this.calculate = (this.wSection / this.getNoOfSections) * 100
-                  this.percent = parseFloat(this.calculate).toFixed(2)
-                  this.completedPercent = this.percent + '%';
+                  for (c = 0; c < this.quizAttempts[j].length; c++) {
+                    if (this.quizAttempts[j][c][2] == 1) {
+                      this.whichSection = j + 1;
+                      this.percent = parseFloat(this.whichSection / this.getNoOfSections * 100).toFixed(2)
+                      this.completedPercent = this.percent + '%'
+                    }
+                  }
                   break
                 }
               }

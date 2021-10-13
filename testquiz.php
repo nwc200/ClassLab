@@ -75,8 +75,7 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
 }
 
 
-$getCompleteSec = $firstpage[4];
-var_dump($getCompleteSec);
+
 ?>
 
 <!DOCTYPE html>
