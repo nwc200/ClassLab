@@ -2,6 +2,7 @@
     require_once "objects/autoload.php";
     $username = $_SESSION['username'];
     $quizid = $_GET['quizid'];
+    $classid = $_GET['classid'];
     $dao = new QuizDAO();
     $quiz = $dao->getTrainerCourse("Wei Cheng");
     $quiz = $dao->getQuiz($quizid);
@@ -43,8 +44,10 @@
                 <br><br><br>
                 <form action="../ProcessAttemptQuiz.php" method="POST">
                     <input type="hidden" name="username" value="<?php echo $username;?>">
+                    <input type="hidden" name="classid" value="<?php echo $classid;?>">
                     <input type="hidden" name="quizid" v-bind:value="quiz[0]">
                     <input type="hidden" name="passingmark" v-bind:value="quiz[5]">
+                    <input type="hidden" name="type" v-bind:value="quiz[4]">
                     <div v-for="question in quiz[6]"> 
                         <b>Question {{question[0]}}: {{question[1]}}</b> [Marks: {{question[3]}}] 
                         <div v-for="answer in question[4]">

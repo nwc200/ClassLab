@@ -275,7 +275,7 @@ class QuizDAO
         foreach ($classidarr as $finalclassid) {
             $conn_manager = new ConnectionManager();
             $pdo = $conn_manager->getConnection("quiz");
-            
+            $sectionnum = $this->getLastSectionNum($finalclassid);
             $sql = "insert into quiz (classid, sectionnum, quizname, quiznum, quizduration, type, passingmark) 
             values (:classid, :sectionnum, :quizname, :quiznum, :quizduration, :type, :passingmark)";
             $stmt = $pdo->prepare($sql);
@@ -390,6 +390,42 @@ class QuizDAO
         $stmt->bindParam(":attemptno", $attemptno);
         $stmt->bindParam(":questionnum", $questionnum);
         $stmt->bindParam(":studentansnum", $studentansnum);
+        $status = $stmt->execute();
+
+        $stmt = null;
+        $pdo = null;
+        return $status;
+    }
+
+    public function getLastSectionNum($classid)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("section");
+        $sql = "select sectionnum from section where classid=:classid";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":classid", $classid);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $sectionnum = 0;
+        while ($row = $stmt->fetch()) {
+            $sectionnum = max($sectionnum, (int)$row["sectionnum"]);
+        }
+
+        $stmt = null;
+        $pdo = null;
+        return $sectionnum;
+    }
+
+    public function quizUpdateEnrolment($username, $classid, $completed)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("enrolment");
+        $sql = "update enrolment set completed=:completed 
+        where username=:username and classid=:classid";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":completed", $completed);
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":classid", $classid);
         $status = $stmt->execute();
 
         $stmt = null;

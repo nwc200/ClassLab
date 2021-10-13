@@ -1,13 +1,13 @@
 <?php
 require 'objects/autoload.php';
-
-var_dump($_POST);
 $dao = new QuizDAO();
 
 $username = $_POST["username"];
 $quizid = $_POST["quizid"];
 $passingmark = $_POST["passingmark"];
 unset($_POST['passingmark']);
+$classid = $_POST["classid"];
+$type = $_POST["type"];
 
 $attemptno = $dao->getAttemptNo($quizid, $username) + 1;
 $quiz = $dao->getTrainerCourse("Wei Cheng");
@@ -49,9 +49,9 @@ for ($i=0; $i<count($markarr); $i++) {
 
 
 if ($marks >= $passingmark) {
-    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, true);
+    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, 1);
 } else {
-    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, false);
+    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, 0);
 }
 
 for ($i=0; $i<count($markarr); $i++) {
@@ -59,13 +59,18 @@ for ($i=0; $i<count($markarr); $i++) {
         $dao->addStudentQuizRecord($username, $quizid, 0, $attemptno, $questionarr[$i], $ansarr[$i]);
     } elseif ($corrarr[$i] == 1) {
         $dao->addStudentQuizRecord($username, $quizid, $markarr[$i], $attemptno, $questionarr[$i], $ansarr[$i]);
-        $marks += $markarr[$i];
     }
 }
 
+var_dump($marks);
+var_dump($passingmark);
+if ($marks>=$passingmark && $type == "Graded") {
+    $dao->quizUpdateEnrolment($username, $classid, 1);
+}
 
-//header('Location: QuizSuccess.html');
-//exit;
+
+header('Location: QuizAttemptSuccess.html');
+exit;
 
 
 
