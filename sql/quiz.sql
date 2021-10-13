@@ -74,7 +74,7 @@ values (1, 1, 1, "Chapter 1 Quiz", 1, 20, "Ungraded", 0);
 
 /* Graded */
 insert into quiz
-values (2, 1, 2, "End of Course Quiz", 1, 20, "Graded", 4);
+values (2, 1, 2, "End of Course Quiz", 1, 20, "Graded", 17);
 
 /* Quiz Question */
 insert into quizQuestion

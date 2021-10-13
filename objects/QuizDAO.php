@@ -361,7 +361,7 @@ class QuizDAO
     {
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("quiz");
-        
+        // echo('hi');
         $sql = "insert into studentquizattempt (username, quizid, attemptno, passfail) 
         values (:username, :quizid, :attemptno, :passfail)";
         $stmt = $pdo->prepare($sql);
@@ -371,6 +371,7 @@ class QuizDAO
         $stmt->bindParam(":passfail", $passfail);
         $status = $stmt->execute();
 
+        var_dump($passfail);
         $stmt = null;
         $pdo = null;
         return $status;

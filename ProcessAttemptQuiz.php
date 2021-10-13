@@ -1,5 +1,6 @@
 <?php
 require 'objects/autoload.php';
+
 $dao = new QuizDAO();
 
 $username = $_POST["username"];
@@ -33,10 +34,10 @@ foreach ($_POST as $key => $value) {
         array_push($corrarr, $anscorr);
     }
 }
-var_dump($markarr);
-var_dump($ansarr);
-var_dump($corrarr);
-var_dump($questionarr);
+// var_dump($markarr);
+// var_dump($ansarr);
+// var_dump($corrarr);
+// var_dump($questionarr);
 
 $marks = 0;
 //check correct
@@ -68,8 +69,8 @@ if ($marks>=$passingmark && $type == "Graded") {
     $dao->quizUpdateEnrolment($username, $classid, 1);
 }
 
-
 header('Location: QuizAttemptSuccess.html');
+
 exit;
 
 

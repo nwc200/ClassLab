@@ -159,18 +159,18 @@ class SectionDAO
         $stmt->bindParam(":sectionNum", $sectionNum);
         $stmt->bindParam(":materialNum", $materialNum);
         $stmt->execute();
-        // $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $completed = '';
+        
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        
+        $complete = '';
         while ($row = $stmt->fetch()) {
-            // var_dump($row);
-            $completed =  $row["completed"];
+            $complete = $row['completed'];
         }
-
+        
         $stmt = null;
         $pdo = null;
-        //return list of class1 classes storing the class information
-        // var_dump($completed);
-        return $completed;
+        // var_dump($complete);
+        return $complete;
     }
 
     public function updateMaterialProgress($classID, $sectionNum, $materialNum)
@@ -224,7 +224,7 @@ class SectionDAO
 
         $sql = "INSERT INTO `materialprogress` 
                 values (:classID, :sectionNum, :materialNum, :userName,:completed)";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":classID", $classID);
         $stmt->bindParam(":sectionNum", $sectionNum);
@@ -263,5 +263,4 @@ class SectionDAO
         $pdo = null;
         return $attempts;
     }
-
 }
