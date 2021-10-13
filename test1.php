@@ -14,7 +14,7 @@ $userCourses = (object)[];
 $counter = 0;
 $zero = 0;
 
-// var_dump($enrolments);
+var_dump($enrolments);
 
 foreach ($enrolments as $enrol) {
     $courseID = $enrol->getCourseID();
@@ -25,8 +25,6 @@ foreach ($enrolments as $enrol) {
 
     $getCompletedArr = [];
     $quizAttempts = [];
-    $arrayMaterials = [];
-
     foreach ($sectionIDs as $sec) { //$sec is individual section num
         // $completed = [];
         $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, 1); //get completed
@@ -34,11 +32,9 @@ foreach ($enrolments as $enrol) {
 
         $attempts = $enrolDAO->studentQuizAttemptRetrieve($username, $sec);
         array_push($quizAttempts, $attempts);
-
-        $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
-        array_push($arrayMaterials, $materials);
+        // var_dump($getCompletedArr);
     }
-    $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $getCompletedArr, $quizAttempts, $arrayMaterials];
+    $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $getCompletedArr, $quizAttempts];
 
     $counter++;
 }
@@ -50,8 +46,7 @@ $totalPercentage = 0;
 $percentage = $totalPercentage . "%";
 $quiz = [];
 $getQuizAttempts = $firstpage[5];
-$getMaterials = $firstpage[6];
-$isCompleted = $firstpage[4];
+
 
 for ($j = 0; $j < $firstpageNoOfSec; $j++) {
     for ($k = 0; $k < count($getQuizAttempts[$j]); $k++) {
@@ -62,6 +57,7 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
         }
     }
 }
+
 
 
 ?>
@@ -145,64 +141,89 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
                         <td>Section</td>
                         <td>Quiz</td>
                         <td>Attempts</td>
-                        <td>Pass/Fail</td>
+                        <td>Pass/Failed</td>
                         <td>View Attempt</td>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr v-for="(each, i) in isCompleted">
-                        <td v-if="isCompleted[i] == 1">
-                            <b>Section {{i+1}}
+                    <tr v-for="(each, i) in getNoOfSections">
+                        <td>
+                            <b>Section {{i+1}}</b>
                         </td>
 
-                        <td v-if="isCompleted[i] == 1">
+                        <!-- <td>
+                            <div v-if="quiz[i] != ''">
+                                <div v-if="quiz[i] != ''">
 
-                            <p v-if="i+1 != getNoOfSections">
-                                <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Quiz {{i+1}}</a><br>
-                            </p>
-                            <p v-else>
-                                <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Final Quiz </a><br>
-                            </p>
-                            <!-- <p v-if= "i == getNoOfSections.length">
-                                <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Quiz {{i+1}}</a><br>
-                            </p>
-                            <p v-else>
-                                Final Quiz
-                            </p> -->
-                            <!-- {{getNoOfSections.length}} -->
-                        </td>
+                                    <p v-if="quizAttempts[i].length !=0">
+                                        <a class="quiz" :href="'AttemptQuiz.php?quizid='+ parseInt(i+1)"> Quiz {{i+1}}</a><br>
+                                    </p>
+                                    <p v-else>
 
-                        <td v-if="isCompleted[i] == 1">
-                            <div v-for="(each, j) in quizAttempts[i]">
-                                <p>
-                                    Attempt {{quizAttempts[i][j][1]}}
-                                </p>
+                                    </p>
+                                </div>
                             </div>
                         </td>
 
-                        <td v-if="isCompleted[i] == 1">
-                            <div v-for="(each, j) in quizAttempts[i]">
-                                <p v-if="quizAttempts[i][j][2]==1" v-bind:style="{color:'green'}">
-                                    <b>Pass</b>
-                                </p>
-                                <p v-else v-bind:style="{color:'red'}">
-                                    <b>Fail</b>
-                                </p>
+                        <td>
+                            <div v-if="quiz[i] != ''">
+                                <div v-for="(each, j) in quizAttempts">
+                                    <p v-if="quizAttempts[i].length !=0">
+                                        Attempt {{quizAttempts[i][j][1]}}
+                                    </p>
+                                    <p v-else>
+
+                                    </p>
+                                </div>
+                            </div>
+                            <div v-else>
+
                             </div>
                         </td>
 
-                        <td v-if="isCompleted[i] == 1">
-                            <div v-for="(each, j) in quizAttempts[i]">
-                                <button type="button" class="btn btn-outline-primary btn1" style="margin:1px;">View Attempt {{j+1}} </button>
+                        <td>
+                            <div v-if="quiz[i] != ''">
+                                <div v-for="(each, j) in quizAttempts">
+                                    <div v-if="quizAttempts[i].length !=0">
+                                        <p v-if="quizAttempts[i][j][2] == 1" v-bind:style="{color:'green'}">
+                                            <b>Pass</b>
+                                        </p>
+                                        <p v-else v-bind:style="{color:'red'}">
+                                            Failed
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div v-else>
+
                             </div>
                         </td>
+
+                        <td>
+                            <div v-if="quiz[i] != ''">
+                                <div v-for="(each, j) in quizAttempts">
+                                    <p v-if="quizAttempts[i].length !=0">
+                                        <button type="button" class="btn btn-outline-primary btn1" style="margin:1px;">View Attempt {{j+1}} </button>
+                                    </p>
+                                    <p v-else>
+
+                                    </p>
+
+                                </div>
+                            </div>
+                            <div v-else>
+
+                            </div>
+                        </td> -->
 
                     </tr>
 
                 </tbody>
 
             </table>
+            <!-- </form> -->
         </div>
     </div>
 
@@ -216,13 +237,12 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
                 firstpage: <?php print json_encode($firstpage) ?>,
                 coursename: '',
                 getCurrentCourse: '',
-                getNoOfSections: <?php print json_encode($firstpageNoOfSec) ?>,
+                getNoOfSections: <?php print json_encode($firstpage[3]) ?>,
 
                 totalPercentage: <?php print json_encode($totalPercentage) ?>,
                 percentage: <?php print json_encode($percentage) ?>,
                 quizAttempts: <?php print json_encode($getQuizAttempts) ?>,
-                getMaterials: <?php print json_encode($getMaterials) ?>,
-                isCompleted: <?php print json_encode($isCompleted) ?>,
+
             },
             methods: {
                 test: function(i) {
@@ -233,20 +253,19 @@ for ($j = 0; $j < $firstpageNoOfSec; $j++) {
                     this.totalPercentage = 0
                     this.percentage = this.totalPercentage + "%"
                     this.quizAttempts = this.getCurrentCourse[5]
-                    this.getMaterials = this.getCurrentCourse[6]
-                    this.isCompleted = this.getCurrentCourse[4]
 
                     for (j = 0; j < this.getNoOfSections; j++) {
-                        if (this.getMaterials[j].length != 0) {
-                            for (k = 0; k < this.quizAttempts[j].length; k++) {
-                                if (this.quizAttempts[j][k][2] == 1) { //section 1 done, section 2 done
-                                    this.totalPercentage = parseFloat(((j + 1) / this.getNoOfSections) * 100).toFixed(2)
-                                    this.percentage = this.totalPercentage + '%'
-                                    break
-                                }
-                            }
-                        }
+                        console.log(this.getNoOfSections)
+                        // for (k = 0; k < this.quizAttempts[j].length; k++) {
+                        //     console.log(this.getCurrentCourse[5])
+                        // //     if (this.quizAttempts[j][k][2] == 1) { //section 1 done, section 2 done
+                        // //         this.totalPercentage = parseFloat(((j + 1) /  this.getNoOfSections) * 100).toFixed(2)
+                        // //         this.percentage = this.totalPercentage + '%'
+                        // //         break
+                        // //     }
+                        // }
                     }
+
                 }
 
             }

@@ -50,7 +50,7 @@
                         <div v-for="answer in question[4]">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    {{answer[0]}}) {{answer[1]}}
+                                    {{answer[0]}} {{answer[1]}}
                                 </div>
                                 <div class="col-sm-3">
                                     <input class="text-right" type="radio" v-bind:name="question[0]+'mark'+question[3]" v-bind:value="answer[0]+'corr'+answer[2]">
