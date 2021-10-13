@@ -26,10 +26,10 @@ REFERENCES class.class(courseID, classID);
 
 /* Enrolment */
 insert into enrolment
-values (1, "Approved", false, "2021-11-22 00:00:01", 1, 1, false, "Yu Hao");
+values (1, "None", false, "2021-11-22 00:00:01", 1, 1, false, "Yu Hao");
 
 insert into enrolment
-values (2, "Approved", false, "2021-03-22 00:00:01", 3, 3, false, "Yu Hao");
+values (2, "None", false, "2021-03-22 00:00:01", 3, 3, false, "Yu Hao");
 
 insert into enrolment
 values (3, "Approved", true, "2021-03-22 00:00:01", 1, 1, false, "Mei Lan");

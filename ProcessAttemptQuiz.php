@@ -1,7 +1,7 @@
 <?php
 require 'objects/autoload.php';
 
-var_dump($_POST);
+// var_dump($_POST);
 $dao = new QuizDAO();
 
 $username = $_POST["username"];
@@ -33,10 +33,10 @@ foreach ($_POST as $key => $value) {
         array_push($corrarr, $anscorr);
     }
 }
-var_dump($markarr);
-var_dump($ansarr);
-var_dump($corrarr);
-var_dump($questionarr);
+// var_dump($markarr);
+// var_dump($ansarr);
+// var_dump($corrarr);
+// var_dump($questionarr);
 
 $marks = 0;
 //check correct
@@ -49,9 +49,9 @@ for ($i=0; $i<count($markarr); $i++) {
 
 
 if ($marks >= $passingmark) {
-    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, true);
+    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, 1);
 } else {
-    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, false);
+    $dao->addStudentQuizAttempt($username, $quizid, $attemptno, 0);
 }
 
 for ($i=0; $i<count($markarr); $i++) {
