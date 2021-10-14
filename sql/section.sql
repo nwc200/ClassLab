@@ -52,6 +52,13 @@ values (1, 2, "Intro to Xerox WorkCentre");
 insert into section
 values (2, 2, "Final Quiz");
 
+insert into section values (1, 3, "Course Brief");
+
+insert into section values (2, 3, "Content");
+
+insert into section values (3, 3, "Final Quiz");
+
+
 /* Section Material */
 insert into sectionMaterial
 values (1, 1, 1, "Hyperlink", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");

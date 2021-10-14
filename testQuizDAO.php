@@ -19,5 +19,6 @@
     // var_dump($quiz->getQuizQuestion()[0]);
 
     // var_dump($dao->retrieveClassQuiz(1));
+    var_dump($dao->getLastSectionNum(1));
 
 ?>
