@@ -398,24 +398,6 @@ class QuizDAO
         return $status;
     }
 
-<<<<<<< HEAD
-    public function retrieveStudentQuizRecord($username, $quizid)
-    {
-        $conn_manager = new ConnectionManager();
-        $pdo = $conn_manager->getConnection("quiz");
-        
-        $sql = "select * from studentQuizRecord where username=:username and quizid=:quizid";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(":username", $username);
-        $stmt->bindParam(":quizid", $quizid);
-        $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-        $ans = [];
-        while ($row = $stmt->fetch()) {
-            $ans = new StudentQuizRecord($row[''], $row[''], $row[''], $row[''], $row[''], $row['']);
-=======
     public function getLastSectionNum($classid)
     {
         $conn_manager = new ConnectionManager();
@@ -428,16 +410,10 @@ class QuizDAO
         $sectionnum = 0;
         while ($row = $stmt->fetch()) {
             $sectionnum = max($sectionnum, (int)$row["sectionnum"]);
->>>>>>> main
         }
 
         $stmt = null;
         $pdo = null;
-<<<<<<< HEAD
-        return $ans;
-    }
-
-=======
         return $sectionnum;
     }
 
@@ -457,7 +433,6 @@ class QuizDAO
         $pdo = null;
         return $status;
     }
->>>>>>> main
 }
 
 ?>
