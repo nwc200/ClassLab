@@ -1,24 +1,29 @@
 <?php
-    require_once 'objects/autoload.php';
+require_once 'objects/autoload.php';
 
-    // if (isset($_SESSION["user"])) {
-    //     $username = $_SESSION["user"];
-    // } else {
-    //     header("Location: before_home.html");
-    // }
+// if (isset($_SESSION["user"])) {
+//     $username = $_SESSION["user"];
+// } else {
+//     header("Location: before_home.html");
+// }
 
-    $_SESSION["username"] = "Xi Hwee";
-    $username = $_SESSION["username"];
-    $courseid = $_GET["courseid"];
-    $classid = $_GET["classid"];
+$_SESSION["username"] = "Xi Hwee";
+$username = $_SESSION["username"];
+$courseid = $_GET["courseid"];
+$classid = $_GET["classid"];
 
-    $dao = new CourseDAO();
-    $course = $dao->retrieve($courseid);
-    $coursename = $course->getCourseName();
+$dao = new CourseDAO();
+//$dao2= new EnrollmentDAO();
+$course = $dao->retrieve($courseid);
+$coursename = $course->getCourseName();
+//$enrollment = $dao2->retrieveEnrolment($courseID, $classID)
+
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,19 +35,22 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>LMS - Edit Enrollment Period</title>
 </head>
+
 <body>
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Confirm Enrolment</h1> 
-                <p>Welcome <?= $username?></p>
+                <h1>Confirm Enrolment</h1>
+                <p>Welcome <?= $username ?></p>
                 <hr>
                 <h5><?= $coursename ?></h5>
 
                 <?php
-                    $class = $dao->retrieveCourseClass($courseid, $classid);
+                $class = $dao->retrieveCourseClass($courseid, $classid);
+                // $ConfirmEnrolPageHref = "confirmEnrolment.php?courseid=$courseid&classid=$classid";
+                // $confirmEnrolPageHref = "confirmEnrolment.php?courseid=$courseid&classid={$class->getClassID()}";
 
-                    echo "<div class='row'>
+                echo "<div class='row'>
                             <div class='col-sm-8'>
                                 ClassID<br>
                                 Class Starting Date<br>
@@ -58,42 +66,47 @@
                                 {$class->getSelfEnrollmentStart()} ~ {$class->getSelfEnrollmentEnd()}<br>
                             </div>
                         </div>";
+
+
                 ?>
 
-                <hr>
-                <!-- <h5 class="text-center">New Enrollment Period</h5>
-                <form action="ProcessEditEnrollmentPeriod.php" method="POST">
-                    <div class="row justify-content-center my-5" >
-                        <label for="startDate" class="col-form-label"><b>Start Date</b></label>
-                        <div class="col-sm-4 mr-5">
-                            <input type="date" class="form-control" id="startDate" name="startDate">
-                        </div>
-                        <label for="endDate" class="col-form-label"><b>End Date</b></label>
-                        <div class="col-sm-4">
-                            <input type="date" class="form-control" id="endDate" name="endDate">
-                        </div>
-                        </div> -->
 
-                   
-                    <div class="row">
-                  
+                <hr>
+
+                <div class="row">
+
                     <div class="col text-right">
-                        <button type="cancel" class="btn btn-danger mb-3 text-center">Cancel</button>
+                        <a :href="'ViewCourseByEligibility.php?classid='+classid" button type="cancel" class="btn btn-danger mb-3 text-center">Cancel</a>
                     </div>
                     <div class="col">
-                        <a href="confirmEnrolment.php" button type="confirm" class="btn btn-primary mb-3">Confirm</a>
+
+                        <a :href="'confirmEnrolment.php?classid='+classid+'&courseid='+courseid" button type="confirm" class="btn btn-primary mb-3">Confirm</a>
                     </div>
                 </div>
-                     <input type="hidden" name="courseid" value="<?= $courseid ?>">
-                        <input type="hidden" name="classid" value="<?= $classid?>">
-                    </div>
-                </form>
+                <input type="hidden" name="courseid" value="<?= $courseid ?>">
+                <input type="hidden" name="classid" value="<?= $classid ?>">
             </div>
+            </form>
         </div>
-    </div> 
+    </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+
+                courseid: <?php print json_encode($courseid) ?>,
+                classid: <?php print json_encode($classid) ?>,
+
+            },
+
+        })
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
+
 </html>

@@ -218,5 +218,29 @@ class EnrollmentDAO
         $pdo = null;
         return $enrolment;
     }
+
+    // Insert pending enrolment
+    public function addPendingEnrolment($name, $courseID, $classID)
+    {
+        $today = date("Y-m-d H:i:s");
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("enrolment");
+        
+        $sql = "insert into enrolment (enrolmentStatus, selfEnrol, dateTimeEnrolled, courseID, classID, completed, userName) values ('Pending', false, :today, :courseId, :classId, false, :name);";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":today", $today);
+        $stmt->bindParam(":courseId", $courseID);
+        $stmt->bindParam(":classId", $classID);
+        $stmt->bindParam(":name", $name);
+        if ($stmt->execute()) {
+            $stmt = null;
+            $pdo = null;
+            return true;
+        }
+        
+        $stmt = null;
+        $pdo = null;
+        return $enrolment;
+    }
 }
 ?>
