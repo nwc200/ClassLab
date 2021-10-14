@@ -310,6 +310,7 @@ class EnrollmentDAO
         $pdo = null;
         return $status;
     }
+}
 
     
 ?>
