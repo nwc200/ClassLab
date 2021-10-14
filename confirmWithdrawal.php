@@ -4,7 +4,7 @@
   
     $_SESSION["username"] = "Xi Hwee";
     $username = $_SESSION["username"];
-  
+
     $courseid = $_GET['courseid'];
     $classid = $_GET['classid'];
     $name = $username;
@@ -23,32 +23,33 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>LMS - Confirm enrolment</title>
+    <title>LMS - Confirm Withdrawal</title>
 
 </head>
 <body>
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Confirm Enrolment</h1> 
+                <h1>Confirm Withdrawal</h1> 
                 <p>Welcome <?= $username?></p>
                 <hr>
 
                 <?php
-                $enrolment = $dao->retrieveEnrolment($courseid, $classid);
+                $enrolment = $dao->retrievePendingEnrolment($courseid, $classid);
 
 
-                 if ($dao->addPendingEnrolment($name, $courseid, $classid) ) {
+                 if ($dao->withdrawSelfEnrol($name, $courseid, $classid) ) {
 
                     echo "<div class='alert alert-success' role='alert'>
-                        Enrolment Success! Enrollment application will be send to the HR for approval.
+                        Withdrawal Success! Your enrolment application had been withdrawn.
                     </div>";
-                    var_dump( $dao->retrieveEnrolment($courseid, $classid) );
+                    
+                    var_dump( $dao->retrievePendingEnrolment($courseid, $classid) );
                     
 
                 } else {
                     echo "<div class='alert alert-danger' role='alert'>
-                        Enrolment failure! Please try again. 
+                        Withdrawal failure! Please try again. 
                     </div>";
                 }
                

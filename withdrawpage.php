@@ -33,23 +33,21 @@ $coursename = $course->getCourseName();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title>Confirm Self-Enrolment Page</title>
+    <title>LMS - Withdraw Self-Enrol</title>
 </head>
 
 <body>
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Confirm Enrolment</h1>
+                <h1>Withdraw Self- Enrol Page</h1>
                 <p>Welcome <?= $username ?></p>
                 <hr>
                 <h5><?= $coursename ?></h5>
 
                 <?php
                 $class = $dao->retrieveCourseClass($courseid, $classid);
-                // $ConfirmEnrolPageHref = "confirmEnrolment.php?courseid=$courseid&classid=$classid";
-                // $confirmEnrolPageHref = "confirmEnrolment.php?courseid=$courseid&classid={$class->getClassID()}";
-
+              
                 echo "<div class='row'>
                             <div class='col-sm-8'>
                                 ClassID<br>
@@ -80,7 +78,7 @@ $coursename = $course->getCourseName();
                     </div>
                     <div class="col">
 
-                        <a :href="'confirmEnrolment.php?classid='+classid+'&courseid='+courseid" button type="confirm" class="btn btn-primary mb-3">Confirm</a>
+                        <a :href="'confirmWithdrawal.php?classid='+classid+'&courseid='+courseid" button type="confirm" class="btn btn-primary mb-3">Confirm</a>
                     </div>
                 </div>
                 <input type="hidden" name="courseid" value="<?= $courseid ?>">

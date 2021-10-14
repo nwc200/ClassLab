@@ -14,6 +14,7 @@
     $dao = new CourseDAO();
     $course = $dao->retrieve($courseid);
     $coursename = $course->getCourseName();
+    $today_date = date("Y-m-d H:i:s");
 ?>
 
 <!DOCTYPE html>
@@ -53,66 +54,80 @@
                     $dao2 = new EnrollmentDAO();
                     foreach ($classes as $class) {
                         $classid = $class->getClassID();
-                        $students = $dao2->retrieveEnrolment($courseid, $class->getClassID());
+                        $students = $dao2->retrievePendingEnrolment($courseid, $class->getClassID());
+                        $SelfEnrolStart =$class->getSelfEnrollmentStart();
+                        $SelfEnrolEnd = $class->getSelfEnrollmentEnd();
                         $remainingSlot = (int)$class->getClassSize()-$students;
                         $enrolPageHref = "enrolpage.php?courseid=$courseid&classid=$classid";
-                         echo"
-                         <div class='row'>
-                                <div class='col-sm-8'>
-                                </div>
-                                <div class='col-2'>
-                                    <b>Class Size:</b> {$class->getClassSize()}
-                                </div>
-                                <div class='col-2'>
-                                    <b>Remaining slot:</b> $remainingSlot
-                                </div>
 
-                                <div class='col-sm-8'>
-                                    ClassID<br>
-                                    Class Starting Date<br>
-                                    Class Ending Date<br>
-                                    Trainer<br>
-                                    Self-enrollment Period<br>
-                                </div>
-
-                                <div class='col-auto'>
-
-
-                                {$class->getClassID()}<br>
-                                    {$class->getStartDate()}, {$class->getStartTime()}<br>
-                                    {$class->getEndDate()}, {$class->getEndTime()}<br>
-                                    {$class->getTrainerUserName()}<br>
-                                    {$class->getSelfEnrollmentStart()} ~ {$class->getSelfEnrollmentEnd()} <br>
+                         if (($SelfEnrolStart > $today_date) && ( $today_date < $SelfEnrolEnd) ) 
+                            {
+                                //If within self-enrolment period
+                                echo"
+                                <div class='row'>
+                                    <div class='col-sm-8'>
                                     </div>
+                                    <div class='col-2'>
+                                        <b>Class Size:</b> {$class->getClassSize()}
                                     </div>
-                                    <div class='row mt-3'>
-                                        <div class='col-sm-8'>
+                                    <div class='col-2'>
+                                        <b>Remaining slot:</b>$remainingSlot
+                                    </div>
+
+                                    <div class='col-sm-8'>
+                                        ClassID<br>
+                                        Class Starting Date<br>
+                                        Class Ending Date<br>
+                                        Trainer<br>
+                                        Self-enrollment Period<br>
+                                    </div>
+
+                                    <div class='col-auto'>
+
+
+                                    {$class->getClassID()}<br>
+                                        {$class->getStartDate()}, {$class->getStartTime()}<br>
+                                        {$class->getEndDate()}, {$class->getEndTime()}<br>
+                                        {$class->getTrainerUserName()}<br>
+                                        {$SelfEnrolStart} ~ {$SelfEnrolEnd} <br>
                                         </div>
-                                        <div class='col-2'>";
-        
-
-                                        if ($students == 0) {
-                                            echo "<button type='button' class='btn btn-secondary' disabled>Withdraw</button>";
-                                        } else {
-                                            echo "<a class='btn btn-success' href='' role='button'>Withdraw</a>";
-                                        }
-                                        echo "</div>
-                                            <div class='col-2'>";
-                
-                                            $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
-                                        if ($remainingSlot == 0) {
-                                            echo "<button type='button' class='btn btn-secondary' disabled>Assign</button>";
-                                        } else {
-                                            echo "<a class='btn btn-success' href='$enrolPageHref' role='button'>Enrol</a>";
-                                        }
-                                        echo "</div>
+                                        </div>
+                                        <div class='row mt-3'>
+                                            <div class='col-sm-8'>
                                             </div>
-                                        <hr>";
-                                    }
-                                }
-
-                                      
-            ?>    
+                                            <div class='col-2'>";
+                                            
+                                            $withdrawPageHref = "withdrawpage.php?courseid=$courseid&classid={$class->getClassID()}";
+                                            if ($students == 0) {
+                                                echo "<button type='button' class='btn btn-secondary' disabled>Withdraw</button>";
+                                            } else {
+                                                echo "<a class='btn btn-success' href='$withdrawPageHref' role='button'>Withdraw</a>";
+                                            }
+                                            echo "</div>
+                                                <div class='col-2'>";
+                    
+                                                $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
+                                            if ($remainingSlot == 0) {
+                                                echo "<button type='button' class='btn btn-secondary' disabled>Enrol</button>";
+                                            } else {
+                                                echo "<a class='btn btn-success' href='$enrolPageHref' role='button'>Enrol</a>";
+                                            }
+                                            echo "</div>
+                                                </div>
+                                            <hr>";
+                                        }
+                                    
+                           
+                        else{
+                        
+                            //echo "<a class='btn btn-success' href='ViewCourseByEligibility.php?classid=$classid' role='button'>back</a>";
+                            echo" There is no available class "; 
+                        }
+                    }
+                    
+                }
+                
+        ?>    
             </div>
         </div>
     </div> 
