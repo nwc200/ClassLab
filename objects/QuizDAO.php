@@ -34,7 +34,7 @@ class QuizDAO
         $quiz = [];
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         while ($row = $stmt->fetch()) {
-            $quiz[] = [$row["quizID"],$row["sectionNum"], $row["quizName"], $row["quizNum"], $row["quizDuration"], $row["type"], $row["passingMark"]];
+            $quiz[] = [$row["quizID"],$row["classID"],$row["sectionNum"], $row["quizName"], $row["quizNum"], $row["quizDuration"], $row["type"], $row["passingMark"]];
         }
         
         $stmt = null;
