@@ -104,10 +104,10 @@ if (count($quizInformation) != 0) {
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="ViewCourseMaterials.php" active>Course Materials <span class="sr-only">(current)</span></a>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="ViewCourseMaterials.php">Course Materials <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
                     </li>
 
@@ -191,7 +191,6 @@ if (count($quizInformation) != 0) {
                                         <div v-for="(each, k) in quizAttempts[i]">
                                             <p>
                                                 Attempt {{quizAttempts[i][k][1]}}
-                                                <!-- <a :href="'viewStudentAttempts.php?classid='+classID+'&quizid='+parseInt(i+1)+'&attemptNo='+parseInt(j+1)" class="btn btn-outline-primary">View Attempt {{j+1}} </a> -->
                                             </p>
                                         </div>
                                     </div>
@@ -269,23 +268,33 @@ if (count($quizInformation) != 0) {
                     this.getMaterials = this.getCurrentCourse[6]
                     this.isCompleted = this.getCurrentCourse[4]
                     this.quizInformation = this.getCurrentCourse[7]
+                    noOfAttempts = this.quizAttempts.length
+
 
                     if (this.quizInformation.length != 0) {
                         if (this.quizAttempts.length != 0) {
-                            for (j = 0; j < this.getNoOfSections; j++) {
-                                if (this.getMaterials[j].length != 0) {
-                                    for (k = 0; k < this.quizAttempts[j].length; k++) {
-                                        if (this.quizAttempts[j][k][2] == 1) { //section 1 done, section 2 done
-                                            this.totalPercentage = parseFloat(((j + 1) / this.getNoOfSections) * 100).toFixed(2)
-                                            this.percentage = this.totalPercentage + '%'
-                                            break
-                                        }
+                            for (j = 0; j < this.quizAttempts[this.quizAttempts.length - 1].length; j++) {
+                                if (this.quizAttempts[noOfAttempts - 1][j][2] == 1) {
+                                    this.totalPercentage = parseFloat((this.quizAttempts.length / this.getNoOfSections) * 100).toFixed(2)
+                                    this.percentage = this.totalPercentage + "%"
+                                    break
+                                } else {
+                                    if (this.quizAttempts.length != 1) {
+                                        this.totalPercentage = parseFloat(((this.quizAttempts.length - 1) / this.getNoOfSections) * 100).toFixed(2)
+                                        this.percentage = this.totalPercentage + "%"
+                                        break
+
+                                    } else {
+                                        this.totalPercentage = parseFloat((this.quizAttempts.length / this.getNoOfSections) * 100).toFixed(2)
+                                        this.percentage = this.totalPercentage + "%"
+                                        break
                                     }
                                 }
                             }
-                        }
-                    }
 
+                        }
+
+                    }
                 }
 
             }
