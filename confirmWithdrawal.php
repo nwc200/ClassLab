@@ -1,20 +1,21 @@
 <?php
-    require_once "objects/autoload.php";
-    $dao = new EnrollmentDAO;
-  
-    $_SESSION["username"] = "Xi Hwee";
-    $username = $_SESSION["username"];
+require_once "objects/autoload.php";
+$dao = new EnrollmentDAO;
 
-    $courseid = $_GET['courseid'];
-    $classid = $_GET['classid'];
-    $name = $username;
-    
+$_SESSION["username"] = "Xi Hwee";
+$username = $_SESSION["username"];
+
+$courseid = $_GET['courseid'];
+$classid = $_GET['classid'];
+$name = $username;
+$enrolmentstatus = "Pending";
 
 
-    
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,33 +27,36 @@
     <title>LMS - Confirm Withdrawal</title>
 
 </head>
+
 <body>
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Confirm Withdrawal</h1> 
-                <p>Welcome <?= $username?></p>
+                <h1>Confirm Withdrawal</h1>
+                <p>Welcome <?= $username ?></p>
                 <hr>
 
                 <?php
                 $enrolment = $dao->retrievePendingEnrolment($courseid, $classid);
 
+                $enrolmentstatus = "Pending";
 
-                 if ($dao->withdrawSelfEnrol($name, $courseid, $classid) ) {
+
+
+                if ($dao->withdrawSelfEnrol($name, $classid, $enrolmentstatus)) {
+
 
                     echo "<div class='alert alert-success' role='alert'>
                         Withdrawal Success! Your enrolment application had been withdrawn.
                     </div>";
-                    
-                    var_dump( $dao->retrievePendingEnrolment($courseid, $classid) );
-                    
 
+                    var_dump($dao->retrievePendingEnrolment($courseid, $classid));
                 } else {
                     echo "<div class='alert alert-danger' role='alert'>
                         Withdrawal failure! Please try again. 
                     </div>";
                 }
-               
+
                 ?>
                 <a class="btn btn-primary" href="ViewCourse.php" role="button">Back to Home</a>
             </div>
@@ -63,4 +67,5 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
+
 </html>

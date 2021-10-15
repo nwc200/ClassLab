@@ -55,12 +55,15 @@
                     foreach ($classes as $class) {
                         $classid = $class->getClassID();
                         $students = $dao2->retrievePendingEnrolment($courseid, $class->getClassID());
+                        $enrolment = $dao2->retrieveEnrolment($courseid, $classid);
                         $SelfEnrolStart =$class->getSelfEnrollmentStart();
                         $SelfEnrolEnd = $class->getSelfEnrollmentEnd();
+                        //$remainingSlot = $dao2->checkClassCapacity($classid);
                         $remainingSlot = (int)$class->getClassSize()-$students;
                         $enrolPageHref = "enrolpage.php?courseid=$courseid&classid=$classid";
+                        
 
-                         if (($SelfEnrolStart > $today_date) && ( $today_date < $SelfEnrolEnd) ) 
+                         if ( ($SelfEnrolStart > $today_date) && ( $today_date < $SelfEnrolEnd) ) 
                             {
                                 //If within self-enrolment period
                                 echo"
@@ -71,7 +74,7 @@
                                         <b>Class Size:</b> {$class->getClassSize()}
                                     </div>
                                     <div class='col-2'>
-                                        <b>Remaining slot:</b>$remainingSlot
+                                        <b>Remaining slot:</b> $remainingSlot
                                     </div>
 
                                     <div class='col-sm-8'>
@@ -109,25 +112,27 @@
                                                 $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
                                             if ($remainingSlot == 0) {
                                                 echo "<button type='button' class='btn btn-secondary' disabled>Enrol</button>";
+                                            
+
                                             } else {
                                                 echo "<a class='btn btn-success' href='$enrolPageHref' role='button'>Enrol</a>";
+
                                             }
                                             echo "</div>
                                                 </div>
                                             <hr>";
-                                        }
-                                    
-                           
-                        else{
-                        
-                            //echo "<a class='btn btn-success' href='ViewCourseByEligibility.php?classid=$classid' role='button'>back</a>";
-                            echo" There is no available class "; 
+                        }
+                                  
+                        else {
+                         //echo" There is no available class ";
                         }
                     }
-                    
                 }
+               
                 
-        ?>    
+                ?>    
+                <br>
+                <a class='btn btn-success' href='ViewCourseByEligibility.php?classid=$classid' role='button'>back</a>
             </div>
         </div>
     </div> 
