@@ -57,20 +57,30 @@ $getMaterials = $firstpage[6];
 $isCompleted = $firstpage[4];
 $quizInformation = $firstpage[7];
 $getClassID = $firstpage[2];
+$noOfAttempts = count($quizAttempts);
 
-// var_dump($quizInformation);
 
 if (count($quizInformation) != 0) {
-    if (count($getQuizAttempts) != 0) {
-        for ($i = 0; $i < count($getQuizAttempts); $i++) {
-            for ($k = 0; $k < count($getQuizAttempts[$i]); $k++) {
-                if ($getQuizAttempts[$i][$k][2] == 1) {
-                    $totalPercentage =  number_format((($i + 1) / $firstpageNoOfSec) * 100, 2, '.', '');
-                    $percentage = $totalPercentage . '%';
+    if (count($quizAttempts) != 0) {
+        for ($j = 0; $j < count($quizAttempts[$noOfAttempts-1]); $j++) {
+            if ($quizAttempts[$noOfAttempts - 1][$j][2] == 1) {
+                $totalPercentage = number_format((count($quizAttempts) / $firstpageNoOfSec) * 100, 2, '.', '');
+                $percentage = $totalPercentage . "%";
+                break;
+            } else {
+                if (count($quizAttempts) != 1) {
+                    $totalPercentage = number_format(((count($quizAttempts)-1) / $firstpageNoOfSec) * 100, 2, '.', '');
+                    $percentage = $totalPercentage . "%";
+                    break;
+
+                } else {
+                    $totalPercentage = number_format((count($quizAttempts) / $firstpageNoOfSec) * 100, 2, '.', '');
+                    $percentage = $totalPercentage . "%";
                     break;
                 }
             }
         }
+
     }
 }
 
@@ -105,7 +115,7 @@ if (count($quizInformation) != 0) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item ">
-                        <a class="nav-link" href="ViewCourseMaterials.php">Course Materials <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="ViewCourseMaterials.php" active>Course Materials <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
@@ -191,6 +201,7 @@ if (count($quizInformation) != 0) {
                                         <div v-for="(each, k) in quizAttempts[i]">
                                             <p>
                                                 Attempt {{quizAttempts[i][k][1]}}
+                                                <!-- <a :href="'viewStudentAttempts.php?classid='+classID+'&quizid='+parseInt(i+1)+'&attemptNo='+parseInt(j+1)" class="btn btn-outline-primary">View Attempt {{j+1}} </a> -->
                                             </p>
                                         </div>
                                     </div>
@@ -270,7 +281,6 @@ if (count($quizInformation) != 0) {
                     this.quizInformation = this.getCurrentCourse[7]
                     noOfAttempts = this.quizAttempts.length
 
-
                     if (this.quizInformation.length != 0) {
                         if (this.quizAttempts.length != 0) {
                             for (j = 0; j < this.quizAttempts[this.quizAttempts.length - 1].length; j++) {
@@ -293,8 +303,8 @@ if (count($quizInformation) != 0) {
                             }
 
                         }
-
                     }
+
                 }
 
             }
