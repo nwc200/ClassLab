@@ -224,26 +224,23 @@ if (count($noOfQuizzez) != 0) {
                   </label>
                 </p>
                 <p v-else-if='firstpage[7][0][1] == 0'>
-                  {{noOfMaterials}}
                   <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(1)+'&materialNum='+noOfMaterials[0].length" class="btn btn-primary">Complete</a>
                 </p>
               </td>
 
               <td>
-                <div v-if="completed[0] == 1">
-                  <div v-if="firstpage[7][0][0] == 1">
-                    <div v-for="(each, j) in noOfQuizzez">
-                      <p v-if="j == 0">
-                        <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])">
-                          {{noOfQuizzez[0][3]}}
-                        </a>
-                      </p>
-                    </div>
+                <div v-if="firstpage[7][0][0] == 1">
+                  <div v-for="(each, j) in noOfQuizzez">
+                    <p v-if="j == 0">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])">
+                        {{noOfQuizzez[0][3]}}
+                      </a>
+                    </p>
                   </div>
                 </div>
               </td>
             </tr>
-            
+
             <tr v-for="(each, i) in getNoOfSections-1">
               <td>
                 <div v-if="completed[i] == 1">
@@ -288,19 +285,16 @@ if (count($noOfQuizzez) != 0) {
               </td>
 
               <td>
-                <div v-if="completed[i] == 1">
-                  <div v-if="firstpage[7][i][0] == 1">
-                    <div v-for="(each, j) in noOfQuizzez">
-                      <p v-if="j == i+1">
-                        <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])">
-                          {{noOfQuizzez[i+1][3]}}
-                        </a>
-                      </p>
-                    </div>
+                <div v-if="firstpage[7][i+1][0] == 1">
+                  <div v-for="(each, j) in noOfQuizzez">
+                    <p v-if="j == i+1">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])">
+                        {{noOfQuizzez[i+1][3]}}
+                      </a>
+                    </p>
                   </div>
                 </div>
               </td>
-
             </tr>
           </tbody>
 
@@ -342,15 +336,13 @@ if (count($noOfQuizzez) != 0) {
 
 
               <td>
-                <div v-if="completed[0] == 1">
-                  <div v-if="getUserCourses[7][0][0] == 1">
-                    <div v-for="(each, j) in noOfQuizzez">
-                      <p v-if="j == 0">
-                        <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])">
-                          {{noOfQuizzez[0][3]}}
-                        </a>
-                      </p>
-                    </div>
+                <div v-if="getUserCourses[7][0][0] == 1">
+                  <div v-for="(each, j) in noOfQuizzez">
+                    <p v-if="j == 0">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])">
+                        {{noOfQuizzez[0][3]}}
+                      </a>
+                    </p>
                   </div>
                 </div>
               </td>
@@ -402,15 +394,13 @@ if (count($noOfQuizzez) != 0) {
               </td>
 
               <td>
-                <div v-if="completed[i] == 1">
-                  <div v-if="getUserCourses[7][i][0] == 1">
-                    <div v-for="(each, j) in noOfQuizzez">
-                      <p v-if="j == i+1">
-                        <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])">
-                          {{noOfQuizzez[i+1][3]}}
-                        </a>
-                      </p>
-                    </div>
+                <div v-if="getUserCourses[7][i+1][0] == 1">
+                  <div v-for="(each, j) in noOfQuizzez">
+                    <p v-if="j == i+1">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])">
+                        {{noOfQuizzez[i+1][3]}}
+                      </a>
+                    </p>
                   </div>
                 </div>
               </td>

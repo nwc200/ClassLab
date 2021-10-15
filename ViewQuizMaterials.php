@@ -57,30 +57,18 @@ $getMaterials = $firstpage[6];
 $isCompleted = $firstpage[4];
 $quizInformation = $firstpage[7];
 $getClassID = $firstpage[2];
-$noOfAttempts = count($quizAttempts);
-
 
 if (count($quizInformation) != 0) {
-    if (count($quizAttempts) != 0) {
-        for ($j = 0; $j < count($quizAttempts[$noOfAttempts-1]); $j++) {
-            if ($quizAttempts[$noOfAttempts - 1][$j][2] == 1) {
-                $totalPercentage = number_format((count($quizAttempts) / $firstpageNoOfSec) * 100, 2, '.', '');
-                $percentage = $totalPercentage . "%";
-                break;
-            } else {
-                if (count($quizAttempts) != 1) {
-                    $totalPercentage = number_format(((count($quizAttempts)-1) / $firstpageNoOfSec) * 100, 2, '.', '');
-                    $percentage = $totalPercentage . "%";
-                    break;
-
-                } else {
-                    $totalPercentage = number_format((count($quizAttempts) / $firstpageNoOfSec) * 100, 2, '.', '');
+    for ($j = 0; $j < count($quizInformation); $j++) {
+        if (count($getQuizAttempts[$j]) != 0) {
+            for ($k = 0; $k < count($getQuizAttempts[$j]); $k++) {
+                if ($getQuizAttempts[$j][$k][2] == 1) {
+                    $totalPercentage = number_format(($getQuizAttempts[$j][$k][0] / $firstpageNoOfSec) * 100, 2, '.', '');
                     $percentage = $totalPercentage . "%";
                     break;
                 }
             }
         }
-
     }
 }
 
@@ -279,29 +267,19 @@ if (count($quizInformation) != 0) {
                     this.getMaterials = this.getCurrentCourse[6]
                     this.isCompleted = this.getCurrentCourse[4]
                     this.quizInformation = this.getCurrentCourse[7]
-                    noOfAttempts = this.quizAttempts.length
+                    
 
                     if (this.quizInformation.length != 0) {
-                        if (this.quizAttempts.length != 0) {
-                            for (j = 0; j < this.quizAttempts[this.quizAttempts.length - 1].length; j++) {
-                                if (this.quizAttempts[noOfAttempts - 1][j][2] == 1) {
-                                    this.totalPercentage = parseFloat((this.quizAttempts.length / this.getNoOfSections) * 100).toFixed(2)
-                                    this.percentage = this.totalPercentage + "%"
-                                    break
-                                } else {
-                                    if (this.quizAttempts.length != 1) {
-                                        this.totalPercentage = parseFloat(((this.quizAttempts.length - 1) / this.getNoOfSections) * 100).toFixed(2)
-                                        this.percentage = this.totalPercentage + "%"
-                                        break
-
-                                    } else {
-                                        this.totalPercentage = parseFloat((this.quizAttempts.length / this.getNoOfSections) * 100).toFixed(2)
-                                        this.percentage = this.totalPercentage + "%"
-                                        break
+                        for (j = 0; j < this.quizInformation.length; j++) {
+                            if (this.quizAttempts[j].length != 0) {
+                                for (k = 0; k < this.quizAttempts[j].length; k++) {
+                                    if (this.quizAttempts[j][k][2] == 1) {
+                                        this.totalPercentage = parseFloat((this.quizAttempts[j][k][1] / this.getNoOfSections) * 100).toFixed(2)
+                                        this.percentage = this.totalPercentage+"%";
+                                        break;
                                     }
                                 }
                             }
-
                         }
                     }
 
