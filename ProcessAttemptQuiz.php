@@ -10,6 +10,8 @@ unset($_POST['passingmark']);
 $classid = $_POST["classid"];
 $type = $_POST["type"];
 
+$zero = $_POST["whichCourse"];
+
 $attemptno = $dao->getAttemptNo($quizid, $username) + 1;
 $quiz = $dao->getTrainerCourse("Wei Cheng");
 $quiz = $dao->getQuiz($quizid);
@@ -69,7 +71,7 @@ if ($marks>=$passingmark && $type == "Graded") {
     $dao->quizUpdateEnrolment($username, $classid, 1);
 }
 
-header('Location: QuizAttemptSuccess.html');
+header("Location: attemptQuizSuccess.php?whichCourse=$zero");
 
 exit;
 

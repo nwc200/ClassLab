@@ -16,6 +16,10 @@ $userCourses = (object)[];
 $counter = 0;
 $zero = 0;
 
+if(isset($_GET['whichCourse'])){
+  $zero= $_GET['whichCourse'];
+}
+
 foreach ($enrolments as $enrol) {
   $courseID = $enrol->getCourseID();
   $courses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
@@ -77,8 +81,6 @@ $getQuizAttempts = $firstpage[8];
 $noOfQuizzez = $firstpage[9];
 $noOfMaterials = $firstpage[6];
 
-$whichSection = 0;
-$whichMaterial = '';
 $percent = 0;
 $completedPercent = $percent . '%';
 $completed = [];
@@ -155,12 +157,11 @@ if (count($noOfQuizzez) != 0) {
 
     <!-- nav click -->
     <div class="container">
-      <h4 style="text-align:center" v-if="coursename !='' ">
+      <h4 style="text-align:center" v-if="coursename != ''">
         {{coursename}}
       </h4>
-
       <h4 style="text-align:center" v-else>
-        {{usercourses[0][1]}}
+        {{firstpage[1]}}
       </h4>
 
       <div>
@@ -224,7 +225,7 @@ if (count($noOfQuizzez) != 0) {
                   </label>
                 </p>
                 <p v-else-if='firstpage[7][0][1] == 0'>
-                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(1)+'&materialNum='+noOfMaterials[0].length" class="btn btn-primary">Complete</a>
+                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(1)+'&materialNum='+noOfMaterials[0].length+'&whichCourse='+zero" class="btn btn-primary">Complete</a>
                 </p>
               </td>
 
@@ -232,7 +233,7 @@ if (count($noOfQuizzez) != 0) {
                 <div v-if="firstpage[7][0][0] == 1">
                   <div v-for="(each, j) in noOfQuizzez">
                     <p v-if="j == 0">
-                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])+'&whichCourse='+zero">
                         {{noOfQuizzez[0][3]}}
                       </a>
                     </p>
@@ -280,7 +281,7 @@ if (count($noOfQuizzez) != 0) {
                     </label>
                   </p>
                   <p v-else-if='firstpage[7][i+1][1] == 0'>
-                    <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(i+2)+'&materialNum='+noOfMaterials[i+1].length" class="btn btn-primary">Complete</a>
+                    <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(i+2)+'&materialNum='+noOfMaterials[i+1].length+'&whichCourse='+zero" class="btn btn-primary">Complete</a>
                   </p>
               </td>
 
@@ -288,7 +289,7 @@ if (count($noOfQuizzez) != 0) {
                 <div v-if="firstpage[7][i+1][0] == 1">
                   <div v-for="(each, j) in noOfQuizzez">
                     <p v-if="j == i+1">
-                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])+'&whichCourse='+zero">
                         {{noOfQuizzez[i+1][3]}}
                       </a>
                     </p>
@@ -302,7 +303,7 @@ if (count($noOfQuizzez) != 0) {
           <tbody v-else>
             <tr v-if="getUserCourses[5][0].length != 0 ">
 
-              <td> <b>Section 1</b>
+              <td><b>Section 1</b>
                 <br>
                 {{getUserCourses[4][0]}}
               </td>
@@ -330,7 +331,7 @@ if (count($noOfQuizzez) != 0) {
                   </label>
                 </p>
                 <p v-else-if='getUserCourses[7][0][1] == 0'>
-                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(1)+'&materialNum='+noOfMaterials[0].length" class="btn btn-primary">Complete</a>
+                  <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(1)+'&materialNum='+noOfMaterials[0].length+'&whichCourse='+zero" class="btn btn-primary">Complete</a>
                 </p>
               </td>
 
@@ -339,7 +340,7 @@ if (count($noOfQuizzez) != 0) {
                 <div v-if="getUserCourses[7][0][0] == 1">
                   <div v-for="(each, j) in noOfQuizzez">
                     <p v-if="j == 0">
-                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[0][0])+'&whichCourse='+zero">
                         {{noOfQuizzez[0][3]}}
                       </a>
                     </p>
@@ -389,7 +390,7 @@ if (count($noOfQuizzez) != 0) {
                     </label>
                   </p>
                   <p v-else-if='getUserCourses[7][i+1][0] == 0'>
-                    <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(i+2)+'&materialNum='+noOfMaterials[i+1].length" class="btn btn-primary">Complete</a>
+                    <a :href="'UpdateCompletion.php?classID='+classID+'&sectionNum='+parseInt(i+2)+'&materialNum='+noOfMaterials[i+1].length+'&whichCourse='+zero" class="btn btn-primary">Complete</a>
                   </p>
               </td>
 
@@ -397,7 +398,7 @@ if (count($noOfQuizzez) != 0) {
                 <div v-if="getUserCourses[7][i+1][0] == 1">
                   <div v-for="(each, j) in noOfQuizzez">
                     <p v-if="j == i+1">
-                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])">
+                      <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(noOfQuizzez[i+1][0])+'&whichCourse='+zero">
                         {{noOfQuizzez[i+1][3]}}
                       </a>
                     </p>
@@ -428,14 +429,13 @@ if (count($noOfQuizzez) != 0) {
         getUserCourses: '',
         getNoOfSections: <?php print json_encode($firstpageNoOfSec) ?>,
         percentage: <?php print json_encode($percent) ?>,
-        wSection: <?php print json_encode($whichSection) ?>,
         completedPercent: <?php print json_encode($completedPercent) ?>,
-        wMaterial: <?php print json_encode($whichMaterial) ?>,
         noOfMaterials: <?php print json_encode($noOfMaterials) ?>,
         classID: <?php print json_encode($classID) ?>,
         quizAttempts: <?php print json_encode($getQuizAttempts) ?>,
         noOfQuizzez: <?php print json_encode($noOfQuizzez) ?>,
         completed: <?php print json_encode($completed) ?>,
+        zero: <?php print json_encode($zero) ?>,
 
       },
       methods: {
@@ -443,14 +443,15 @@ if (count($noOfQuizzez) != 0) {
           this.coursename = this.usercourses[i][1]
           this.getUserCourses = this.usercourses[i]
           this.getNoOfSections = this.getUserCourses[3].length //retrieve no of sections
-          this.wSection = 0
+
           this.percentage = 0
           this.completedPercent = '0%'
           this.classID = this.getUserCourses[2]
           this.quizAttempts = this.getUserCourses[8]
           this.noOfQuizzez = this.getUserCourses[9]
           this.noOfMaterials = this.getUserCourses[6]
-          this.completed = [];
+          this.completed = []
+          this.zero = i
 
           if (this.noOfQuizzez.length != 0) {
             if (this.quizAttempts.length != 0) {
