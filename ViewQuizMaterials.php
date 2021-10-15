@@ -12,7 +12,12 @@ $userCourses = (object)[];
 $counter = 0;
 $zero = 0;
 
+
 $quizDAO = new QuizDAO();
+
+if (isset($_GET['whichCourse'])) {
+    $zero = $_GET['whichCourse'];
+}
 
 
 foreach ($enrolments as $enrol) {
@@ -63,7 +68,7 @@ if (count($quizInformation) != 0) {
         if (count($getQuizAttempts[$j]) != 0) {
             for ($k = 0; $k < count($getQuizAttempts[$j]); $k++) {
                 if ($getQuizAttempts[$j][$k][2] == 1) {
-                    $totalPercentage = number_format(($getQuizAttempts[$j][$k][0] / $firstpageNoOfSec) * 100, 2, '.', '');
+                    $totalPercentage = number_format(($getQuizAttempts[$j][$k][1] / $firstpageNoOfSec) * 100, 2, '.', '');
                     $percentage = $totalPercentage . "%";
                     break;
                 }
@@ -71,7 +76,7 @@ if (count($quizInformation) != 0) {
         }
     }
 }
-
+// var_dump($firstpage);
 
 ?>
 
@@ -88,7 +93,7 @@ if (count($quizInformation) != 0) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title>View Course Materials</title>
+    <title>View Quiz Available</title>
 </head>
 
 <body>
@@ -129,7 +134,7 @@ if (count($quizInformation) != 0) {
             {{coursename}}
         </h4>
         <h4 style="text-align:center" v-else>
-            {{usercourses[0][1]}}
+            {{firstpage[1]}}
         </h4>
 
         <div class="container">
@@ -175,7 +180,7 @@ if (count($quizInformation) != 0) {
                         <td v-if="isCompleted[i] == 1">
                             <div v-for="(each, j) in quizInformation">
                                 <p v-if="j == i">
-                                    <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(quizInformation[i][0])">
+                                    <a :href="'AttemptQuiz.php?classid='+classID+'&quizid='+ parseInt(quizInformation[i][0])+'&whichCourse='+zero">
                                         {{quizInformation[i][3]}}
                                     </a>
                                 </p>
@@ -189,7 +194,6 @@ if (count($quizInformation) != 0) {
                                         <div v-for="(each, k) in quizAttempts[i]">
                                             <p>
                                                 Attempt {{quizAttempts[i][k][1]}}
-                                                <!-- <a :href="'viewStudentAttempts.php?classid='+classID+'&quizid='+parseInt(i+1)+'&attemptNo='+parseInt(j+1)" class="btn btn-outline-primary">View Attempt {{j+1}} </a> -->
                                             </p>
                                         </div>
                                     </div>
@@ -220,7 +224,7 @@ if (count($quizInformation) != 0) {
                                     <div v-if="j == i">
                                         <div v-for="(each, k) in quizAttempts[i]">
                                             <p>
-                                                <a :href="'viewStudentAttempts.php?classid='+classID+'&quizid='+parseInt(i+1)+'&attemptNo='+parseInt(quizAttempts[i][k][1])" class="btn btn-outline-primary">View Attempt {{quizAttempts[i][k][1]}} </a>
+                                                <a :href="'viewStudentAttempts.php?classid='+classID+'&quizid='+parseInt(i+1)+'&attemptNo='+parseInt(quizAttempts[i][k][1])+'&whichCourse='+zero" class="btn btn-outline-primary">View Attempt {{quizAttempts[i][k][1]}} </a>
                                             </p>
                                         </div>
                                     </div>
@@ -254,6 +258,7 @@ if (count($quizInformation) != 0) {
                 isCompleted: <?php print json_encode($isCompleted) ?>,
                 quizInformation: <?php print json_encode($quizInformation) ?>,
                 classID: <?php print json_encode($getClassID) ?>,
+                zero: <?php print json_encode($zero) ?>,
             },
             methods: {
                 test: function(i) {
@@ -267,7 +272,8 @@ if (count($quizInformation) != 0) {
                     this.getMaterials = this.getCurrentCourse[6]
                     this.isCompleted = this.getCurrentCourse[4]
                     this.quizInformation = this.getCurrentCourse[7]
-                    
+                    this.zero = i
+
 
                     if (this.quizInformation.length != 0) {
                         for (j = 0; j < this.quizInformation.length; j++) {
@@ -275,7 +281,7 @@ if (count($quizInformation) != 0) {
                                 for (k = 0; k < this.quizAttempts[j].length; k++) {
                                     if (this.quizAttempts[j][k][2] == 1) {
                                         this.totalPercentage = parseFloat((this.quizAttempts[j][k][1] / this.getNoOfSections) * 100).toFixed(2)
-                                        this.percentage = this.totalPercentage+"%";
+                                        this.percentage = this.totalPercentage + "%";
                                         break;
                                     }
                                 }
