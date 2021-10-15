@@ -81,8 +81,4 @@ values (2, 2, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
 
 
 /* Material Progress */
-insert into materialProgress
-values (1, 1, 1, "Yu Hao", false);
 
-insert into materialProgress
-values (1, 1, 2, "Yu Hao", false);
