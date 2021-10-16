@@ -16,8 +16,8 @@ $userCourses = (object)[];
 $counter = 0;
 $zero = 0;
 
-if(isset($_GET['whichCourse'])){
-  $zero= $_GET['whichCourse'];
+if (isset($_GET['whichCourse'])) {
+  $zero = $_GET['whichCourse'];
 }
 
 foreach ($enrolments as $enrol) {
@@ -70,10 +70,11 @@ foreach ($enrolments as $enrol) {
 
 
   $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $arraySecName, $arrayMaterials, $getMaterialsNum, $getCompletedArr, $quizAttempts, $getQuizzes];
-
+  // var_dump($userCourses->$counter[2]);
   $counter++;
 }
-// var_dump($userCourses);
+
+
 $firstpage = $userCourses->$zero;
 $firstpageNoOfSec = count($firstpage[3]);
 $classID = $firstpage[2];
@@ -203,19 +204,27 @@ if (count($noOfQuizzez) != 0) {
               </td>
 
               <td>
-                <p v-for="(each, j) in firstpage[5][0]">
-                  <i class="fas fa-file-pdf"></i>
-                  <a v-bind:href="firstpage[5][0][j][2]">Lecture Note {{1}}.{{j}}</a>
-                </p>
+                <div v-for="(each, j) in firstpage[5][0]">
+                  <p v-if="firstpage[5][0][j][2][0] == '.'">
+                    <i class="fas fa-file-pdf"></i>
+                    <a v-bind:href="firstpage[5][0][j][2]">Lecture Note {{1}}.{{firstpage[5][0][j][0]}}</a>
+                  </p>
+                  <p v-else>
+                    <i class="fas fa-link"></i>
+                    <a v-bind:href="firstpage[5][0][j][2]">{{firstpage[5][0][j][2]}}</a>
+                  </p>
+                </div>
               </td>
 
               <td>
-                <p v-for="(each, j) in firstpage[5][0]">
-                  <i class="fa fa-download"></i>
-                  <a v-bind:href="firstpage[5][0][j][2]" download="LectureNote">
-                    Download
-                  </a>
-                </p>
+                <div v-for="(each, j) in firstpage[5][0]">
+                  <p v-if="firstpage[5][0][j][2][0] == '.'">
+                    <i class="fa fa-download"></i>
+                    <a v-bind:href="firstpage[5][0][j][2]" :download="firstpage[5][0][j][2]">
+                      Download
+                    </a>
+                  </p>
+                </div>
               </td>
 
               <td>
@@ -255,21 +264,29 @@ if (count($noOfQuizzez) != 0) {
 
               <td>
                 <div v-if="completed[i] == 1">
-                  <p v-for="(each, j) in firstpage[5][i+1]">
-                    <i class="fas fa-file-pdf"></i>
-                    <a v-bind:href="firstpage[5][i+1][j][2]">Lecture Note {{i+2}}.{{j}}</a>
-                  </p>
+                  <div v-for="(each, j) in firstpage[5][i+1]">
+                    <p v-if="firstpage[5][i+1][j][2][0] == '.'">
+                      <i class="fas fa-file-pdf"></i>
+                      <a v-bind:href="firstpage[5][i+1][j][2]">Lecture Note {{i+2}}.{{firstpage[5][i+1][j][0]}}</a>
+                    </p>
+                    <p v-else>
+                      <i class="fas fa-link"></i>
+                      <a v-bind:href="firstpage[5][i+1][j][2]">{{firstpage[5][i+1][j][2]}}</a>
+                    </p>
+                  </div>
                 </div>
               </td>
 
               <td>
                 <div v-if="completed[i] == 1">
-                  <p v-for="(each, j) in firstpage[5][i+1]">
-                    <i class="fa fa-download"></i>
-                    <a v-bind:href="firstpage[5][i+1][j][2]" download="LectureNote">
-                      Download
-                    </a>
-                  </p>
+                  <div v-for="(each, j) in firstpage[5][i+1]">
+                    <p v-if="firstpage[5][i+1][j][2][0] == '.'">
+                      <i class="fa fa-download"></i>
+                      <a v-bind:href="firstpage[5][i+1][j][2]" :download="firstpage[5][i+1][j][2]">
+                        Download
+                      </a>
+                    </p>
+                  </div>
                 </div>
               </td>
 
@@ -309,19 +326,27 @@ if (count($noOfQuizzez) != 0) {
               </td>
 
               <td>
-                <p v-for="(each, j) in getUserCourses[5][0]">
-                  <i class="fas fa-file-pdf"></i>
-                  <a v-bind:href="getUserCourses[5][0][j][2]">Lecture Note {{1}}.{{j}}</a>
-                </p>
+                <div v-for="(each, j) in getUserCourses[5][0]">
+                  <p v-if="getUserCourses[5][0][j][2][0] == '.'">
+                    <i class="fas fa-file-pdf"></i>
+                    <a v-bind:href="getUserCourses[5][0][j][2]">Lecture Note {{1}}.{{getUserCourses[5][0][j][0]}}</a>
+                  </p>
+                  <p v-else>
+                    <i class="fas fa-link"></i>
+                    <a v-bind:href="getUserCourses[5][0][j][2]">{{getUserCourses[5][0][j][2]}}</a>
+                  </p>
+                </div>
               </td>
 
               <td>
-                <p v-for="(each, j) in getUserCourses[5][0]">
-                  <i class="fa fa-download"></i>
-                  <a v-bind:href="getUserCourses[5][0][j][2]" download="LectureNote">
-                    Download
-                  </a>
-                </p>
+                <div v-for="(each, j) in getUserCourses[5][0]">
+                  <p v-if="getUserCourses[5][0][j][2][0] == '.'">
+                    <i class="fa fa-download"></i>
+                    <a v-bind:href="getUserCourses[5][0][j][2]" :download="getUserCourses[5][0][j][2]">
+                      Download
+                    </a>
+                  </p>
+                </div>
               </td>
 
               <td>
@@ -364,21 +389,29 @@ if (count($noOfQuizzez) != 0) {
 
               <td>
                 <div v-if="completed[i] == 1">
-                  <p v-for="(each, j) in getUserCourses[5][i+1]">
-                    <i class="fas fa-file-pdf"></i>
-                    <a v-bind:href="getUserCourses[5][i+1][j][2]">Lecture Note {{i+2}}.{{j}}</a>
-                  </p>
+                  <div v-for="(each, j) in getUserCourses[5][i+1]">
+                    <p v-if="getUserCourses[5][i+1][j][2][0] == '.'">
+                      <i class="fas fa-file-pdf"></i>
+                      <a v-bind:href="getUserCourses[5][i+1][j][2]">Lecture Note {{i+2}}.{{firstpage[5][i+1][j][0]}}</a>
+                    </p>
+                    <p v-else>
+                      <i class="fas fa-link"></i>
+                      <a v-bind:href="getUserCourses[5][i+1][j][2]">{{firstpage[5][i+1][j][2]}}</a>
+                    </p>
+                  </div>
                 </div>
               </td>
 
               <td>
                 <div v-if="completed[i] == 1">
-                  <p v-for="(each, j) in getUserCourses[5][i+1]">
-                    <i class="fa fa-download"></i>
-                    <a v-bind:href="getUserCourses[5][i+1][j][2]" download="LectureNote">
-                      Download
-                    </a>
-                  </p>
+                  <div v-for="(each, j) in getUserCourses[5][i+1]">
+                    <p v-if="firstpage[5][i+1][j][2][0] == '.'">
+                      <i class="fa fa-download"></i>
+                      <a v-bind:href="firstpage[5][i+1][j][2]" :download="firstpage[5][i+1][j][2]">
+                        Download
+                      </a>
+                    </p>
+                  </div>
                 </div>
               </td>
 
