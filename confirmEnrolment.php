@@ -36,14 +36,15 @@
 
                 <?php
                 $enrolment = $dao->retrieveEnrolment($courseid, $classid);
+                $status = $dao->retrieveEnrolment($courseid, $classid);
 
-
+                
                  if ($dao->addPendingEnrolment($name, $courseid, $classid) ) {
 
                     echo "<div class='alert alert-success' role='alert'>
                         Enrolment Success! Enrollment application will be send to the HR for approval.
                     </div>";
-                    var_dump( $dao->retrieveEnrolment($courseid, $classid) );
+                    //var_dump( $dao->retrieveEnrolment($courseid, $classid) );
                     
 
                 } else {
