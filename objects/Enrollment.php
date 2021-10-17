@@ -51,7 +51,6 @@ class Enrollment
     {
         return $this->User;
     }
-
 }
 
 ?>
