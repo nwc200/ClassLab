@@ -181,8 +181,10 @@ if (count($noOfQuizzez) != 0) {
       </div>
     </div>
 
+    <br>
+    <br>
 
-    <div class='container-fluid' style="margin:50px; padding: 20px">
+    <div class='container-fluid' >
       <form method='POST' action='UpdateCompletion.php'>
         <table class="table">
           <thead>
@@ -208,15 +210,15 @@ if (count($noOfQuizzez) != 0) {
                 <div v-for="(each, j) in firstpage[5][0]">
                   <p v-if="firstpage[5][0][j][1] == 'pdf'">
                     <i class="fas fa-file-pdf"></i>
-                    <a v-bind:href="firstpage[5][0][j][2]">Lecture Note {{1}}.{{firstpage[5][0][j][0]}}</a>
+                    <a v-bind:href="firstpage[5][0][j][2]"  target=”_blank”>Lecture Note {{1}}.{{firstpage[5][0][j][0]}}</a>
                   </p>
-                  <p v-else-if="firstpage[5][0][j][1] == 'docs'">
+                  <p v-else-if="firstpage[5][0][j][1] == 'docs'"  target=”_blank”>
                     <i class="fas fa-file-word"></i>
-                    <a v-bind:href="firstpage[5][0][j][2]">{{firstpage[5][0][j][2]}}</a>
+                    <a v-bind:href="firstpage[5][0][j][2]"  target=”_blank”>{{firstpage[5][0][j][2]}}</a>
                   </p>
                   <p v-else>
                     <i class="fas fa-link"></i>
-                    <a v-bind:href="firstpage[5][0][j][2]">{{firstpage[5][0][j][2]}}</a>
+                    <a v-bind:href="firstpage[5][0][j][2]"  target=”_blank”>{{firstpage[5][0][j][2]}}</a>
                   </p>
                 </div>
               </td>
@@ -275,15 +277,15 @@ if (count($noOfQuizzez) != 0) {
                   <div v-for="(each, j) in firstpage[5][i+1]">
                     <p v-if="firstpage[5][i+1][j][1] == 'pdf'">
                       <i class="fas fa-file-pdf"></i>
-                      <a v-bind:href="firstpage[5][i+1][j][2]">Lecture Note {{i+2}}.{{firstpage[5][i+1][j][0]}}</a>
+                      <a v-bind:href="firstpage[5][i+1][j][2]"  target=”_blank”>Lecture Note {{i+2}}.{{firstpage[5][i+1][j][0]}}</a>
                     </p>
                     <p v-else-if="firstpage[5][i+1][j][1] == 'docs'">
                       <i class="fas fa-file-word"></i>
-                      <a v-bind:href="firstpage[5][i+1][j][2]">{{firstpage[5][i+1][j][2]}}</a>
+                      <a v-bind:href="firstpage[5][i+1][j][2]"  target=”_blank”>{{firstpage[5][i+1][j][2]}}</a>
                     </p>
                     <p v-else>
                       <i class="fas fa-link"></i>
-                      <a v-bind:href="firstpage[5][i+1][j][2]">{{firstpage[5][i+1][j][2]}}</a>
+                      <a v-bind:href="firstpage[5][i+1][j][2]"  target=”_blank”>{{firstpage[5][i+1][j][2]}}</a>
                     </p>
                   </div>
                 </div>
@@ -344,15 +346,15 @@ if (count($noOfQuizzez) != 0) {
                 <div v-for="(each, j) in getUserCourses[5][0]">
                   <p v-if="getUserCourses[5][0][j][1] == 'pdf'">
                     <i class="fas fa-file-pdf"></i>
-                    <a v-bind:href="getUserCourses[5][0][j][2]">Lecture Note {{1}}.{{getUserCourses[5][0][j][0]}}</a>
+                    <a v-bind:href="getUserCourses[5][0][j][2]"  target=”_blank”>Lecture Note {{1}}.{{getUserCourses[5][0][j][0]}}</a>
                   </p>
                   <p v-else-if="getUserCourses[5][0][j][1] == 'docs'">
                     <i class="fas fa-file-word"></i>
-                    <a v-bind:href="getUserCourses[5][0][j][2]">{{getUserCourses[5][0][j][2]}}</a>
+                    <a v-bind:href="getUserCourses[5][0][j][2]"  target=”_blank”>{{getUserCourses[5][0][j][2]}}</a>
                   </p>
                   <p v-else>
                     <i class="fas fa-link"></i>
-                    <a v-bind:href="getUserCourses[5][0][j][2]">{{getUserCourses[5][0][j][2]}}</a>
+                    <a v-bind:href="getUserCourses[5][0][j][2]"  target=”_blank”>{{getUserCourses[5][0][j][2]}}</a>
                   </p>
                 </div>
               </td>
@@ -414,15 +416,15 @@ if (count($noOfQuizzez) != 0) {
                   <div v-for="(each, j) in getUserCourses[5][i+1]">
                     <p v-if="getUserCourses[5][i+1][j][1] == 'pdf'">
                       <i class="fas fa-file-pdf"></i>
-                      <a v-bind:href="getUserCourses[5][i+1][j][2]">Lecture Note {{i+2}}.{{firstpage[5][i+1][j][0]}}</a>
+                      <a v-bind:href="getUserCourses[5][i+1][j][2]"  target=”_blank”>Lecture Note {{i+2}}.{{firstpage[5][i+1][j][0]}}</a>
                     </p>
                     <p v-else-if="getUserCourses[5][i+1][j][1] == 'docs'">
                       <i class="fas fa-file-word"></i>
-                      <a v-bind:href="getUserCourses[5][i+1][j][2]">{{firstpage[5][i+1][j][2]}}</a>
+                      <a v-bind:href="getUserCourses[5][i+1][j][2]"  target=”_blank”>{{firstpage[5][i+1][j][2]}}</a>
                     </p>
                     <p v-else>
                       <i class="fas fa-link"></i>
-                      <a v-bind:href="getUserCourses[5][i+1][j][2]">{{firstpage[5][i+1][j][2]}}</a>
+                      <a v-bind:href="getUserCourses[5][i+1][j][2]"  target=”_blank”>{{firstpage[5][i+1][j][2]}}</a>
                     </p>
                   </div>
                 </div>

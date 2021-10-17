@@ -47,7 +47,7 @@ insert into section
 values (2, 1, "Final Quiz");
 
 insert into section
-values (1, 2, "Intro to Xerox WorkCentre");
+values (1, 2, "Intro to Programming");
 
 insert into section
 values (2, 2, "Final Quiz");

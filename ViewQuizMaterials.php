@@ -160,7 +160,7 @@ if (count($quizInformation) != 0) {
                         <td>Quiz</td>
                         <td>Attempts</td>
                         <td>Pass/Fail</td>
-                        <td>View Attempt</td>
+                       
                     </tr>
                 </thead>
 
@@ -211,20 +211,6 @@ if (count($quizInformation) != 0) {
                                             </p>
                                             <p v-else v-bind:style="{color:'red'}">
                                                 <b>Fail</b>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-
-                        <td v-if="isCompleted[i] == 1">
-                            <div v-if="quizAttempts.length != 0">
-                                <div v-for="(each, j) in quizAttempts">
-                                    <div v-if="j == i">
-                                        <div v-for="(each, k) in quizAttempts[i]">
-                                            <p>
-                                                <a :href="'viewStudentAttempts.php?classid='+classID+'&quizid='+parseInt(i+1)+'&attemptNo='+parseInt(quizAttempts[i][k][1])+'&whichCourse='+zero" class="btn btn-outline-primary">View Attempt {{quizAttempts[i][k][1]}} </a>
                                             </p>
                                         </div>
                                     </div>

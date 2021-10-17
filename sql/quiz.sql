@@ -167,21 +167,21 @@ insert into quizAnswer
 values (2, 2, 5, "False", false);
 
 /* Student Quiz Attempt */
-insert into studentQuizAttempt
-values ("Yu Hao", 1, 1, false);
+-- insert into studentQuizAttempt
+-- values ("Yu Hao", 1, 1, false);
 
-insert into studentQuizAttempt
-values ("Yu Hao", 1, 2, true);
+-- insert into studentQuizAttempt
+-- values ("Yu Hao", 1, 2, true);
 
 /* Student Quiz Record (!Note that student quiz record has to be inserted first before student quiz attempt) */
-insert into studentQuizRecord
-values (1, "Yu Hao", 1, 0, 1, 1, 2);
+-- insert into studentQuizRecord
+-- values (1, "Yu Hao", 1, 0, 1, 1, 2);
 
-insert into studentQuizRecord
-values (2, "Yu Hao", 1, 0, 1, 2, 2);
+-- insert into studentQuizRecord
+-- values (2, "Yu Hao", 1, 0, 1, 2, 2);
 
-insert into studentQuizRecord
-values (3, "Yu Hao", 1, 0, 2, 1, 1);
+-- insert into studentQuizRecord
+-- values (3, "Yu Hao", 1, 0, 2, 1, 1);
 
-insert into studentQuizRecord
-values (4, "Yu Hao", 1, 0, 2, 2, 1);
+-- insert into studentQuizRecord
+-- values (4, "Yu Hao", 1, 0, 2, 2, 1);
