@@ -248,6 +248,7 @@ class EnrollmentDAO
     // Insert new enrolment
     public function addEnrolment($name, $courseID, $classID)
     {
+        date_default_timezone_set( 'Asia/Singapore');
         $today = date("Y-m-d H:i:s");
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("enrolment");
@@ -272,6 +273,7 @@ class EnrollmentDAO
     // Insert pending enrolment
     public function addPendingEnrolment($name, $courseID, $classID)
     {
+        date_default_timezone_set( 'Asia/Singapore');
         $today = date("Y-m-d H:i:s");
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("enrolment");
