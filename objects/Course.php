@@ -285,6 +285,11 @@ class Quiz implements JsonSerializable
         $this->QuizQuestion[] = new QuizQuestion($QuestionNum, $Question, $QuestionType, $Marks);
     }
 
+    public function getQuizName()
+    {
+        return $this->QuizName;
+    }
+
     public function getQuizQuestion()
     {
         return $this->QuizQuestion;
@@ -333,12 +338,22 @@ class QuizQuestion implements JsonSerializable
 
     public function getQuizAnswer()
     {
-        return $this->QuizQuestion;
+        return $this->QuizAnswer;
     }
     
+    public function getQuestion()
+    {
+        return $this->Question;
+    }
+
     public function getQuestionNum()
     {
         return $this->QuestionNum;
+    }
+
+    public function getQuestionType()
+    {
+        return $this->QuestionType;
     }
 
     public function jsonSerialize()
@@ -364,6 +379,21 @@ class QuizAnswer implements JsonSerializable
         $this->AnswerNum = $AnswerNum;
         $this->Answer = $Answer;
         $this->Correct = $Correct;
+    }
+
+    public function getAnswerNum()
+    {
+        return $this->AnswerNum;
+    }
+
+    public function getAnswer()
+    {
+        return $this->Answer;
+    }
+
+    public function getAnswerCorrect()
+    {
+        return $this->Correct;
     }
 
     public function jsonSerialize()

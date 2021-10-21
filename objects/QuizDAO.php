@@ -433,6 +433,57 @@ class QuizDAO
         $pdo = null;
         return $status;
     }
+
+    public function getCourseQuiz($courseid)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("class");
+        $sql = "select * from class where courseid=:courseid";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":courseid", $courseid);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $returnarr=[];
+        while ($row = $stmt->fetch()) {
+            $returnarr[] = new Class1($row["classID"], $row["classSize"], $row["trainerUserName"], $row["startDate"], $row["endDate"], $row["startTime"], $row["endTime"], $row["selfEnrollmentStart"], $row["selfEnrollmentEnd"]);
+        }
+
+        foreach ($returnarr as $class1) {
+            $classid = $class1->getClassID();
+            $conn_manager = new ConnectionManager();
+            $pdo = $conn_manager->getConnection("section");
+            $sql = "select * from section where classid=:classid";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":classid", $classid);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            while ($row = $stmt->fetch()) {
+                $class1->addSection($row["sectionNum"], $row["sectionName"]);
+            }
+        }
+
+        foreach ($returnarr as $class1) {
+            foreach ($class1->getSection() as $section) {
+                $classid = $class1->getClassID();
+                $sectionnum = $section->getSectionNum();
+                $conn_manager = new ConnectionManager();
+                $pdo = $conn_manager->getConnection("quiz");
+                $sql = "select * from quiz where classid=:classid and sectionnum=:sectionnum and type='Ungraded'";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(":classid", $classid);
+                $stmt->bindParam(":sectionnum", $sectionnum);
+                $stmt->execute();
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                while ($row = $stmt->fetch()) {
+                    $quiz = new Quiz($row["quizID"], $row["quizName"], $row["quizNum"], $row["quizDuration"], $row["type"], $row["passingMark"]);
+                    $section->addQuiz($quiz);
+                }
+            }
+        }
+        $stmt = null;
+        $pdo = null;
+        return $returnarr;
+    }
 }
 
 ?>
