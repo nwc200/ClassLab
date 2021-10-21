@@ -1,9 +1,15 @@
 <?php
-    require_once "objects/autoload.php";
+require_once "objects/autoload.php";
+$userDao = new UserDAO();
+$trainer = $userDao->getTrainer();
+if (!isset($GET['user'])) {
+    $_SESSION['username'] = $_GET['user'];
+} else {
     $_SESSION['username'] = "Wei Cheng";
-    $username = $_SESSION['username'];
-    $dao = new QuizDAO();
-    $course = $dao->getTrainerCourse($username);
+}
+$username = $_SESSION['username'];
+$dao = new QuizDAO();
+$course = $dao->getTrainerCourse($username);
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +31,14 @@
             <div class="col-sm-12">
                 <h1>Quiz Creation</h1> 
                 <p>Welcome {{username}}</p>
+                <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Change User
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" v-bind:href="'QuizCreation.php?user=' + user" v-for="(user, index) in trainer">{{trainer[index]}}</a>
+                </div>
+                </div>
                 <hr>
                 
                 <div v-for="value in course">
@@ -47,9 +61,10 @@
             el: "#app",
             data:{
                 course: <?php print json_encode($course)?>,
-                username: <?php print json_encode($username)?>
+                username: <?php print json_encode($username)?>,
+                trainer: <?php print json_encode($trainer)?>
                 
-            }
+            },
         })
         
     </script>

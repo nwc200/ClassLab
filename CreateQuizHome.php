@@ -61,6 +61,7 @@
                     </div>
                     <hr>
                     <a class="btn btn-primary" v-if="sectioninfo[3].length==0 && index1 !=class1[9].length-1" v-bind:href="'../CreateUngradedQuiz.php?classid='+class1[0]+'&sectionnum='+sectioninfo[0]+'&quiznum=' + (sectioninfo[3].length+1)" role="button">Add Ungraded Quiz</a>
+                    <a class="btn btn-primary" v-if="sectioninfo[3].length==0 && index1 !=class1[9].length-1" v-bind:href="'../ImportQuiz.php?classid='+class1[0]+'&sectionnum='+sectioninfo[0]+'&quiznum=' + (sectioninfo[3].length+1) + '&courseid='+ courseid" role="button">Import Ungraded Quiz</a>
                     <a class="btn btn-primary" v-if="index1 == class1[9].length-1 && checker ==0" v-bind:href="'../CreateGradedQuiz.php?classid='+class1[0]+'&sectionnum='+sectioninfo[0]+'&quiznum=' + (sectioninfo[3].length+1)" >Add Graded Quiz</a>
                     <br><br>
                 </div>
@@ -79,7 +80,8 @@
                 username: <?php print json_encode($username)?>,
                 counter:0,
                 classstudentnum: <?php print json_encode($classstudentnum)?>,
-                checker:0
+                checker:0,
+                courseid: <?php print json_encode($courseid)?>
             },
             methods:{
                 getDate: function(){
