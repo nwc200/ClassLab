@@ -1,6 +1,6 @@
 <?php
 
-class TestUpdateProgress extends \PHPUnit\Framework\TestCase
+class TestGetClass extends \PHPUnit\Framework\TestCase
 {
     public function testCalculateTotalMarksScored()
     {
