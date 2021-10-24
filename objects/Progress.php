@@ -11,6 +11,10 @@ class MaterialProgress
         $this->User = $User;
         $this->Completed = $Completed;
     }
+    public function getComplete()
+    {
+        return $this->Completed;
+    }
 }
 
 class StudentQuizAttempt
