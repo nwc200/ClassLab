@@ -61,38 +61,38 @@ insert into section values (3, 3, "Final Quiz");
 
 /* Section Material */
 insert into sectionMaterial
-values (1, 1, 1, "Hyperlink", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
+values (1, 1, 1, "pdf", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
 
 insert into sectionMaterial
 values (1, 1, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
 
 insert into sectionMaterial
-values (2, 1, 1, "Hyperlink", "./materials/week2/Week2-SWDevProcess-G45.pdf");
+values (2, 1, 1, "pdf", "./materials/week2/Week2-SWDevProcess-G45.pdf");
 
 insert into sectionMaterial
 values (2, 1, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
 
 insert into sectionMaterial
-values (2, 2, 1, "Hyperlink", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
+values (2, 2, 1, "pdf", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
 
 insert into sectionMaterial
 values (2, 2, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
 
 insert into sectionMaterial
-values (1, 2, 1, "Hyperlink", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
+values (1, 2, 1, "pdf", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
 
 insert into sectionMaterial
-values (1, 2, 2, "Hyperlink", "./materials/week2/Week2-SWDevProcess-G45.pdf");
+values (1, 2, 2, "pdf", "./materials/week2/Week2-SWDevProcess-G45.pdf");
 
 insert into sectionMaterial
 values (3, 1, 1, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
 insert into sectionMaterial
 values (3, 1, 2, "Hyperlink", "https://www.youtube.com/watch?v=5RJMBRo_h5Q");
 insert into sectionMaterial
-values (1, 1, 3, "Hyperlink", "./materials/week1/AWS-Docs.docx");
+values (1, 1, 3, "docs", "./materials/week1/AWS-Docs.docx");
 
 insert into sectionMaterial
-values (3, 1, 3, "Hyperlink", "./materials/week1/AWS-Docs.docx");
+values (3, 1, 3, "docs", "./materials/week1/AWS-Docs.docx");
 
 /* Material Progress */
 
