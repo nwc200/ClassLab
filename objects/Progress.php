@@ -5,10 +5,11 @@ class MaterialProgress
     private $User; //User Class (Aggregate)
     private $Completed;
 
-    public function __construct($Class1, $User, $Completed)
+    public function __construct($Class1, $User, $SectionMaterial, $Completed)
     {
         $this->Class1 = $Class1;
         $this->User = $User;
+        $this->SectionMaterial = $SectionMaterial
         $this->Completed = $Completed;
     }
     public function getComplete()
