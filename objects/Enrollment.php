@@ -39,7 +39,7 @@ class Enrollment
     {
         return $this->DateTimeEnrolled;
     }
-    public function getCourseID()
+    public function getCourse()
     {
         return $this->Course;
     }
@@ -47,7 +47,7 @@ class Enrollment
     {
         return $this->Completed;
     }
-    public function getUserName()
+    public function getUser()
     {
         return $this->User;
     }
