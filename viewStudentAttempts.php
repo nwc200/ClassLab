@@ -5,6 +5,35 @@ $quizid = $_GET['quizid'];
 $dao = new QuizDAO();
 $quiz = $dao->getTrainerCourse("Wei Cheng");
 $quiz = $dao->getQuiz($quizid);
+$zero = $_GET['whichCourse'];
+$attemptNo = $_GET['attemptNo'];
+
+$getQuizQuestion = $quiz->getQuizQuestion();
+
+
+$getStudentQuizRecord = $dao->getStudentQuizAttempt($quizid, $username, $attemptNo);
+$getStudentQuizRecord = array_reverse($getStudentQuizRecord);
+$counter = 0;
+$question = $quiz->getQuizQuestion();
+$array_correct = [];
+$total = count($getStudentQuizRecord);
+
+
+foreach ($question as $qns) {
+    $ans = $qns->getQuizAnswer();
+    foreach ($ans as $correct) {
+        if ($correct->getAnswerCorrect() == 1) {
+            $correctAns = $correct->getAnswerNum();
+            array_push($array_correct, $correctAns);
+        }
+    }
+}
+
+for ($i = 0; $i < $total; $i++) {
+    if ($array_correct[$i] == $getStudentQuizRecord[$i]) {
+        $counter++;
+    }
+}
 
 
 ?>
@@ -26,51 +55,66 @@ $quiz = $dao->getQuiz($quizid);
 
 <body>
 
-<div class="container" id="app">
+    <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <div class="text-center"> 
+                <div class="text-center" v-bind:style="{margin:'15px'}">
                     <h1>Quiz Title: {{quiz[1]}}</h1>
                     <h4>Type: {{quiz[4]}}</h4>
                     <h4>Passing Mark: {{quiz[5]}}</h4>
                     <hr>
+                    <h6 class="text-right"> Attempt No. {{attemptNo}}</h6>
 
                 </div>
                 <br><br><br>
-                <form action="ProcessAttemptQuiz.php" method="POST">
-                    <input type="hidden" name="username" value="<?php echo $username;?>">
+                <form>
+                    <input type="hidden" name="username" value="<?php echo $username; ?>">
                     <input type="hidden" name="quizid" v-bind:value="quiz[0]">
                     <input type="hidden" name="passingmark" v-bind:value="quiz[5]">
-                    <div v-for="question in quiz[6]"> 
-                        <b>Question {{question[0]}}: {{question[1]}}</b> [Marks: {{question[3]}}] 
-                        <div v-for="answer in question[4]">
+                    <div v-for="i in quiz[6].length">
+                        <b>Question {{quiz[6][i-1][0]}}: {{quiz[6][i-1][1]}}</b> [Marks: {{quiz[6][i-1][3]}}]
+                        <div v-for="answer in quiz[6][i-1][4]">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    {{answer[0]}} {{answer[1]}}
-                                </div>
-                                <div class="col-sm-3">
-                                    <input class="text-right" type="radio" v-bind:name="question[0]+'mark'+question[3]" v-bind:value="answer[0]+'corr'+answer[2]">
+                                    {{answer[0]}}. {{answer[1]}}
                                 </div>
                             </div>
                         </div>
-                        <br><br>
+                        <br>
+                        <div v-for="answer in quiz[6][i-1][4]">
+                            <div v-if="answer[0] == getStudentQuizRecord[i-1]">
+                                <b v-bind:style="{color:'grey'}">Attempt Answer: </b>{{getStudentQuizRecord[i-1]}}. {{answer[1]}}
+                            </div>
+                        </div>
+                        <div v-for="answer in quiz[6][i-1][4]">
+                            <div v-if="answer[2] == 1">
+                                <b v-bind:style="{color:'blue'}">Correct Answer: </b>{{answer[0]}}. {{answer[1]}}
+                            </div>
+                        </div>
+
+                        <hr>
                     </div>
-                    <br><br>
-                    <button id='submit' name='submit' type="submit" class="btn btn-primary btn-block">Close</button>
+                    <br>
+                    <h6 class="text-right"> No. of Correct Answered Question: {{counter}}/{{total}}</h6>
+                    
                 </form>
+                <a :href="'ViewQuizMaterials.php?whichCourse='+zero" class="btn btn-primary btn-lg btn-block" v-bind:style="{margin:'40px'}">Close</a>
             </div>
         </div>
     </div>
-
-
-
 
 
     <script>
         var app = new Vue({
             el: "#app",
             data: {
-                quiz: <?php print json_encode($quiz) ?>
+                quiz: <?php print json_encode($quiz) ?>,
+                zero: <?php print json_encode($zero) ?>,
+                counter: <?php print json_encode($counter) ?>,
+                total: <?php print json_encode($total) ?>,
+                attemptNo: <?php print json_encode($attemptNo) ?>,
+                getStudentQuizRecord: <?php print json_encode($getStudentQuizRecord) ?>,
+
             }
         })
     </script>

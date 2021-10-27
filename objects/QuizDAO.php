@@ -484,6 +484,27 @@ class QuizDAO
         $pdo = null;
         return $returnarr;
     }
+
+    public function getStudentQuizAttempt($quizid, $username, $attemptNo)
+    {
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+        $sql = "select * from studentQuizRecord where quizid=:quizid and username=:username and attemptno=:attemptNo";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":quizid", $quizid);
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":attemptNo", $attemptNo);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        
+        while ($row = $stmt->fetch()) {
+            $quiz[] = $row["studentAnsNum"];
+        }
+        
+        $stmt = null;
+        $pdo = null;
+        return $quiz;
+    }
 }
 
 ?>
