@@ -267,8 +267,11 @@ class QuizDAO
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $classidarr =[];
+        $classidarr[] = $classid;
         while ($row = $stmt->fetch()) {
-            $classidarr[]=$row['classid'];
+            if (!in_array($row['classid'], $classidarr)) {
+                $classidarr[] = $row['classid'];
+            }
         }
 
         // add quiz to all classes
@@ -504,6 +507,28 @@ class QuizDAO
         $stmt = null;
         $pdo = null;
         return $quiz;
+    }
+    public function getGradedQuizID($classid, $sectionnum, $quiznum, $type)
+    {
+        $quizid1 = $this->getQuizID($classid, $sectionnum, $quiznum, $type)[0];
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("quiz");
+        
+        $sql = "select quizid from quiz";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        
+        $quizid = [];
+        while ($row = $stmt->fetch()) {
+            if ((int)$row['quizid'] >= (int)$quizid1) {
+                $quizid[] = $row['quizid'];
+            }
+        }
+        $stmt = null;
+        $pdo = null;
+        return $quizid;
+
     }
 }
 
