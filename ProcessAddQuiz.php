@@ -15,10 +15,6 @@ if ( isset($_POST['submit']) ) {
     $quizmarks=[];
     $questioncount=0;
     foreach ($_POST as $key => $value) {
-        echo $key;
-        echo " ";
-        echo $value;
-        echo " ";
         if (strpos($key, "uestiontype")) {
             array_push($questiontype, $value);
         }
