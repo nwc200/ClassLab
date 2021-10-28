@@ -1,12 +1,14 @@
 <?php
 require_once "objects/autoload.php";
+if (isset($_GET['user'])) {
+    if (!isset($GET['user'])) {
+        $_SESSION['username'] = $_GET['user'];
+    } else {
+        $_SESSION['username'] = "Wei Cheng";
+    }
+}
 $userDao = new UserDAO();
 $trainer = $userDao->getTrainer();
-if (!isset($GET['user'])) {
-    $_SESSION['username'] = $_GET['user'];
-} else {
-    $_SESSION['username'] = "Wei Cheng";
-}
 $username = $_SESSION['username'];
 $dao = new QuizDAO();
 $course = $dao->getTrainerCourse($username);
