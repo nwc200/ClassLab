@@ -283,6 +283,15 @@ class Quiz implements JsonSerializable
     public function addQuizQuestion($QuestionNum, $Question, $QuestionType, $Marks)
     {
         $this->QuizQuestion[] = new QuizQuestion($QuestionNum, $Question, $QuestionType, $Marks);
+        $checkarr = [];
+        foreach ($this->QuizQuestion as $question) {
+            if (in_array($question->getQuestionNum(), $checkarr)) {
+                array_pop($this->QuizQuestion);
+                throw new Exception("Duplicated Quiz Question Added.");
+            } else {
+                array_push($checkarr, $question->getQuestionNum());
+            }
+        }
     }
 
     public function getQuizName()
@@ -313,6 +322,25 @@ class Quiz implements JsonSerializable
         ];
     }
 
+    public function getTotalMarks()
+    {
+        if (count($this->QuizQuestion)==0) {
+            throw new Exception("There are no quiz questions.");
+        }
+        $sumTotal=0;
+        foreach ($this->QuizQuestion as $question) {
+            $sumTotal = $sumTotal + $question->getQuestionMark();
+        }
+        if ($sumTotal<0) {
+            throw new Exception("Score cannot be negative.");
+        }
+        return $sumTotal;
+    }
+
+    public function getNumberOfQuestions()
+    {
+        return count($this->QuizQuestion);
+    }
 }
 
 class QuizQuestion implements JsonSerializable
@@ -354,6 +382,11 @@ class QuizQuestion implements JsonSerializable
     public function getQuestionType()
     {
         return $this->QuestionType;
+    }
+
+    public function getQuestionMark()
+    {
+        return $this->Marks;
     }
 
     public function jsonSerialize()
