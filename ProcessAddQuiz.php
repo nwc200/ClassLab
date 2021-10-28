@@ -93,7 +93,8 @@ if ( isset($_POST['submit']) ) {
         $dao = new QuizDAO();
         // add quiz to all class of same course
         $add = $dao->addGradedQuiz($classid, $sectionnum, $quiztitle, $quiznum, $quizduration, $quiztype, $quizpassingmark);
-        $quizidarr = $dao->getQuizID($classid, $sectionnum, $quiznum, "Graded");
+        $quizidarr = $dao->getGradedQuizID($classid, $sectionnum, $quiznum, "Graded");
+        var_dump($quizidarr);
         foreach ($quizidarr as $quizid) {
             for ($i=0; $i<count($quizquestion); $i++) {
                 $addquestion = $dao->addQuizQuestion($quizid, $i+1, $quizquestion[$i], $questiontype[$i], $quizmarks[$i]);
