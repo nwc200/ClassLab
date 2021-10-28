@@ -9,7 +9,7 @@ class MaterialProgress
     {
         $this->Class1 = $Class1;
         $this->User = $User;
-        $this->SectionMaterial = $SectionMaterial
+        $this->SectionMaterial = $SectionMaterial;
         $this->Completed = $Completed;
     }
     public function getComplete()
@@ -48,6 +48,15 @@ class StudentQuizAttempt
     public function addStudentQuizRecord($QuizRecord, $Marks, $QuestionNum, $StudentAns)
     {
         $this->StudentQuizRecord[] = new StudentQuizRecord($QuizRecord, $Marks, $QuestionNum, $StudentAns);
+        $checkarr = [];
+        foreach ($this->StudentQuizRecord as $record ) {
+            if (in_array($record->getQuizRecord(), $checkarr)) {
+                array_pop($this->StudentQuizRecord);
+                throw new Exception("Duplicated Student Quiz Record Added.");
+            } else {
+                array_push($checkarr, $record->getQuizRecord());
+            }
+        }
     }
 
     public function getStudentQuizRecord()
@@ -57,9 +66,15 @@ class StudentQuizAttempt
 
     public function calculateTotalMarksScored()
     {
+        if (count($this->StudentQuizRecord)==0) {
+            throw new Exception("There are no student quiz records.");
+        }
         $sumTotal=0;
         foreach ($this->StudentQuizRecord as $Record) {
             $sumTotal = $sumTotal + $Record->getMarks();
+        }
+        if ($sumTotal<0) {
+            throw new Exception("Score cannot be negative.");
         }
         return $sumTotal;
     }
@@ -78,6 +93,11 @@ class StudentQuizRecord
         $this->Marks = $Marks;
         $this->QuestionNum = $QuestionNum;
         $this->StudentAnsNum = $StudentAnsNum;
+    }
+
+    public function getQuizRecord()
+    {
+        return $this->QuizRecord;
     }
 
     public function getMarks()
