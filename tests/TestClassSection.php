@@ -54,7 +54,7 @@ class TestClassSection extends \PHPUnit\Framework\TestCase
 
         $enrol = new Enrollment(1, "Approved", true, "2021-11-22 00:00:01", $course, false, $user);
  
-        $progress1 = new MaterialProgress($class, $user, true);
+        $progress1 = new MaterialProgress($class, $user, 1,true);
         $getComplete1 = $progress1->getComplete();
 
         $this->assertTrue($getComplete1, true);      
