@@ -67,13 +67,6 @@ insert into permissions
 values ("Alexandra", 1, "Trainer");
 insert into permissions
 values ("Alexandra", 3, "Learner");
-
-
-/* Trainer #2 teaches course 1 but learner for course 3 */
-insert into permissions
-values ("Alexandra", 1, "Trainer");
-insert into permissions
-values ("Alexandra", 3, "Learner");
 insert into permissions
 values ("Alexandra", 4, "Learner");
 
@@ -92,7 +85,6 @@ insert into permissions
 values ("Yu Hao", 1, "Trainer");
 insert into permissions
 values ("Yu Hao", 2, "Trainer");
-
 insert into permissions
 values ("Yu Hao", 5, "Trainer");
 
