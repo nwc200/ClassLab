@@ -12,25 +12,22 @@ require 'objects/Course.php';
 require 'objects/Enrollment.php';
 require 'objects/User.php';
 
+
 class TestCourseSection extends \PHPUnit\Framework\TestCase
 {
-    public function testAddPrereq()
+    public function testPrerequisite()
     {
+        // courseID, CourseName, CourseDescription
+        $course = new Course (4, "How to set up VersaLink C405", "This course aims to teach the set up of VersaLink C405.");
+        $permissions = new Permissions("Xi Hwee", "3", "Learner");
+        $coursePrereq = $course->getCoursePrereq(4, 3);
+        $prereq = 3;
         
-        $course = new Course(7,"Intro to VersaLink C555", "This course aims to teach the set up of VersaLink C405.");
-
-        $course->addCoursePrereq(7, 5);
-        $course->addCoursePrereq(7, 6);
+        $this->assertTrue($coursePrereq, $prereq); //Should return true...
         
-        $getPrerequisite = $course->getPrerequisite;
-        $counter = 1;
-        foreach($getPrerequisite as $prerequiste){
-            $this->assertSame($prerequiste->getPrerequisite(), $counter);
-            $counter ++;
-        }
     }
 
-    // public function testAddPrerequisite()
+    // public function testAddCourse()
     // {
         
         
