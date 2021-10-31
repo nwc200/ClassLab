@@ -73,20 +73,20 @@ values ("Alexandra", 4, "Learner");
 
 /* Adding Learner Data */
 insert into permissions
-values ("Xi Hwee", 1, "Trainer");
+values ("Xi Hwee", 1, "Learner");
 insert into permissions
-values ("Xi Hwee", 3, "Trainer");
+values ("Xi Hwee", 3, "Learner");
 insert into permissions
-values ("Xi Hwee", 5, "Trainer");
+values ("Xi Hwee", 5, "Learner");
 
 
 /* Adding Learner Data */
 insert into permissions
-values ("Yu Hao", 1, "Trainer");
+values ("Yu Hao", 1, "Learner");
 insert into permissions
-values ("Yu Hao", 2, "Trainer");
+values ("Yu Hao", 2, "Learner");
 insert into permissions
-values ("Yu Hao", 5, "Trainer");
+values ("Yu Hao", 5, "Learner");
 
 
 
