@@ -14,6 +14,8 @@
     $dao = new CourseDAO();
     $course = $dao->retrieve($courseid);
     $coursename = $course->getCourseName();
+
+
     $today_date = date("Y-m-d H:i:s");
 
 ?>
@@ -43,7 +45,20 @@
                 <h1>View Class</h1> 
                 <p>Welcome <?= $username?></p>
                 <hr>
+            <div style="text-align:right">
+            <form action="/ViewClassByEligibility.php">
+            <label for="date" >Date:</label>
+            <input type="date" id="" name="date">
+            <input type="submit" value="Submit">
+            </form>
+
+
+            </div>   
+            
                 <h5><?= $coursename ?></h5>
+                
+                
+                
                 
                 <?php
                 $classes = $dao->retrieveCourseClasses($courseid);
@@ -112,7 +127,7 @@
                                                 <div class='col-2'>";
                     
                                             $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
-                                            if($remainingSlot == 0)
+                                            if($remainingSlot == 0 || $students == 1 )
                                             {
                                                 echo "<button type='button' class='btn btn-secondary' disabled>Enrol</button>";
                                             } else {

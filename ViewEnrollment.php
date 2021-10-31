@@ -65,8 +65,8 @@
                                 <tbody>";
 
                     foreach ($enrollments as $enrolment) {
-                        $user = $enrolment->getUserName();
-                        $course = $enrolment->getCourseID();
+                        $user = $enrolment->getUser();
+                        $course = $enrolment->getCourse();
                         $classes = $course->getClass1();
                         $class = $classes[0];
                         $learners = $dao->retrieveEnrolment($course->getCourseID(), $class->getClassID());
@@ -93,6 +93,8 @@
                                     <button type='submit' class='btn btn-danger px-2' name='reject' value='{$enrolment->getEnrollmentID()}'>Reject</button>
                                 </td>
                             </tr>";
+
+                            
                         }
                     }
 
