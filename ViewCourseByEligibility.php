@@ -6,7 +6,7 @@
     // } else {
     //     header("Location: before_home.html");
     // }
-    $_SESSION["username"] = "Yu Hao";
+    $_SESSION["username"] = "Xi Hwee";
     $username = $_SESSION["username"];
 
     $dao = new CourseDAO();
@@ -34,23 +34,48 @@
 </head>
 
 <body>
-    <header>
+    
+<header>
+<br>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" >Learning Management System</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"> </span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-
-
+                    <li class="nav-item active">
+                    <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="ViewCourseMaterials.php">Course Materials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
+                    </li>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Courses Enrolled
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div v-for="(each, i) in usercourses">
+                                <a class="dropdown-item" :value="i" @click='test([i])'> {{usercourses[i][1]}} - Class
+                                    {{usercourses[i][2]}}</a>
+                            </div>
+                        </div>
+                    
+                    
+                    
                 </ul>
                 Welcome, <?=$username?>
             </div>
         </nav>
     </header>
+
+    
 
 
     <main style="margin-top: 10px;">
@@ -64,8 +89,7 @@
                     <div class="mb-3 row">
                         <label for="searchCourse" class="col-sm-1 col-form-label"><b>Course</b></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="searchCourse" size="30"
-                                placeholder="Search course here" onkeyup="search()">
+                            <input type="text" class="form-control" id="searchCourse" size="30" placeholder="Search course here" onkeyup="search()">
                         </div>
                     </div>
 
@@ -133,7 +157,7 @@
             filter = input.value.toUpperCase();
             ul = document.getElementById("myUL");
             li = document.getElementsByTagName("li");
-            for (i = 2; i < li.length; i++) {
+            for (i = 4; i < li.length; i++) {
                 courseName = li[i].getAttribute("value");
                 if (courseName.toUpperCase().indexOf(filter) > -1) {
                     li[i].style.display = "";

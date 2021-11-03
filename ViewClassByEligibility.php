@@ -36,9 +36,10 @@ $today_date = date("Y-m-d H:i:s");
 </head>
 
 <body>
-    <header>
+    <br>
+<div class="" id="app">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="adminHomePage.php">Learning Management System</a>
+            <a class="navbar-brand" href="ViewCourseMaterials.php">LMS Self Enrollment System</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"> </span>
@@ -46,11 +47,40 @@ $today_date = date("Y-m-d H:i:s");
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="ViewCourseMaterials.php">Course Materials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
+                    </li>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Courses Enrolled
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div v-for="(each, i) in usercourses">
+                                <a class="dropdown-item" :value="i" @click='test([i])'> {{usercourses[i][1]}} - Class
+                                    {{usercourses[i][2]}}</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </ul>
-                Welcome, <?=$username?>
+                Learner: <?=$username?>
+
             </div>
         </nav>
-    </header>
+        <br>
+
+    
+
+
 
     <main style="margin-top: 10px;">
     <div class="container" id="app">

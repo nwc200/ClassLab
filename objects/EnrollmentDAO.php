@@ -328,7 +328,7 @@ class EnrollmentDAO
         $stmt->bindParam(":enrolmentstatus", $enrolmentstatus);
         $stmt->bindParam(":classid", $classid);
         $stmt->bindParam(":username", $username);
-        var_dump($stmt->execute());
+        ($stmt->execute());
         if ($stmt->execute()) {
             $stmt = null;
             $pdo = null;
