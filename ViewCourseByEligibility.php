@@ -6,7 +6,7 @@
     // } else {
     //     header("Location: before_home.html");
     // }
-    $_SESSION["username"] = "Neo Yu Hao";
+    $_SESSION["username"] = "Yu Hao";
     $username = $_SESSION["username"];
 
     $dao = new CourseDAO();
@@ -120,7 +120,6 @@
                             </li>";
                         }
                     }
-                    echo "</ul>";
 
                     ?>
 
