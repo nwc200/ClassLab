@@ -369,14 +369,15 @@ class QuizQuestion implements JsonSerializable
     {
         $this->QuizAnswer[] = new QuizAnswer($AnswerNum, $Answer, $Correct);
         $checkarr = [];
+
         foreach ($this->QuizAnswer as $answer) {
-            if (in_array(1, $checkarr)) {
+            array_push($checkarr, $answer->getAnswerCorrect());
+            if (count(array_keys($checkarr, 1))>1) {
                 array_pop($this->QuizAnswer);
                 throw new Exception("Correct Answer Already Added.");
-            } else {
-                array_push($checkarr, $answer->getAnswerCorrect());
             }
         }
+        
     }
 
     public function getQuizAnswer()
