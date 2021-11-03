@@ -15,23 +15,36 @@ require 'objects/User.php';
 
 class TestCourseSection extends \PHPUnit\Framework\TestCase
 {
-    public function testPrerequisite()
-    {
+    public function testAddCoursePrereq()
+    {   $course = new Course (5, "Intro to programming", "This course aims to teach the programming");
         // courseID, CourseName, CourseDescription
-        $course = new Course (4, "How to set up VersaLink C405", "This course aims to teach the set up of VersaLink C405.");
-        $permissions = new Permissions("Xi Hwee", "3", "Learner");
-        $coursePrereq = $course->getCoursePrereq(4, 3);
-        $prereq = 3;
-        
-        $this->assertTrue($coursePrereq, $prereq); //Should return true...
+        $course->addCoursePrereq(1);
+        $course->addCoursePrereq(3);
+        $course = $course->getCoursePrereq();
+        $counter = count($course);
+        $this->assertSame(2, $counter); //Should return true...
         
     }
 
-    // public function testAddCourse()
+    public function testAddCourse()
+    {
+       
+        $course = new Course (5, "Intro to programming", "This course aims to teach the programming");
+        $course = $course->getCourseName();
+        $this->assertEquals("Intro to programming", $course);
+        
+
+        
+    }
+
+    //  public function testGetCourse()
     // {
         
         
     // }
+
+
+
 
     
 }

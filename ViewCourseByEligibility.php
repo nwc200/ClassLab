@@ -6,7 +6,7 @@
     // } else {
     //     header("Location: before_home.html");
     // }
-    $_SESSION["username"] = "Xi Hwee";
+    $_SESSION["username"] = "Neo Yu Hao";
     $username = $_SESSION["username"];
 
     $dao = new CourseDAO();
@@ -34,41 +34,55 @@
 </head>
 
 <body>
-    <div class="container" id="app">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>View Course</h1>
-                <p>Welcome <?= $username?></p>
-                <hr>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="adminHomePage.php">Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> </span>
+            </button>
 
-                <div class="mb-3 row">
-                    <label for="searchCourse" class="col-sm-1 col-form-label"><b>Course</b></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="searchCourse" size="30"
-                            placeholder="Search course here">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+
+
+                </ul>
+                Welcome, <?=$username?>
+            </div>
+        </nav>
+    </header>
+
+
+    <main style="margin-top: 10px;">
+        <div class="container" id="app">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>View Course</h2>
+
+                    <hr>
+
+                    <div class="mb-3 row">
+                        <label for="searchCourse" class="col-sm-1 col-form-label"><b>Course</b></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="searchCourse" size="30"
+                                placeholder="Search course here" onkeyup="search()">
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-3">Search</button>
 
-                    </div>
-
-
-
-                </div>
-
-                <?php
-                    foreach($courses as $course) 
-                    {
+                    <?php
+                    echo "<ul id='myUL' style='list-style-type: none; padding: 0;'>";
+                    foreach ($courses as $course) {
                         $courseid = $course->getCourseID();
                         $coursename = $course->getCourseName();
                         $coursedes = $course->getCourseDescription();
                         $prerequisiteIDs = $dao->setPrerequisite($courseid, $course);
-                        echo "<div class='row'>
-                                <div class='col-sm-9' >
-                                    CourseID: $courseid <br>
-                                    Course Name: $coursename <br>    
-                                    Course Description: $coursedes <br>
-                                    Course Prerequisite: ";
+                        echo "<li value='$coursename'>
+                                <div class='row'>
+                                    <div class='col-sm-9' >
+                                        CourseID: $courseid <br>
+                                        Course Name: $coursename <br>    
+                                        Course Description: $coursedes <br>
+                                        Course Prerequisite: ";
                         
                         $courseprereqs = $course->getCoursePrereq();
 
@@ -78,16 +92,15 @@
                             foreach ($prerequisiteIDs as $id) {
                                 $prereq = $dao->retrieve($id);
                                 $name = $prereq->getCourseName();
-                                $htmlcode = "$name,"; 
+                                $htmlcode = "$name,";
                             }
                             $htmlcode = rtrim($htmlcode, ",");
                             echo "$htmlcode";
                         }
 
-                        $nextPageHref = "ViewClassByEligibility.php?courseid=$courseid"; 
+                        $nextPageHref = "ViewClassByEligibility.php?courseid=$courseid";
                          //echo("<script> console.log('testing: " . $courseid . "');</script>");
-                        if(!in_array($courseid, $courseEligible)){
-                           
+                        if (!in_array($courseid, $courseEligible) ) {
                             echo "<br> 
                             </div>
                                 <div class='col-auto mt-4'>
@@ -95,7 +108,7 @@
                                 </div>
                             </div>
                             <hr>";
-                        }else{
+                        } else {
 
                             echo" <br> 
                             </div>
@@ -103,25 +116,38 @@
                                  <a class='btn btn-secondary disabled'> View Course</a>
                                 </div>
                             </div>
-                            <hr>";
+                            <hr>
+                            </li>";
                         }
                     }
+                    echo "</ul>";
 
-                ?>
+                    ?>
 
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+    <script>
+        function search() {
+            input = document.getElementById("searchCourse");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = document.getElementsByTagName("li");
+            for (i = 2; i < li.length; i++) {
+                courseName = li[i].getAttribute("value");
+                if (courseName.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script> 
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
 
 </html>

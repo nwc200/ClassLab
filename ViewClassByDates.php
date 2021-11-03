@@ -1,28 +1,27 @@
 <?php
-require_once "objects/autoload.php";
+    require_once "objects/autoload.php";
 
-// if (isset($_SESSION["user"])) {
-//     $username = $_SESSION["user"];
-// } else {
-//     header("Location: before_home.html");
-// }
-$_SESSION["username"] = "Neo Yu Hao";
-$username = $_SESSION["username"];
-$courseid = $_GET["courseid"];
-//echo("<script> console.log('testing: " . $courseid . "');</script>");
+    // if (isset($_SESSION["user"])) {
+    //     $username = $_SESSION["user"];
+    // } else {
+    //     header("Location: before_home.html");
+    // }
+    $_SESSION["username"] = "Xi Hwee";
+    $username = $_SESSION["username"];
+    $courseid = $_GET["courseid"];
+    //echo("<script> console.log('testing: " . $courseid . "');</script>");
+    $startdate = $_GET["date"];
+    $dao = new CourseDAO();
+    $course = $dao->retrieve($courseid);
+    $coursename = $course->getCourseName();
 
-$dao = new CourseDAO();
-$course = $dao->retrieve($courseid);
-$coursename = $course->getCourseName();
 
-
-$today_date = date("Y-m-d H:i:s");
+    $today_date = date("Y-m-d H:i:s");
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,43 +33,35 @@ $today_date = date("Y-m-d H:i:s");
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>LMS - View Class</title>
 </head>
-
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="adminHomePage.php">Learning Management System</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"> </span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+    <style>
+    
 
 
-                </ul>
-                Welcome, <?=$username?>
-            </div>
-        </nav>
-    </header>
+    </style>
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h2>View Class</h2>
+                <h1>View Class</h1> 
+                <p>Welcome <?= $username?></p>
                 <hr>
-                <div style="text-align:right">
-                    <form action="ViewClassByDates.php">
-                        <label for="date">Date:</label>
-                        <input type="date" id="" name="date">
-                        <input type="submit" value="Submit">
-                    </form>
+            <div style="text-align:right">
+            <form action="ViewClassByDates.php" method="post">
+            <label for="date" >Start Date:</label>
+            <input type="date" id="" name="date">
+            <input type="submit" value="Submit">
+            </form>
 
-                </div>
 
+            </div>   
+            
                 <h5><?= $coursename ?></h5>
-
+                
+                
+                
+                
                 <?php
-                $classes = $dao->retrieveCourseClasses($courseid);
+                $classes = $dao->retrieveCourseClassesByDate($courseID, $startdate);
                 if (empty($classes)) {
                     echo "<div class='alert alert-danger my-4' role='alert'>
                         No Class Found. Click <a href=''>here</a> to create new class.
@@ -82,16 +73,17 @@ $today_date = date("Y-m-d H:i:s");
                         $students = $dao2->retrievePendingEnrolment($courseid, $class->getClassID());
                         $status = $dao2->retrievePendingEnrolment($courseid, $classid);
                         $enrolment = $dao2->retrieveEnrolment($courseid, $classid);
-                        $SelfEnrolStart = $class->getSelfEnrollmentStart();
+                        $SelfEnrolStart =$class->getSelfEnrollmentStart();
                         $SelfEnrolEnd = $class->getSelfEnrollmentEnd();
                         //$remainingSlot = $dao2->checkClassCapacity($classid);
-                        $remainingSlot = (int)$class->getClassSize() - $students;
+                        $remainingSlot = (int)$class->getClassSize()-$students;
                         $enrolPageHref = "enrolpage.php?courseid=$courseid&classid=$classid";
+                        
 
-
-                        if (($SelfEnrolStart >= $today_date) && ($today_date <= $SelfEnrolEnd)) {
-                            //If within self-enrolment period
-                            echo "
+                         if ( ($SelfEnrolStart >= $today_date) && ( $today_date <= $SelfEnrolEnd) ) 
+                            {
+                                //If within self-enrolment period
+                                echo"
                                 <div class='row'>
                                     <div class='col-sm-8'>
                                     </div>
@@ -124,52 +116,46 @@ $today_date = date("Y-m-d H:i:s");
                                             <div class='col-sm-8'>
                                             </div>
                                             <div class='col-2'>";
-
-                            $withdrawPageHref = "withdrawpage.php?courseid=$courseid&classid={$class->getClassID()}";
-                            if ($students == 0) {
-                                echo "<button type='button' class='btn btn-secondary' disabled>Withdraw</button>";
-                            } else {
-                                echo "<a class='btn btn-success' href='$withdrawPageHref' role='button'>Withdraw</a>";
-                            }
-                            echo "</div>
+                                            
+                                            $withdrawPageHref = "withdrawpage.php?courseid=$courseid&classid={$class->getClassID()}";
+                                            if ($students == 0) {
+                                                echo "<button type='button' class='btn btn-secondary' disabled>Withdraw</button>";
+                                            } else {
+                                                echo "<a class='btn btn-success' href='$withdrawPageHref' role='button'>Withdraw</a>";
+                                            }
+                                            echo "</div>
                                                 <div class='col-2'>";
+                    
+                                            $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
+                                            if($remainingSlot == 0 || $students == 1 )
+                                            {
+                                                echo "<button type='button' class='btn btn-secondary' disabled>Enrol</button>";
+                                            } else {
+                                                echo "<a class='btn btn-success' href='$enrolPageHref' role='button'>Enrol</a>";
+                                            }
 
-                            $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
-                            if ($remainingSlot == 0 || $students == 1) {
-                                echo "<button type='button' class='btn btn-secondary' disabled>Enrol</button>";
-                            } else {
-                                echo "<a class='btn btn-success' href='$enrolPageHref' role='button'>Enrol</a>";
-                            }
-
-
-                            echo "</div>
+                                           
+                                            echo "</div>
                                                 </div>
                                             <hr>";
-                        } else {
-                            //echo" There is no available class ";
+                        }
+                                  
+                        else {
+                         //echo" There is no available class ";
                         }
                     }
                 }
-
-
-                ?>
+               
+                
+                ?>    
                 <br>
                 <a class='btn btn-success text-align: right' href='ViewCourseByEligibility.php?classid=$classid' role='button'>back</a>
             </div>
         </div>
-    </div>
-
-    <!-- <script>
-        function retrieveCourseClassesByDate() {
-            var action_src = "ViewClassByDate.php" + document.getElementsByName("date")[0].value;
-            var your_form = document.getElementById('your_form');
-            your_form.action = action_src;
-        }
-    </script> -->
+    </div> 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
-
 </html>

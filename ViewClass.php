@@ -45,6 +45,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="ViewEnrollment.php">View Self-Enrollment </a>
                     </li>
+                    
                 </ul>
                 Welcome, <?=$username?>
             </div>
