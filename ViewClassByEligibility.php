@@ -168,14 +168,12 @@ $today_date = date("Y-m-d H:i:s");
         ul = document.getElementById("myUL");
         li = document.getElementsByTagName("li");
         
-        for (i = 2; i < li.length; i++) {
+        for (i = 0; i < li.length; i++) {
             courseStartDate = li[i].getAttribute("value");
             //console.log(input.value, courseStartDate);
-            console.log("input");
-            console.log("courseStartDate");
-
-
-            if (input.value < courseStartDate) {
+            // console.log(input);
+            // console.log(courseStartDate);
+            if (input.value == courseStartDate) {
                 li[i].style.display = "";
             } else {
                 

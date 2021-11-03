@@ -2,7 +2,7 @@
 require_once "objects/autoload.php";
 $dao = new EnrollmentDAO;
 
-$_SESSION["username"] = "Xi Hwee";
+$_SESSION["username"] = "Yu Hao";
 $username = $_SESSION["username"];
 
 $courseid = $_GET['courseid'];
@@ -29,11 +29,30 @@ $enrolmentstatus = "Pending";
 </head>
 
 <body>
+<header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" >Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+
+
+                </ul>
+                Welcome, <?=$username?>
+            </div>
+        </nav>
+    </header>
+
+    <main style="margin-top: 10px;">
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Confirm Withdrawal</h1>
-                <p>Welcome <?= $username ?></p>
+                <h2>Confirm Withdrawal</h2>
+               
                 <hr>
 
                 <?php
@@ -41,16 +60,12 @@ $enrolmentstatus = "Pending";
 
                 $enrolmentstatus = "Pending";
 
-
-
                 if ($dao->withdrawSelfEnrol($name, $classid, $enrolmentstatus)) {
 
 
                     echo "<div class='alert alert-success' role='alert'>
                         Withdrawal Success! Your enrolment application had been withdrawn.
                     </div>";
-
-                    var_dump($dao->retrievePendingEnrolment($courseid, $classid));
                 } else {
                     echo "<div class='alert alert-danger' role='alert'>
                         Withdrawal failure! Please try again. 
@@ -58,10 +73,11 @@ $enrolmentstatus = "Pending";
                 }
 
                 ?>
-                <a class="btn btn-primary" href="ViewCourse.php" role="button">Back to Home</a>
+                <a class="btn btn-primary" href="ViewCourseByEligibility.php?courseid=$courseid" role="button">Back to Home</a>
             </div>
         </div>
     </div>
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

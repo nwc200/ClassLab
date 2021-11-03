@@ -36,7 +36,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="adminHomePage.php">Learning Management System</a>
+            <a class="navbar-brand" >Learning Management System</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"> </span>
@@ -99,7 +99,7 @@
                         }
 
                         $nextPageHref = "ViewClassByEligibility.php?courseid=$courseid";
-                         //echo("<script> console.log('testing: " . $courseid . "');</script>");
+                         
                         if (!in_array($courseid, $courseEligible) ) {
                             echo "<br> 
                             </div>

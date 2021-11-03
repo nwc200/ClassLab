@@ -159,32 +159,6 @@ class CourseDAO
         return $classes;
     }
 
-    // Retrieve all course classes by dates
-    public function retrieveCourseClassesByDate($courseID, $startDate)
-    {
-        $today = date("Y-m-d H:i:s");
-        $conn_manager = new ConnectionManager();
-        $pdo = $conn_manager->getConnection("class");
-        
-        $sql = "select * from class where courseID=:courseId and startDate=:startDate";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(":courseId", $courseID);
-        $stmt->bindParam(":startDate", $startDate);
-        $stmt->execute();
-        
-        $classes = [];
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        while ($row = $stmt->fetch()) {
-            $schedule = $row["startDate"] . $row["startTime"];
-            if ($schedule > $today) {
-                $classes[] = new Class1($row["classID"], $row["classSize"], $row["trainerUserName"], $row["startDate"], $row["endDate"], $row["startTime"], $row["endTime"], $row["selfEnrollmentStart"], $row["selfEnrollmentEnd"]);
-            }
-        }
-        $stmt = null;
-        $pdo = null;
-        return $classes;
-    }
-
     // Retrieve a course class
     public function retrieveCourseClass($courseID, $classID)
     {

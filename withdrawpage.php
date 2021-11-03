@@ -7,7 +7,7 @@ require_once 'objects/autoload.php';
 //     header("Location: before_home.html");
 // }
 
-$_SESSION["username"] = "Xi Hwee";
+$_SESSION["username"] = "Yu Hao";
 $username = $_SESSION["username"];
 $courseid = $_GET["courseid"];
 $classid = $_GET["classid"];
@@ -37,11 +37,29 @@ $coursename = $course->getCourseName();
 </head>
 
 <body>
+<header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" >Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+
+
+                </ul>
+                Welcome, <?=$username?>
+            </div>
+        </nav>
+    </header>
+    <main style="margin-top: 10px;">
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Withdraw Self- Enrol Page</h1>
-                <p>Welcome <?= $username ?></p>
+                <h2>Withdraw Self- Enrol Page</h2>
+                
                 <hr>
                 <h5><?= $coursename ?></h5>
 
@@ -88,6 +106,7 @@ $coursename = $course->getCourseName();
         </div>
     </div>
     </div>
+    </main>
 
     <script>
         var app = new Vue({
