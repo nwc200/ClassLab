@@ -31,98 +31,134 @@
     <title>LMS - Assign Learner</title>
 </head>
 <body>
-    <div class="container" id="app">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>Assign Learner</h1> 
-                <p>Welcome <?= $username?></p>
-                <hr>
-                <h5><?= $coursename ?></h5>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="adminHomePage.php">Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> </span>
+            </button>
 
-                <?php
-                    $class = $dao->retrieveCourseClass($courseid, $classid);
-                    $dao2 = new EnrollmentDAO();
-                    $students = $dao2->retrieveEnrolment($courseid, $classid);
-                    $remainingSlot = (int)$class->getClassSize()-$students;
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="ViewCourse.php" active>Assign Engineer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ViewEnrollment.php">View Self-Enrollment </a>
+                    </li>
+                </ul>
+                Welcome, <?=$username?>
+            </div>
+        </nav>
+    </header>
 
-                    echo "<div class='row'>
-                            <div class='col-sm-8'>
-                            </div>
-                            <div class='col-2'>
-                                <b>Class Size:</b> {$class->getClassSize()}
-                            </div>
-                            <div class='col-2'>
-                                <b>Remaining slot:</b> $remainingSlot
-                            </div>
-                                    
-                            <div class='col-sm-8'>
-                                ClassID<br>
-                                Class Starting Date<br>
-                                Class Ending Date<br>
-                                Trainer<br>
-                                Self-enrollment Period<br>
-                            </div>
-                            <div class='col-auto'>
-                                {$classid}<br>
-                                {$class->getStartDate()}, {$class->getStartTime()}<br>
-                                {$class->getEndDate()}, {$class->getEndTime()}<br>
-                                {$class->getTrainerUserName()}<br>
-                                {$class->getSelfEnrollmentStart()} ~ {$class->getSelfEnrollmentEnd()}<br>
-                            </div>
+    <main style="margin-top: 10px;">
+        <div class="container" id="app">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Assign Engineer</h2> 
+                    <hr>
+                    <h5><?= $coursename ?></h5>
+
+                    <?php
+                        $class = $dao->retrieveCourseClass($courseid, $classid);
+                        $dao2 = new EnrollmentDAO();
+                        $students = $dao2->retrieveEnrolment($courseid, $classid);
+                        $remainingSlot = (int)$class->getClassSize()-$students;
+
+                        echo "<div class='row'>
+                                <div class='col-sm-8'>
+                                </div>
+                                <div class='col-2'>
+                                    <b>Class Size:</b> {$class->getClassSize()}
+                                </div>
+                                <div class='col-2'>
+                                    <b>Remaining slot:</b> $remainingSlot
+                                </div>
+                                        
+                                <div class='col-sm-8'>
+                                    ClassID<br>
+                                    Class Starting Date<br>
+                                    Class Ending Date<br>
+                                    Trainer<br>
+                                    Self-enrollment Period<br>
+                                </div>
+                                <div class='col-auto'>
+                                    {$classid}<br>
+                                    {$class->getStartDate()}, {$class->getStartTime()}<br>
+                                    {$class->getEndDate()}, {$class->getEndTime()}<br>
+                                    {$class->getTrainerUserName()}<br>
+                                    {$class->getSelfEnrollmentStart()} ~ {$class->getSelfEnrollmentEnd()}<br>
+                                </div>
+                            </div>";
+                    ?>
+                    <hr>
+
+                    <?php
+                    $learnersID = $dao2->retrieveQualifiedLearners($courseid);
+                    if (empty($learnersID)) {
+                        echo "<div class='alert alert-warning' role='alert'>
+                            There is no engineer to assign! Click <a href='ViewCourse.php?courseid=$courseid'>here</a> to go back. 
                         </div>";
-                ?>
-                <hr>
-
-                <?php
-                $learnersID = $dao2->retrieveQualifiedLearners($courseid);
-                if (empty($learnersID)) {
-                    echo "<div class='alert alert-warning' role='alert'>
-                        There is no learner to assign! Click <a href='ViewClass.php?courseid=$courseid'>here</a> to go back. 
-                    </div>";
-                } else {
-                    echo "<div class='mb-3 row'>
-                            <label for='searchLearner' class='col-sm-1 col-form-label'><b>Learner</b></label>
-                            <div class='col-sm-4'>
-                                <input type='text' class='form-control' id='searchLearner' size='30' placeholder='Search name here'>
+                    } else {
+                        echo "<div class='mb-3 row'>
+                                <label for='searchLearner' class='col-sm-1 col-form-label'><b>Learner</b></label>
+                                <div class='col-sm-4'>
+                                    <input type='text' class='form-control' id='searchLearner' size='30' placeholder='Search name here' onkeyup='search()'>
+                                </div>
                             </div>
-                            <div class='col-auto'>
-                                <button type='submit' class='btn btn-primary mb-3'>Search</button>
-                            </div>
-                        </div>
 
-                        <form action='ProcessAssignLearner.php' method='POST'>
-                            <table class='table table-striped'>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Number of Enrolled Course</th>
-                                        <th>Assign</th>
-                                    </tr>
-                                </thead>
-                                <tbody>";
+                            <form action='ProcessAssignLearner.php' method='POST'>
+                                <table class='table table-striped' id='myTable'>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Number of Enrolled Course</th>
+                                            <th>Assign</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
 
-                    foreach ($learnersID as $name) {
-                        $numOfCourses = $dao2->retrieveNumberOfCourses($name);
+                        foreach ($learnersID as $name) {
+                            $numOfCourses = $dao2->retrieveNumberOfCourses($name);
 
-                        echo "<tr>
-                                <td>$name</th>
-                                <td>$numOfCourses</td>
-                                <td>
-                                    <button type='submit' class='btn btn-primary' name='submit' value='$name'>Assign</button>
-                                    <input type='hidden' name='courseID' value='$courseid'>
-                                    <input type='hidden' name='classID' value='$classid'>
-                                </td>
-                            </tr>";
+                            echo "<tr value='$name'>
+                                    <td>$name</th>
+                                    <td>$numOfCourses</td>
+                                    <td>
+                                        <button type='submit' class='btn btn-primary' name='submit' value='$name'>Assign</button>
+                                        <input type='hidden' name='courseID' value='$courseid'>
+                                        <input type='hidden' name='classID' value='$classid'>
+                                    </td>
+                                </tr>";
+                        }
+
+                        echo "</tbody>
+                            </table>
+                        </form>";
                     }
-
-                    echo "</tbody>
-                        </table>
-                    </form>";
-                }
-                ?>
+                    ?>
+                </div>
             </div>
         </div>
-    </div> 
+    </main>
+
+    <script>
+        function search() {
+            input = document.getElementById("searchLearner");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tableRows = document.getElementsByTagName("tr");
+            for (i = 1; i < tableRows.length; i++) {
+                name = tableRows[i].getAttribute("value");
+                if (name.toUpperCase().indexOf(filter) > -1) {
+                    tableRows[i].style.display = "";
+                } else {
+                    tableRows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

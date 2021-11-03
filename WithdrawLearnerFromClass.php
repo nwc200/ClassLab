@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title>LMS - Edit Enrollment Period</title>
+    <title>LMS - Withdraw Engineer</title>
 </head>
 <body>
     <header>
@@ -56,23 +56,35 @@
         <div class="container" id="app">
             <div class="row">
                 <div class="col-sm-12">
-                    <h2>Edit Enrollment Period</h2> 
+                    <h2>Withdraw Engineer</h2> 
                     <hr>
                     <h5><?= $coursename ?></h5>
 
                     <?php
                         $class = $dao->retrieveCourseClass($courseid, $classid);
+                        $dao2 = new EnrollmentDAO();
+                        $students = $dao2->retrieveEnrolment($courseid, $classid);
+                        $remainingSlot = (int)$class->getClassSize()-$students;
 
                         echo "<div class='row'>
+                                <div class='col-sm-8'>
+                                </div>
+                                <div class='col-2'>
+                                    <b>Class Size:</b> {$class->getClassSize()}
+                                </div>
+                                <div class='col-2'>
+                                    <b>Remaining slot:</b> $remainingSlot
+                                </div>
+                                        
                                 <div class='col-sm-8'>
                                     ClassID<br>
                                     Class Starting Date<br>
                                     Class Ending Date<br>
                                     Trainer<br>
-                                    Self-enrolment Period<br>
+                                    Self-enrollment Period<br>
                                 </div>
                                 <div class='col-auto'>
-                                    {$class->getClassID()}<br>
+                                    {$classid}<br>
                                     {$class->getStartDate()}, {$class->getStartTime()}<br>
                                     {$class->getEndDate()}, {$class->getEndTime()}<br>
                                     {$class->getTrainerUserName()}<br>
@@ -80,31 +92,69 @@
                                 </div>
                             </div>";
                     ?>
-
                     <hr>
-                    <h5 class="text-center">New Enrollment Period</h5>
-                    <form action="ProcessEditEnrollmentPeriod.php" method="POST">
-                        <div class="row justify-content-center my-5" >
-                            <label for="startDate" class="col-form-label"><b>Start Date</b></label>
-                            <div class="col-sm-4 mr-5">
-                                <input type="date" class="form-control" id="startDate" name="startDate">
+
+                    <?php
+                    $names = $dao2->retrieveEnrolledEngineers($courseid, $classid);
+                    if (empty($names)) {
+                        echo "<div class='alert alert-warning' role='alert'>
+                            There is no engineer to withdraw! Click <a href='ViewCourse.php'>here</a> to go back. 
+                        </div>";
+                    } else {
+                        echo "<div class='mb-3 row'>
+                                <label for='searchLearner' class='col-sm-1 col-form-label'><b>Engineer</b></label>
+                                <div class='col-sm-4'>
+                                    <input type='text' class='form-control' id='searchLearner' size='30' placeholder='Search name here' onkeyup='search()'>
+                                </div>
                             </div>
-                            <label for="endDate" class="col-form-label"><b>End Date</b></label>
-                            <div class="col-sm-4">
-                                <input type="date" class="form-control" id="endDate" name="endDate">
-                            </div>
-                            </div>
-                            <div class="col-auto text-center">
-                                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-                            </div>
-                            <input type="hidden" name="courseid" value="<?= $courseid ?>">
-                            <input type="hidden" name="classid" value="<?= $classid?>">
-                        </div>
-                    </form>
+
+                            <form action='ProcessWithdrawLearner.php' method='POST'>
+                                <table class='table table-striped' id='myTable'>
+                                    <thead>
+                                        <tr>
+                                            <th class='col-10'>Name</th>
+                                            <th>Withdraw</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
+
+                        foreach ($names as $name) {
+                            echo "<tr value='$name'>
+                                    <td class='col-10'>$name</th>
+                                    <td>
+                                        <button type='submit' class='btn btn-danger' name='submit' value='$name'>Withdraw</button>
+                                        <input type='hidden' name='courseID' value='$courseid'>
+                                        <input type='hidden' name='classID' value='$classid'>
+                                    </td>
+                                </tr>";
+                        }
+
+                        echo "</tbody>
+                            </table>
+                        </form>";
+                    }
+                    ?>
                 </div>
             </div>
         </div>
     </main>
+
+    <script>
+        function search() {
+            input = document.getElementById("searchLearner");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tableRows = document.getElementsByTagName("tr");
+            for (i = 1; i < tableRows.length; i++) {
+                name = tableRows[i].getAttribute("value");
+                if (name.toUpperCase().indexOf(filter) > -1) {
+                    tableRows[i].style.display = "";
+                } else {
+                    tableRows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

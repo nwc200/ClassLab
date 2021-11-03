@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>LMS - Insert Confirmation</title>
+    <title>LMS - Withdraw Confirmation</title>
 
 </head>
 <body>
@@ -38,19 +38,19 @@
                 Welcome, <?=$username?>
             </div>
         </nav>
-    </header>
 
+    </header>
     <main style="margin-top: 10px;">
         <div class="container" id="app">
             <div class="row">
                 <div class="col-sm-12">
-                    <h2>Assign Engineer</h2> 
+                    <h2>Withdraw Engineer</h2> 
                     <hr>
 
                     <?php
                     if ($status) {
                         echo "<div class='alert alert-success' role='alert'>
-                            Update Success! $name has been enrolled.
+                            Update Success! $name has been withdrawn.
                         </div>";
                     } else {
                         echo "<div class='alert alert-danger' role='alert'>

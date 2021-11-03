@@ -18,28 +18,50 @@
 
 </head>
 <body>
-    <div class="container" id="app">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>Edit Enrollment Period</h1> 
-                <p>Welcome <?= $username?></p>
-                <hr>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="adminHomePage.php">Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> </span>
+            </button>
 
-                <?php
-                if ($status) {
-                    echo "<div class='alert alert-success' role='alert'>
-                        Update Success! Enrollment period has been changed.
-                    </div>";
-                } else {
-                    echo "<div class='alert alert-danger' role='alert'>
-                        Update Failed! Please try again. 
-                    </div>";
-                }
-                ?>
-                <a class="btn btn-primary" href="ViewCourse.php" role="button">Back to Home</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="ViewCourse.php" active>Assign Engineer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ViewEnrollment.php">View Self-Enrollment </a>
+                    </li>
+                </ul>
+                Welcome, <?=$username?>
+            </div>
+        </nav>
+    </header>
+
+    <main style="margin-top: 10px;">
+        <div class="container" id="app">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Edit Enrollment Period</h2> 
+                    <hr>
+
+                    <?php
+                    if ($status) {
+                        echo "<div class='alert alert-success' role='alert'>
+                            Update Success! Enrollment period has been changed.
+                        </div>";
+                    } else {
+                        echo "<div class='alert alert-danger' role='alert'>
+                            Update Failed! Please try again. 
+                        </div>";
+                    }
+                    ?>
+                    <a class="btn btn-primary" href="ViewCourse.php" role="button">Back to Course</a>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
