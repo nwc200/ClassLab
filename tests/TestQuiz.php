@@ -51,5 +51,11 @@ class TestQuiz extends \PHPUnit\Framework\TestCase
         $quiz->addQuizQuestion(1, "Question1", "MCQ", 1);
 
     }
+    public function testConstructType()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Invalid quiz type entered.");
+        $quiz = new Quiz(1, "Quiz1", 1, 10, "fail", 5);
+    }
 }
 ?>
