@@ -43,6 +43,7 @@
                                 <th scope="col">Title</th>
                                 <th scope="col">Duration</th>
                                 <th scope="col">Type</th>
+                                <th scope="col">View Quiz</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,7 @@
                                 <td scope="col">{{quizinfo[1]}}</th>
                                 <td scope="col">{{quizinfo[3]}} mins</th>
                                 <td scope="col">{{quizinfo[4]}} </th>
+                                <td scope="col"><a class="btn btn-primary" v-if="quizinfo[0]" v-bind:href="'../ViewQuiz.php?quizid='+quizinfo[0]" >View Quiz</a> </th>
                             </tr>
                         </tbody>
                     </table>

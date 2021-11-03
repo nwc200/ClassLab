@@ -1,62 +1,67 @@
 <?php
     require_once "objects/autoload.php";
     $username = $_SESSION['username'];
-    $sectionnum= $_GET["sectionnum"];
-    $classid= $_GET["classid"];
-    $quiznum= $_GET["quiznum"];
-    $courseid= $_GET["courseid"];
+    $quizid = $_GET['quizid'];
+    
     $dao = new QuizDAO();
-    $course = $dao->getTrainerCourse($username);
-    $class1 = $dao->getCourseQuiz($courseid);
+    $quiz = $dao->getTrainerCourse("Wei Cheng");
+    $quiz = $dao->getQuiz($quizid);
+    $quizduration = $quiz->getQuizDuration();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attempt Quiz</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <title>Import Quiz</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
-<body>
+<body>  
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Import Quiz for Course <?php echo $courseid?></h1>
-                <hr>
-                <div v-for="classes in class1">
-                    <div v-for="section in classes[9]" v-if="classes[0] != classid">
-                        <div v-for="quiz in section[3]">
-                            <h4>QuizID: {{quiz[0]}}</h4>
-                            <h4>Quiz Name: {{quiz[1]}}</h4>
-                            Quiz Duration: {{quiz[3]}} mins<br>
-                            Trainer: {{classes[2]}} <br>
-                            Class: {{classes[0]}} <br>
-                            Section: {{section[0]}}<br>
-                            Section Name: {{section[1]}} <br>
-                            <a class="btn btn-primary" v-bind:href="'ProcessImportQuiz.php?quizid=' + quiz[0] + '&classid=' + classid + '&sectionnum=' + sectionnum" role="button">Import Quiz</a>
-                            <a class="btn btn-primary" v-if="quiz[0]" v-bind:href="'ViewQuiz.php?quizid='+quiz[0]" >View Quiz</a> 
-                            <hr>
+                <div class="text-center"> 
+                    <h1>Quiz Title: {{quiz[1]}}</h1>
+                    <h4>Type: {{quiz[4]}}</h4>
+                    <h4>Passing Mark: {{quiz[5]}}</h4>
+                    <hr>
+                </div>
+                <br><br><br>
+                <span class="text-primary">**Blue answers are correct</span>
+                <br><br>
+                <div v-for="question in quiz[6]"> 
+                    <b>Question {{question[0]}}: {{question[1]}}</b> [Marks: {{question[3]}}] 
+                    <div v-for="answer in question[4]">
+                        <div class="row">
+                            <div class="col-sm-9" v-if="answer[2] ==0">
+                                {{answer[0]}} {{answer[1]}}
+                            </div>
+                            <div class="col-sm-9" v-else="answer[2] ==0">
+                                <span class="text-primary">{{answer[0]}} {{answer[1]}}</span>
+                            </div>
                         </div>
                     </div>
-
+                    <br><br>
                 </div>
             </div>
         </div>
     </div>
+    
 
     <script>
         var app = new Vue({
             el: "#app",
             data:{
-                class1: <?php print json_encode($class1)?>,
-                classid: <?php print json_encode($classid)?>,
-                sectionnum: <?php print json_encode($sectionnum)?>
+                quiz: <?php print json_encode($quiz)?>
             }
         })
+        
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
