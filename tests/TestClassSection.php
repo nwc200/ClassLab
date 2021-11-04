@@ -18,14 +18,25 @@ class TestClassSection extends \PHPUnit\Framework\TestCase
         $class->addSection(2, 'Data Management');
         
         $getSection = $class->getSection();
+
+        $countSections = count($getSection);
+        $this->assertSame(2, $countSections);
+    }
+
+    public function testGetSectionNum()
+    {
+        
+        $class = new Class1(1, 20, "Wei Cheng", "2021-10-5", "2021-10-20", "10:00:00", "16:00:00", "2021-09-15", "2021-09-30");
+
+        $class->addSection(1, 'Intro to Data Management');
+        $class->addSection(2, 'Data Management');
+        
+        $getSection = $class->getSection();
         $counter = 1;
         foreach($getSection as $section){
             $this->assertSame($section->getSectionNum(), $counter);
             $counter ++;
         }
-
-        $countSections = count($getSection);
-        $this->assertSame(2, $countSections);
     }
 
     public function testGetSectionMaterialType()
