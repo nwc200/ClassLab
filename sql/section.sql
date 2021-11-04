@@ -100,10 +100,6 @@ insert into section values (1, 13, "Content");
 
 insert into section values (2, 13, "Final Quiz");
 
-insert into section values (1, 14, "Content");
-
-insert into section values (2, 14, "Final Quiz");
-
 /* Section Material */
 insert into sectionMaterial
 values (1, 1, 1, "pdf", "./materials/week1/Week1b-SPM-fundamentals-v1.0.pdf");
