@@ -27,6 +27,7 @@ $zero = $_GET['whichCourse'];
 <body>
 
     <div class="container" id="app">
+        <br><br>
         <h3>Your quiz result has been submitted and recorded, <a :href="'ViewQuizMaterials.php?whichCourse='+zero">click here</a> to be redirected to check if you have pass/fail the quiz</h3>
     </div>
 
