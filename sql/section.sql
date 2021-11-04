@@ -58,6 +58,51 @@ insert into section values (2, 3, "Content");
 
 insert into section values (3, 3, "Final Quiz");
 
+insert into section values (1, 4, "Course Brief");
+
+insert into section values (2, 4, "Content");
+
+insert into section values (3, 4, "Final Quiz");
+
+insert into section values (1, 5, "Content");
+
+insert into section values (2, 5, "Final Quiz");
+
+insert into section values (1, 6, "Content");
+
+insert into section values (2, 6, "Final Quiz");
+
+insert into section values (1, 7, "Content");
+
+insert into section values (2, 7, "Final Quiz");
+
+insert into section values (1, 8, "Content");
+
+insert into section values (2, 8, "Final Quiz");
+
+insert into section values (1, 9, "Content");
+
+insert into section values (2, 9, "Final Quiz");
+
+insert into section values (1, 10, "Content");
+
+insert into section values (2, 10, "Final Quiz");
+
+insert into section values (1, 11, "Content");
+
+insert into section values (2, 11, "Final Quiz");
+
+insert into section values (1, 12, "Content");
+
+insert into section values (2, 12, "Final Quiz");
+
+insert into section values (1, 13, "Content");
+
+insert into section values (2, 13, "Final Quiz");
+
+insert into section values (1, 14, "Content");
+
+insert into section values (2, 14, "Final Quiz");
 
 /* Section Material */
 insert into sectionMaterial
