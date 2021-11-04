@@ -86,7 +86,9 @@ class EnrollmentDAO
         if ($stmt->execute()) {
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             while ($row = $stmt->fetch()) {
-                $nonQualifiedLearners[] = $row["userName"];
+                if (!in_array($row["userName"], $nonQualifiedLearners)) {
+                    $nonQualifiedLearners[] = $row["userName"];
+                }
             }
         }
 
@@ -103,7 +105,9 @@ class EnrollmentDAO
         if ($stmt->execute()) {
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             while ($row = $stmt->fetch()) {
-                $nonQualifiedLearners[] = $row["userName"];
+                if (!in_array($row["userName"], $nonQualifiedLearners)) {
+                    $nonQualifiedLearners[] = $row["userName"];
+                }
             }
         }
 
@@ -137,7 +141,9 @@ class EnrollmentDAO
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         while ($row = $stmt->fetch()) {
             if (!in_array($row["userName"], $nonQualifiedLearners)) {
-                $qualifiedLearners[] = $row["userName"];
+                if (!in_array($row["userName"], $qualifiedLearners)) {
+                    $qualifiedLearners[] = $row["userName"];
+                }
             }
         }
 

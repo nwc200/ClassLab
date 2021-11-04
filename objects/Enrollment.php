@@ -14,10 +14,30 @@ class Enrollment
         $this->EnrollmentID = $EnrollmentID;
         $this->EnrolmentStatus = $EnrolmentStatus;
         $this->SelfEnrol = $SelfEnrol;
-        $this->DateTimeEnrolled = $DateTimeEnrolled;
-        $this->Course = $Course;
+
+        if ($EnrolmentStatus == "Pending" && $DateTimeEnrolled != "") {
+            throw new Exception("Invalid date time! Expecting no enrollment date time if pending.");
+        } else {
+            $this->DateTimeEnrolled = $DateTimeEnrolled;
+        }
+
+        if (getType($Course) == "object") {
+            $this->Course = $Course;
+        } else {
+            throw new Exception("Invalid data type! Expecting Course object.");
+        }
+
         $this->Completed = $Completed;
-        $this->User = $User;
+
+        if (getType($User) == "object") {
+            if ($User->getRoles() == "Administrator") {
+                throw new Exception("Invalid user! Expecting learner or trainer.");
+            } else {
+                $this->User = $User;
+            }
+        } else {
+            throw new Exception("Invalid data type! Expecting User object.");
+        }
     }
 
     public function getEnrollmentID()
@@ -39,14 +59,17 @@ class Enrollment
     {
         return $this->DateTimeEnrolled;
     }
+
     public function getCourse()
     {
         return $this->Course;
     }
+
     public function getCompleted()
     {
         return $this->Completed;
     }
+    
     public function getUser()
     {
         return $this->User;

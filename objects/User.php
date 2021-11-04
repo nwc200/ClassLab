@@ -21,6 +21,11 @@ class User{
     {
         return $this->UserName;
     }
+
+    public function getRoles()
+    {
+        return $this->Roles;
+    }
 }
 
 class Engineer extends User{
