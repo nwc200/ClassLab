@@ -317,18 +317,18 @@ class EnrollmentDAO
     }
 
     // Withdraw self-enrollment
-    public function withdrawSelfEnrol($username, $classid)
+    public function withdrawSelfEnrol($courseid, $username, $classid)
     {
         $enrolmentstatus = "Pending";
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("enrolment");
           
-        $sql = "delete from enrolment where username =:username and classid =:classid and enrolmentstatus =:enrolmentstatus";
+        $sql = "delete from enrolment where courseid =: courseid and username =:username and classid =:classid and enrolmentstatus =:enrolmentstatus";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":enrolmentstatus", $enrolmentstatus);
+        $stmt->bindParam(":courseId", $courseid);
         $stmt->bindParam(":classid", $classid);
         $stmt->bindParam(":username", $username);
-        ($stmt->execute());
         if ($stmt->execute()) {
             $stmt = null;
             $pdo = null;
