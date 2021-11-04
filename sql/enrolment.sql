@@ -38,4 +38,4 @@ insert into enrolment
 values (4, "Pending", true, "", 2, 1, false, "Kai Hao");
 
 insert into enrolment
-values (5, "Pending", true, "", 3, 3, false, "Mei Xin");
+values (5, "Pending", true, "", 3, 2, false, "Mei Xin");
