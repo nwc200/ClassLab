@@ -35,7 +35,7 @@ insert into enrolment
 values (3, "Approved", true, "2021-03-22 00:00:01", 1, 1, false, "Mei Lan");
 
 insert into enrolment
-values (4, "Pending", true, "", 2, 1, false, "Kai Hao");
+values (4, "Pending", true, "", 2, 2, false, "Kai Hao");
 
 insert into enrolment
 values (5, "Pending", true, "", 3, 5, false, "Mei Xin");
