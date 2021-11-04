@@ -21,7 +21,7 @@ ALTER TABLE class.class
 ADD foreign key class_fk(courseID)
 REFERENCES course.course(courseID);
 
-/* 1 Classes for Course #1 */
+/* 1 Class for Course #1 */
 insert into class
 values (1, 1, 2, "Wei Cheng", "2021-10-05", "2021-10-20", "10:00:00", "16:00:00", "2021-09-15", "2021-11-30");
 
@@ -43,12 +43,14 @@ values (5, 3, 3, "Wei Cheng", "2021-11-30", "2021-11-30", "12:00:00", "15:00:00"
 insert into class
 values (6, 3, 3, "Alexandra", "2021-10-05", "2021-10-20", "19:00:00", "22:00:00", "2021-09-15", "2021-11-30");
 
+
 /* 2 Classes for Course #4 */
 insert into class
 values (7, 4, 5, "Wei Cheng", "2021-12-05", "2021-12-05", "08:00:00", "17:00:00", "2021-09-15", "2021-12-05");
 
 insert into class
 values (8, 4, 3, "Alexandra", "2021-12-15", "2021-12-15", "08:00:00", "17:00:00", "2021-09-15", "2021-12-15");
+
 
 /* 2 Classes for Course #5 */
 insert into class
@@ -57,10 +59,10 @@ values (9, 5, 3, "Wei Cheng", "2021-11-30", "2021-11-30", "08:00:00", "17:00:00"
 insert into class
 values (10, 5, 5, "Alexandra", "2021-10-17", "2021-10-17", "08:00:00", "17:00:00", "2021-09-15", "2021-12-05");
 
+
 /* 4 Classes for Course #6 */
 insert into class
 values (11, 6, 4, "Jun Xiang", "2021-10-31", "2021-10-31", "08:00:00", "17:00:00", "2021-10-24", "2021-11-30");
-
 
 insert into class
 values (12, 6, 3, "Wei Cheng", "2021-12-25", "2021-12-25", "08:00:00", "17:00:00", "2021-10-24", "2021-12-25");

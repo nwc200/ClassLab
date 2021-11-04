@@ -15,7 +15,7 @@ class Enrollment
         $this->EnrolmentStatus = $EnrolmentStatus;
         $this->SelfEnrol = $SelfEnrol;
 
-        if ($EnrolmentStatus == "Pending" && $DateTimeEnrolled != "") {
+        if ($EnrolmentStatus == "Pending" && $DateTimeEnrolled != "0000-00-00 00:00:00") {
             throw new Exception("Invalid date time! Expecting no enrollment date time if pending.");
         } else {
             $this->DateTimeEnrolled = $DateTimeEnrolled;
