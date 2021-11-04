@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"TestClassSection::testAddSection":0.302,"TestClassSection::testAddSectionMaterials":0,"TestClassSection::testSectionMaterialProgress":0.028}}
+{"version":1,"defects":{"TestClassSection::testGetSectionName":3},"times":{"TestClassSection::testAddSection":0.275,"TestClassSection::testAddSectionMaterials":0,"TestClassSection::testSectionMaterialProgress":0.016,"TestClassSection::testGetSectionName":0,"TestClassSection::testGetSectionMaterialType":0,"TestClassSection::testGetSectionMaterialNum":0}}

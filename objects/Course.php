@@ -257,6 +257,10 @@ class SectionMaterial implements JsonSerializable
     {
         return $this->MaterialNum;
     }
+    public function getMaterialType()
+    {
+        return $this->MaterialType;
+    }
 }
 
 class Quiz implements JsonSerializable
