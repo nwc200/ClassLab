@@ -90,6 +90,23 @@ class EnrollmentDAO
             }
         }
 
+        $enrolmentStatus = "Pending";
+        $selfEnrol = "1";
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("enrolment");
+        
+        $sql = "select userName from enrolment where courseID=:courseId and enrolmentStatus=:enrolmentStatus and selfEnrol=:selfEnrol";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":courseId", $courseID);
+        $stmt->bindParam(":enrolmentStatus", $enrolmentStatus);
+        $stmt->bindParam(":selfEnrol", $selfEnrol);
+        if ($stmt->execute()) {
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            while ($row = $stmt->fetch()) {
+                $nonQualifiedLearners[] = $row["userName"];
+            }
+        }
+
         // Retrieve all learners, including trainers who want to learn
         $role = "Learner";
         $conn_manager = new ConnectionManager();
@@ -183,6 +200,8 @@ class EnrollmentDAO
     {
         $completed = "0";
         $enrolmentStatus = "Approved";
+        $enrolments = [];
+        $numOfCourses = 0;
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("enrolment");
         
@@ -192,18 +211,21 @@ class EnrollmentDAO
         $stmt->bindParam(":enrolmentStatus", $enrolmentStatus);
         $stmt->bindParam(":yetcompleted", $completed);
         if ($stmt->execute()) {
-            $numOfCourses = 0;
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             while ($row = $stmt->fetch()) {
+                $enrolments[] = [$row["courseID"], $row["classID"]];
+            }
+
+            foreach ($enrolments as $enrolment) {
                 $conn_manager = new ConnectionManager();
                 $pdo = $conn_manager->getConnection("class");
-
+    
                 $sql = "select * from class where courseID=:courseId and classID=:classId";
                 $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(":courseId", $row["courseID"]);
-                $stmt->bindParam(":classId", $row["classID"]);
+                $stmt->bindParam(":courseId", $enrolment[0]);
+                $stmt->bindParam(":classId", $enrolment[1]);
                 $stmt->execute();
-
+    
                 if ($row = $stmt->fetch()) {
                     $today = date("Y-m-d H:i:s");
                     $schedule = $row["endDate"] . $row["endTime"];
@@ -211,16 +233,15 @@ class EnrollmentDAO
                         $numOfCourses += 1;
                     }
                 }
+    
+                $stmt = null;
+                $pdo = null;
             }
-            
-            $stmt = null;
-            $pdo = null;
-            return $numOfCourses;
         }
-
+            
         $stmt = null;
         $pdo = null;
-        return 0;
+        return $numOfCourses;
     }
     
     // Check class capacity before enrollment
@@ -305,9 +326,8 @@ class EnrollmentDAO
         $sql = "delete from enrolment where username =:username and classid =:classid and enrolmentstatus =:enrolmentstatus";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":enrolmentstatus", $enrolmentstatus);
-        $stmt->bindParam(":classid", $classid);
         $stmt->bindParam(":username", $username);
-        var_dump($stmt->execute());
+        $stmt->bindParam(":classid", $classid);
         if ($stmt->execute()) {
             $stmt = null;
             $pdo = null;
@@ -428,7 +448,54 @@ class EnrollmentDAO
         $pdo = null;
         return false;
     }
-}
 
-    
+    // Retrieve all engineers enrolled in the course class
+    public function retrieveEnrolledEngineers($courseID, $classID)
+    {
+        $enrolmentStatus = "Approved";
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("enrolment");
+        
+        $sql = "select * from enrolment where courseID=:courseId and classID=:classId and enrolmentStatus=:enrolmentStatus";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":courseId", $courseID);
+        $stmt->bindParam(":classId", $classID);
+        $stmt->bindParam(":enrolmentStatus", $enrolmentStatus);
+        $stmt->execute();
+        
+        $names = [];
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        while ($row = $stmt->fetch()) {
+            $names[] = $row["userName"];
+        }
+        
+        $stmt = null;
+        $pdo = null;
+        return $names;
+    }
+
+    // Withdraw engineer from a course class
+    public function withdrawEngineer($courseID, $classID, $username)
+    {
+        $enrolmentStatus = "Withdrawn";
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("enrolment");
+        
+        $sql = "update enrolment set enrolmentStatus=:enrolmentStatus where courseID=:courseId and classID=:classId and userName=:username";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":enrolmentStatus", $enrolmentStatus);
+        $stmt->bindParam(":courseId", $courseID);
+        $stmt->bindParam(":classId", $classID);
+        $stmt->bindParam(":username", $username);
+        if ($stmt->execute()) {
+            $stmt = null;
+            $pdo = null;
+            return true;
+        }
+        
+        $stmt = null;
+        $pdo = null;
+        return false;
+    }
+}
 ?>

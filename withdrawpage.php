@@ -7,7 +7,7 @@ require_once 'objects/autoload.php';
 //     header("Location: before_home.html");
 // }
 
-$_SESSION["username"] = "Xi Hwee";
+$_SESSION["username"] = "Yu Hao";
 $username = $_SESSION["username"];
 $courseid = $_GET["courseid"];
 $classid = $_GET["classid"];
@@ -37,11 +37,54 @@ $coursename = $course->getCourseName();
 </head>
 
 <body>
+<br>
+<div class="" id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="ViewCourseByEligibility.php">LMS Self Enrollment System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="ViewCourseByEligibility.php" >View Course <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ViewCourseMaterials.php" >Course Materials <span
+                                class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
+                    </li>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Courses Enrolled
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div v-for="(each, i) in usercourses">
+                                <a class="dropdown-item" :value="i" @click='test([i])'> {{usercourses[i][1]}} - Class
+                                    {{usercourses[i][2]}}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </ul>
+                Learner: <?=$username?>
+
+            </div>
+        </nav>
+        <br>
+    <main style="margin-top: 10px;">
     <div class="container" id="app">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Withdraw Self- Enrol Page</h1>
-                <p>Welcome <?= $username ?></p>
+                <h2>Withdraw Self- Enrol Page</h2>
+                
                 <hr>
                 <h5><?= $coursename ?></h5>
 
@@ -88,6 +131,7 @@ $coursename = $course->getCourseName();
         </div>
     </div>
     </div>
+    </main>
 
     <script>
         var app = new Vue({

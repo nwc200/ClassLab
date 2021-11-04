@@ -7,7 +7,7 @@ if (isset($_POST["submit"])) {
     $classid = $_POST["classID"];
 
     $dao = new EnrollmentDAO();
-    $status = $dao->addEnrolment($name, $courseid, $classid);
+    $status = $dao->withdrawEngineer($courseid, $classid, $name);
 
     if ($status) {
         $_SESSION["status"] = true;
@@ -16,7 +16,7 @@ if (isset($_POST["submit"])) {
     }
 
     $_SESSION["learner"] = $name;
-    header("Location: InsertConfirmation.php");
+    header("Location: WithdrawConfirmation.php");
     exit();
 }
 ?>

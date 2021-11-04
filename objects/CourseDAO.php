@@ -137,6 +137,7 @@ class CourseDAO
     // Retrieve all course classes
     public function retrieveCourseClasses($courseID)
     {
+        $today = date("Y-m-d H:i:s");
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("class");
         
@@ -148,9 +149,11 @@ class CourseDAO
         $classes = [];
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         while ($row = $stmt->fetch()) {
-            $classes[] = new Class1($row["classID"], $row["classSize"], $row["trainerUserName"], $row["startDate"], $row["endDate"], $row["startTime"], $row["endTime"], $row["selfEnrollmentStart"], $row["selfEnrollmentEnd"]);
+            $schedule = $row["endDate"] . $row["endTime"];
+            if ($schedule > $today) {
+                $classes[] = new Class1($row["classID"], $row["classSize"], $row["trainerUserName"], $row["startDate"], $row["endDate"], $row["startTime"], $row["endTime"], $row["selfEnrollmentStart"], $row["selfEnrollmentEnd"]);
+            }
         }
-        
         $stmt = null;
         $pdo = null;
         return $classes;

@@ -27,83 +27,105 @@
     <title>LMS - View Enrollment</title>
 </head>
 <body>
-    <div class="container" id="app">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>View Enrollment </h1> 
-                <p>Welcome <?= $username?></p>
-                <hr>
-                
-                <?php
-                if (empty($enrollments)) {
-                    echo "<div class='alert alert-warning' role='alert'>
-                        There is no pending enrollment record! Click <a href=''>here</a> to go back. 
-                    </div>";
-                } else {
-                    echo "<div class='mb-3 row'>
-                            <label for='searchLearner' class='col-sm-1 col-form-label'><b>Learner</b></label>
-                            <div class='col-sm-4'>
-                                <input type='text' class='form-control' id='searchLearner' size='30' placeholder='Search name here'>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="adminHomePage.php">Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="ViewCourse.php">Assign Engineer</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="ViewEnrollment.php" active>View Self-Enrollment </a>
+                    </li>
+                </ul>
+                Welcome, <?=$username?>
+            </div>
+        </nav>
+    </header>
+
+    <main style="margin-top: 10px;">
+        <div class="container" id="app">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>View Self-Enrollment</h2> 
+                    <hr>
+                    
+                    <?php
+                    if (empty($enrollments)) {
+                        echo "<div class='alert alert-warning' role='alert'>
+                            There is no pending enrollment record! Click <a href='adminHomePage.php'>here</a> to go back. 
+                        </div>";
+                    } else {
+                        echo "<div class='mb-3 row'>
+                                <label for='searchLearner' class='col-sm-1 col-form-label'><b>Learner</b></label>
+                                <div class='col-sm-4'>
+                                    <input type='text' class='form-control' id='searchLearner' size='30' placeholder='Search name here'>
+                                </div>
+                                <div class='col-auto'>
+                                    <button type='submit' class='btn btn-primary mb-3'>Search</button>
+                                </div>
                             </div>
-                            <div class='col-auto'>
-                                <button type='submit' class='btn btn-primary mb-3'>Search</button>
-                            </div>
-                        </div>
 
-                        <form action='ProcessSelfEnrollment.php' method='POST'>
-                            <table class='table table-striped'>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Course</th>
-                                        <th>Class Remaining Slot</th>
-                                        <th>Enrollment Period</th>
-                                        <th>Class Start Date</th>
-                                        <th>Approve/ Reject</th>
-                                    </tr>
-                                </thead>
-                                <tbody>";
+                            <form action='ProcessSelfEnrollment.php' method='POST'>
+                                <table class='table table-striped'>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Course</th>
+                                            <th>Class Remaining Slot</th>
+                                            <th>Enrollment Period</th>
+                                            <th>Class Start Date</th>
+                                            <th>Approve/ Reject</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
 
-                    foreach ($enrollments as $enrolment) {
-                        $user = $enrolment->getUserName();
-                        $course = $enrolment->getCourseID();
-                        $classes = $course->getClass1();
-                        $class = $classes[0];
-                        $learners = $dao->retrieveEnrolment($course->getCourseID(), $class->getClassID());
-                        $remainingSlot = (int)$class->getClassSize() - $learners;
+                        foreach ($enrollments as $enrolment) {
+                            $user = $enrolment->getUser();
+                            $course = $enrolment->getCourse();
+                            $classes = $course->getClass1();
+                            $class = $classes[0];
+                            $learners = $dao->retrieveEnrolment($course->getCourseID(), $class->getClassID());
+                            $remainingSlot = (int)$class->getClassSize() - $learners;
 
-                        echo "<tr>
-                                <td>{$user->getUserName()}</th>
-                                <td class='col-3'>{$course->getCourseName()}</td>
-                                <td>$remainingSlot</td>
-                                <td>{$class->getSelfEnrollmentStart()} to {$class->getSelfEnrollmentEnd()}</td>
-                                <td>{$class->getStartDate()}, {$class->getStartTime()}</td>";
-                        
-                        date_default_timezone_set( 'Asia/Singapore');
-                        $today = date("Y-m-d");
-                        if ($today < $class->getStartDate()) {
-                            echo "<td>
-                                    <button type='submit' class='btn btn-primary px-2' name='approve' value='{$enrolment->getEnrollmentID()}'>Approve</button>
-                                    <button type='submit' class='btn btn-danger px-2' name='reject' value='{$enrolment->getEnrollmentID()}'>Reject</button>
-                                </td>
-                            </tr>";
-                        } else {
-                            echo "<td>
-                                    <button type='submit' class='btn btn-primary px-2' name='approve' value='{$enrolment->getEnrollmentID()}' disabled>Approve</button>
-                                    <button type='submit' class='btn btn-danger px-2' name='reject' value='{$enrolment->getEnrollmentID()}'>Reject</button>
-                                </td>
-                            </tr>";
+                            echo "<tr>
+                                    <td>{$user->getUserName()}</th>
+                                    <td class='col-3'>{$course->getCourseName()}</td>
+                                    <td>$remainingSlot</td>
+                                    <td>{$class->getSelfEnrollmentStart()} to {$class->getSelfEnrollmentEnd()}</td>
+                                    <td>{$class->getStartDate()}, {$class->getStartTime()}</td>";
+                            
+                            date_default_timezone_set( 'Asia/Singapore');
+                            $today = date("Y-m-d");
+                            if ($today < $class->getStartDate()) {
+                                echo "<td>
+                                        <button type='submit' class='btn btn-primary px-2' name='approve' value='{$enrolment->getEnrollmentID()}'>Approve</button>
+                                        <button type='submit' class='btn btn-danger px-2' name='reject' value='{$enrolment->getEnrollmentID()}'>Reject</button>
+                                    </td>
+                                </tr>";
+                            } else {
+                                echo "<td>
+                                        <button type='submit' class='btn btn-primary px-2' name='approve' value='{$enrolment->getEnrollmentID()}' disabled>Approve</button>
+                                        <button type='submit' class='btn btn-danger px-2' name='reject' value='{$enrolment->getEnrollmentID()}'>Reject</button>
+                                    </td>
+                                </tr>";
+                            }
                         }
-                    }
 
-                    echo "</tbody>
-                        </table>
-                    </form>";
-                }
-                ?>
+                        echo "</tbody>
+                            </table>
+                        </form>";
+                    }
+                    ?>
+                </div>
             </div>
         </div>
-    </div> 
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

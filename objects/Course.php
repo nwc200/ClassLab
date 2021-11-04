@@ -276,6 +276,9 @@ class Quiz implements JsonSerializable
 
     public function __construct($QuizID, $QuizName, $QuizNum, $QuizDuration, $Type, $PassingMark)
     {
+        if ($Type != "Graded" && $Type!= "Ungraded") {
+            throw new Exception("Invalid quiz type entered.");
+        }
         $this->QuizID = $QuizID;
         $this->QuizName = $QuizName;
         $this->QuizNum = $QuizNum;
@@ -357,6 +360,9 @@ class QuizQuestion implements JsonSerializable
 
     public function __construct($QuestionNum, $Question, $QuestionType, $Marks)
     {
+        if ($QuestionType != "MCQ" && $QuestionType!= "TF") {
+            throw new Exception("Invalid quiz type entered.");
+        }
         $this->QuestionNum = $QuestionNum;
         $this->Question = $Question;
         $this->QuestionType = $QuestionType;
@@ -366,6 +372,16 @@ class QuizQuestion implements JsonSerializable
     public function addQuizAnswer($AnswerNum, $Answer, $Correct)
     {
         $this->QuizAnswer[] = new QuizAnswer($AnswerNum, $Answer, $Correct);
+        $checkarr = [];
+
+        foreach ($this->QuizAnswer as $answer) {
+            array_push($checkarr, $answer->getAnswerCorrect());
+            if (count(array_keys($checkarr, 1))>1) {
+                array_pop($this->QuizAnswer);
+                throw new Exception("Correct Answer Already Added.");
+            }
+        }
+        
     }
 
     public function getQuizAnswer()
@@ -391,6 +407,30 @@ class QuizQuestion implements JsonSerializable
     public function getQuestionMark()
     {
         return $this->Marks;
+    }
+
+    public function addMarks($val)
+    {
+        if (gettype($val) != "integer") {
+            throw new Exception("Input must be integer.");
+        }
+        $this->Marks = $this->Marks +$val;
+    }
+
+    public function minusMarks($val)
+    {
+        if (gettype($val) != "integer") {
+            throw new Exception("Input must be integer.");
+        }
+        if (($this->Marks - $val) < 0) {
+            throw new Exception("Marks cannot be less than 0.");
+        }
+        $this->Marks = $this->Marks - $val;
+    }
+
+    public function getNumberOfAnswers()
+    {
+        return count($this->QuizAnswer);
     }
 
     public function jsonSerialize()
