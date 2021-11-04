@@ -86,7 +86,17 @@ values ("Yu Hao", 1, "Learner");
 insert into permissions
 values ("Yu Hao", 2, "Learner");
 insert into permissions
+values ("Yu Hao", 3, "Learner");
+insert into permissions
 values ("Yu Hao", 5, "Learner");
+
+/* Adding Learner Data */
+insert into permissions
+values ("Mei Lan", 1, "Learner");
+insert into permissions
+values ("Kai Hao", 2, "Learner");
+insert into permissions
+values ("Mei Xin", 3, "Learner");
 
 
 
