@@ -14,8 +14,8 @@ $courseid = $_GET["courseid"];
 $dao = new CourseDAO();
 $course = $dao->retrieve($courseid);
 $coursename = $course->getCourseName();
-$today_date = date("Y-m-d H:i:s");
 
+$today_date = date("Y-m-d");
 ?>
 
 <!DOCTYPE html>
@@ -102,10 +102,10 @@ $today_date = date("Y-m-d H:i:s");
 
                 </div>
 
-               
-
+            
                 <?php
                 $classes = $dao->retrieveCourseClasses($courseid);
+                
                 if (empty($classes)) {
                     echo "<div class='alert alert-danger my-4' role='alert'>
                         No Class Found!
@@ -116,17 +116,15 @@ $today_date = date("Y-m-d H:i:s");
                     foreach ($classes as $class) {
                         $classid = $class->getClassID();
                         $students = $dao2->retrieveEnrolment($courseid, $class->getClassID());
-                        // $status = $dao2->retrievePendingEnrolment($courseid, $classid);
-                        // $enrolment = $dao2->retrieveEnrolment($courseid, $classid);
-                        // $SelfEnrolStart = $class->getSelfEnrollmentStart();
-                        // $SelfEnrolEnd = $class->getSelfEnrollmentEnd();
-                        //$remainingSlot = $dao2->checkClassCapacity($classid);
+
                         $remainingSlot = (int)$class->getClassSize()-$students;
                         $enrolPageHref = "enrolpage.php?courseid=$courseid&classid=$classid";
-
-
-                        if (($class->getSelfEnrollmentStart() >= $today_date) && ($today_date <= $class->getSelfEnrollmentEnd())) {
+                        $enrolStart = (new DateTime($class->getSelfEnrollmentStart()))->format('Y-m-d');
+                        $enrolEnd = (new DateTime($class->getSelfEnrollmentEnd()))->format('Y-m-d');
+                        
+                        if ($today_date <= $enrolEnd && $today_date >= $enrolStart) {
                             //If within self-enrolment period
+                            
                             echo
                             "<li value='{$class->getStartDate()}'>
                             
