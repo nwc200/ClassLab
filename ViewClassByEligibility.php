@@ -88,7 +88,12 @@ $today_date = date("Y-m-d H:i:s");
             <div class="col-sm-12">
                 <h2>View Class</h2>
                 <hr>
-                <div style="text-align:right">
+
+                <div class='row my-3'>
+                        <div class='col-8'>
+                            <h5><?= $coursename ?></h5>
+                        </div>
+               
             
                 <label for="date">Start Date:</label>
                 <input type="date" id="startDate" name="startDate">
@@ -97,7 +102,7 @@ $today_date = date("Y-m-d H:i:s");
 
                 </div>
 
-                <h5><?= $coursename ?></h5>
+               
 
                 <?php
                 $classes = $dao->retrieveCourseClasses($courseid);
@@ -110,17 +115,17 @@ $today_date = date("Y-m-d H:i:s");
                     $dao2 = new EnrollmentDAO();
                     foreach ($classes as $class) {
                         $classid = $class->getClassID();
-                        $students = $dao2->retrievePendingEnrolment($courseid, $class->getClassID());
-                        $status = $dao2->retrievePendingEnrolment($courseid, $classid);
-                        $enrolment = $dao2->retrieveEnrolment($courseid, $classid);
-                        $SelfEnrolStart = $class->getSelfEnrollmentStart();
-                        $SelfEnrolEnd = $class->getSelfEnrollmentEnd();
+                        $students = $dao2->retrieveEnrolment($courseid, $class->getClassID());
+                        // $status = $dao2->retrievePendingEnrolment($courseid, $classid);
+                        // $enrolment = $dao2->retrieveEnrolment($courseid, $classid);
+                        // $SelfEnrolStart = $class->getSelfEnrollmentStart();
+                        // $SelfEnrolEnd = $class->getSelfEnrollmentEnd();
                         //$remainingSlot = $dao2->checkClassCapacity($classid);
-                        $remainingSlot = (int)$class->getClassSize() - $students;
+                        $remainingSlot = (int)$class->getClassSize()-$students;
                         $enrolPageHref = "enrolpage.php?courseid=$courseid&classid=$classid";
 
 
-                        if (($SelfEnrolStart >= $today_date) && ($today_date <= $SelfEnrolEnd)) {
+                        if (($class->getSelfEnrollmentStart() >= $today_date) && ($today_date <= $class->getSelfEnrollmentEnd())) {
                             //If within self-enrolment period
                             echo
                             "<li value='{$class->getStartDate()}'>
@@ -144,19 +149,17 @@ $today_date = date("Y-m-d H:i:s");
                                     </div>
 
                                     <div class='col-auto'>
-
-
-                                    {$class->getClassID()}<br>
+                                        {$class->getClassID()}<br>
                                         {$class->getStartDate()}, {$class->getStartTime()}<br>
                                         {$class->getEndDate()}, {$class->getEndTime()}<br>
                                         {$class->getTrainerUserName()}<br>
-                                        {$SelfEnrolStart} ~ {$SelfEnrolEnd} <br>
+                                        {$class->getSelfEnrollmentStart()} ~ {$class->getSelfEnrollmentEnd()} <br>
                                         </div>
+                                    </div>
+                                    <div class='row mt-3'>
+                                        <div class='col-sm-8'>
                                         </div>
-                                        <div class='row mt-3'>
-                                            <div class='col-sm-8'>
-                                            </div>
-                                            <div class='col-2'>";
+                                        <div class='col-2'>";
 
                             $withdrawPageHref = "withdrawpage.php?courseid=$courseid&classid={$class->getClassID()}";
                             if ($students == 0) {
