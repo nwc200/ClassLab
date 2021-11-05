@@ -19,9 +19,9 @@ if (isset($_GET['whichCourse'])) {
     $zero = $_GET['whichCourse'];
 }
 
-
 foreach ($enrolments as $enrol) {
-    $courseID = $enrol->getCourse();
+    $getCourse= $enrol->getCourse();
+    $courseID = $getCourse->getCourseID();
     $courses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
     $courseName = $courses->getCourseName();
     $classID = $enrolDAO->getLearnerClassID($courseID, $username); //get class id
