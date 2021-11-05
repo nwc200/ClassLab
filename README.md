@@ -1,5 +1,6 @@
 # SPM Project
-LMS
+Four core features for Learning Management System.
+Home page is index.html
 
 # SQL Importing & Dropping
 Order of importing sql files: course, user, class, section, enrolment, quiz
