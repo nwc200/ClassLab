@@ -92,7 +92,7 @@ class CourseDAO
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             while ($row = $stmt->fetch()) {
-                $courseprereqarr[] = [$courseid, $row['courseID']];
+                $courseprereqarr[] = [$courseid, $row['courseid']];
             }
         }
  
