@@ -9,7 +9,6 @@ require_once "objects/autoload.php";
 $_SESSION["username"] = "Yu Hao";
 $username = $_SESSION["username"];
 $courseid = $_GET["courseid"];
-//echo("<script> console.log('testing: " . $courseid . "');</script>");
 
 $dao = new CourseDAO();
 $course = $dao->retrieve($courseid);
