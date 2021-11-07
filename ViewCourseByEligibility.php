@@ -10,7 +10,7 @@ $courseEligible= $dao->getEligibleCourseID($username);
 
 $status = 'Approved';
 $enrolDAO = new SectionDAO();
-$enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); 
+$enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status);
 $userCourses = (object)[];
 $counter = 0;
 if (isset($_GET['whichCourse'])) {
