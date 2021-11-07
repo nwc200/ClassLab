@@ -12,7 +12,7 @@ $getQuizQuestion = $quiz->getQuizQuestion();
 
 
 $getStudentQuizRecord = $dao->getStudentQuizAttempt($quizid, $username, $attemptNo);
-$getStudentQuizRecord = array_reverse($getStudentQuizRecord);
+
 $counter = 0;
 $question = $quiz->getQuizQuestion();
 $array_correct = [];
