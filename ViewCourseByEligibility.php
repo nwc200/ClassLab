@@ -133,7 +133,6 @@
                             </div>
                             <hr>";
                         } else {
-
                             echo" <br> 
                             </div>
                                 <div class='col-auto mt-4'>
