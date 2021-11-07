@@ -86,7 +86,7 @@ class CourseDAO
         // Get prereq for all course eligible for
         $courseprereqarr =[];
         foreach ($courseideligible as $courseid) {
-            $sql = "select courseprereq from courseprereq where courseid=:courseid";
+            $sql = "select coursePrereq from coursePrereq where courseid=:courseid";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(":courseid", $courseid);
             $stmt->execute();

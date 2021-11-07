@@ -71,7 +71,7 @@ class QuizDAO
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("quiz");
         
-        $sql = "insert into quizquestion (quizid, questionnum, question, questiontype, marks) 
+        $sql = "insert into quizQuestion (quizid, questionnum, question, questiontype, marks) 
         values (:quizid, :questionnum, :question, :questiontype, :marks)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":quizid", $quizid);
@@ -92,7 +92,7 @@ class QuizDAO
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("quiz");
         
-        $sql = "insert into quizanswer (answernum, quizid, questionnum, answer, correct) 
+        $sql = "insert into quizAnswer (answernum, quizid, questionnum, answer, correct) 
         values (:answernum, :quizid, :questionnum, :answer, :correct)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":answernum", $answernum);
@@ -313,7 +313,7 @@ class QuizDAO
 
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("quiz");
-        $sql = "select * from quizquestion where quizid=:quizid";
+        $sql = "select * from quizQuestion where quizid=:quizid";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":quizid", $quizid);
         $stmt->execute();
@@ -326,7 +326,7 @@ class QuizDAO
             $questionnum = $question->getQuestionNum();
             $conn_manager = new ConnectionManager();
             $pdo = $conn_manager->getConnection("quiz");
-            $sql = "select * from quizanswer where quizid=:quizid and questionnum=:questionnum";
+            $sql = "select * from quizAnswer where quizid=:quizid and questionnum=:questionnum";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(":quizid", $quizid);
             $stmt->bindParam(":questionnum", $questionnum);
@@ -345,7 +345,7 @@ class QuizDAO
     {
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("quiz");
-        $sql = "select * from studentquizattempt where quizid=:quizid and username=:username";
+        $sql = "select * from studentQuizAttempt where quizid=:quizid and username=:username";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":quizid", $quizid);
         $stmt->bindParam(":username", $username);
@@ -365,7 +365,7 @@ class QuizDAO
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("quiz");
         // echo('hi');
-        $sql = "insert into studentquizattempt (username, quizid, attemptno, passfail) 
+        $sql = "insert into studentQuizAttempt (username, quizid, attemptno, passfail) 
         values (:username, :quizid, :attemptno, :passfail)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":username", $username);
@@ -385,7 +385,7 @@ class QuizDAO
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("quiz");
         
-        $sql = "insert into studentquizrecord (username, quizid, marks, attemptno, questionnum, studentansnum) 
+        $sql = "insert into studentQuizRecord (username, quizid, marks, attemptno, questionnum, studentansnum) 
         values (:username, :quizid, :marks, :attemptno, :questionnum, :studentansnum)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":username", $username);
