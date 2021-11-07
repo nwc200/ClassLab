@@ -131,7 +131,7 @@ foreach ($enrolments as $enrol) {
 
                         $nextPageHref = "ViewClassByEligibility.php?courseid=$courseid";
                          
-                        if (!in_array($courseid, $courseEligible) ) {
+                        if (in_array($courseid, $courseEligible) ) {
                             echo "<br> 
                             </div>
                                 <div class='col-auto mt-4'>
@@ -163,7 +163,7 @@ foreach ($enrolments as $enrol) {
             filter = input.value.toUpperCase();
             ul = document.getElementById("myUL");
             li = document.getElementsByTagName("li");
-            for (i = 4; i < li.length; i++) {
+            for (i = 1; i < li.length; i++) {
                 courseName = li[i].getAttribute("value");
                 if (courseName.toUpperCase().indexOf(filter) > -1) {
                     li[i].style.display = "";
