@@ -1,16 +1,35 @@
 <?php
-    require_once "objects/autoload.php";
-    $dao = new EnrollmentDAO;
-  
-    $_SESSION["username"] = "Yu Hao";
-    $username = $_SESSION["username"];
-  
-    $courseid = $_GET['courseid'];
-    $classid = $_GET['classid'];
-    $name = $username;
+require_once "objects/autoload.php";
+$dao = new EnrollmentDAO;
+$_SESSION["username"] = "Yu Hao";
+$username = $_SESSION["username"];
+$courseid = $_GET['courseid'];
+$classid = $_GET['classid'];
+$name = $username;
+
+$dao2 = new CourseDAO();
+$courses = $dao2->retrieveAll();
+
+$status = 'Approved';
+$enrolDAO = new SectionDAO();
+$enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); 
+$userCourses = (object)[];
+$counter = 0;
+if (isset($_GET['whichCourse'])) {
+    $zero = $_GET['whichCourse'];
+}
+
+foreach ($enrolments as $enrol) {
+    $getCourse= $enrol->getCourse();
+    $courseID = $getCourse->getCourseID();
+    $getcourses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
+    $courseName = $getcourses->getCourseName();
+    $classID = $enrolDAO->getLearnerClassID($courseID, $username);
+    $userCourses->$counter = [$courseName, $classID];
+    $counter++;
+}
+// var_dump($userCourses);
     
-
-
     
 ?>
 <!DOCTYPE html>
@@ -31,28 +50,22 @@
 </head>
 
 <body>
+<header>
 <br>
-<div class="" id="app">
+    <div class="" id="app">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="ViewCourseByEligibility.php">LMS Self Enrollment System</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" >Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"> </span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
+                    <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
                                 class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link " href="ViewQuizMaterials.php">Course Materials</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
-                    </li>
-
+                   
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,18 +73,17 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <div v-for="(each, i) in usercourses">
-                                <a class="dropdown-item" :value="i" @click='test([i])'> {{usercourses[i][1]}} - Class
-                                    {{usercourses[i][2]}}</a>
+                                <a :value="i" :href="'ViewCourseMaterials.php?whichCourse='+i" class="dropdown-item" > {{usercourses[i][0]}} - Class
+                                    {{usercourses[i][1]}}</a>
                             </div>
                         </div>
-                    </div>
-
+                    
                 </ul>
                 Learner: <?=$username?>
-
             </div>
         </nav>
-        <br>
+    </div>
+</header>
     <main style="margin-top: 10px;">
         <div class="container" id="app">
             <div class="row">
@@ -101,6 +113,15 @@
             </div>
         </div>
     </main>
+     <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                usercourses: <?php print json_encode($userCourses) ?>,
+            }
+
+        })
+        </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">

@@ -1,36 +1,31 @@
 <?php
-    require_once "objects/autoload.php";
+require_once "objects/autoload.php";
 
-    // if (isset($_SESSION["user"])) {
-    //     $username = $_SESSION["user"];
-    // } else {
-    //     header("Location: before_home.html");
-    // }
-    $_SESSION["username"] = "Yu Hao";
-    $username = $_SESSION["username"];
+$_SESSION["username"] = "Yu Hao";
+$username = $_SESSION["username"];
 
-    $dao = new CourseDAO();
-    $courses = $dao->retrieveAll();
-    $courseEligible= $dao->getEligibleCourseID($username);
-    
-    $status = 'Approved';
-    $enrolDAO = new SectionDAO();
-    $enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); 
-    $userCourses = (object)[];
-    $counter = 0;
-    if (isset($_GET['whichCourse'])) {
-        $zero = $_GET['whichCourse'];
-    }
+$dao = new CourseDAO();
+$courses = $dao->retrieveAll();
+$courseEligible= $dao->getEligibleCourseID($username);
 
-    foreach ($enrolments as $enrol) {
-        $getCourse= $enrol->getCourse();
-        $courseID = $getCourse->getCourseID();
-        $getcourses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
-        $courseName = $getcourses->getCourseName();
-        $classID = $enrolDAO->getLearnerClassID($courseID, $username);
-        $userCourses->$counter = [$courseName, $classID];
-        $counter++;
-    }
+$status = 'Approved';
+$enrolDAO = new SectionDAO();
+$enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); 
+$userCourses = (object)[];
+$counter = 0;
+if (isset($_GET['whichCourse'])) {
+    $zero = $_GET['whichCourse'];
+}
+
+foreach ($enrolments as $enrol) {
+    $getCourse= $enrol->getCourse();
+    $courseID = $getCourse->getCourseID();
+    $getcourses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
+    $courseName = $getcourses->getCourseName();
+    $classID = $enrolDAO->getLearnerClassID($courseID, $username);
+    $userCourses->$counter = [$courseName, $classID];
+    $counter++;
+}
     // var_dump($userCourses);
 ?>
 
@@ -51,8 +46,7 @@
     <title>LMS - View Course</title>
 </head>
 
-<body>
-    
+<body>   
 <header>
 <br>
     <div class="" id="app">
@@ -68,12 +62,7 @@
                     <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
                                 class="sr-only">(current)</span></a>
                     </li>
-                    <!-- <li class="nav-item ">
-                        <a class="nav-link " href="ViewCourseMaterials.php">Course Materials</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
-                    </li> -->
+                   
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

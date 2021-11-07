@@ -1,22 +1,36 @@
 <?php
 require_once 'objects/autoload.php';
 
-// if (isset($_SESSION["user"])) {
-//     $username = $_SESSION["user"];
-// } else {
-//     header("Location: before_home.html");
-// }
-
 $_SESSION["username"] = "Yu Hao";
 $username = $_SESSION["username"];
 $courseid = $_GET["courseid"];
 $classid = $_GET["classid"];
 
 $dao = new CourseDAO();
-//$dao2= new EnrollmentDAO();
+$courses = $dao->retrieveAll();
 $course = $dao->retrieve($courseid);
 $coursename = $course->getCourseName();
-//$enrollment = $dao2->retrieveEnrolment($courseID, $classID)
+
+
+$status = 'Approved';
+$enrolDAO = new SectionDAO();
+$enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); 
+$userCourses = (object)[];
+$counter = 0;
+if (isset($_GET['whichCourse'])) {
+    $zero = $_GET['whichCourse'];
+}
+
+foreach ($enrolments as $enrol) {
+    $getCourse= $enrol->getCourse();
+    $courseID = $getCourse->getCourseID();
+    $getcourses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
+    $courseName = $getcourses->getCourseName();
+    $classID = $enrolDAO->getLearnerClassID($courseID, $username);
+    $userCourses->$counter = [$courseName, $classID];
+    $counter++;
+}
+    // var_dump($userCourses);
 
 
 ?>
@@ -37,28 +51,22 @@ $coursename = $course->getCourseName();
 </head>
 
 <body>
+<header>
 <br>
-<div class="" id="app">
+    <div class="" id="app">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="ViewCourseByEligibility.php">LMS Self Enrollment System</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" >Learning Management System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"> </span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
+                    <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
                                 class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link " href="ViewCourseMaterials.php">Course Materials</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ViewQuizMaterials.php">Quizzes Available </a>
-                    </li>
-
+                   
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,18 +74,18 @@ $coursename = $course->getCourseName();
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <div v-for="(each, i) in usercourses">
-                                <a class="dropdown-item" :value="i" @click='test([i])'> {{usercourses[i][1]}} - Class
-                                    {{usercourses[i][2]}}</a>
+                                <a :value="i" :href="'ViewCourseMaterials.php?whichCourse='+i" class="dropdown-item" > {{usercourses[i][0]}} - Class
+                                    {{usercourses[i][1]}}</a>
                             </div>
                         </div>
-                    </div>
-
+                    
                 </ul>
                 Learner: <?=$username?>
 
             </div>
         </nav>
         <br>
+
     <main style="margin-top: 10px;">
     <div class="container" id="app">
         <div class="row">
@@ -88,9 +96,7 @@ $coursename = $course->getCourseName();
 
                 <?php
                 $class = $dao->retrieveCourseClass($courseid, $classid);
-                // $ConfirmEnrolPageHref = "confirmEnrolment.php?courseid=$courseid&classid=$classid";
-                // $confirmEnrolPageHref = "confirmEnrolment.php?courseid=$courseid&classid={$class->getClassID()}";
-
+                
                 echo "<div class='row'>
                             <div class='col-sm-8'>
                                 ClassID<br>
@@ -108,20 +114,18 @@ $coursename = $course->getCourseName();
                             </div>
                         </div>";
 
-
                 ?>
-
 
                 <hr>
 
                 <div class="row">
 
                     <div class="col text-right">
-                        <a :href="'ViewCourseByEligibility.php?classid='+classid" button type="cancel" class="btn btn-danger mb-3 text-center">Cancel</a>
+                        <a :href="'ViewCourseByEligibility.php?classid='+classid" button type="cancel" class="btn btn-danger mb-3 text-center ">Cancel</a>
                     </div>
                     <div class="col">
 
-                        <a :href="'confirmEnrolment.php?classid='+classid+'&courseid='+courseid" button type="confirm" class="btn btn-primary mb-3">Confirm</a>
+                        <a :href="'confirmEnrolment.php?classid='+classid+'&courseid='+courseid" button type="confirm" class="btn btn-primary mb-3 ">Confirm</a>
                     </div>
                 </div>
                 <input type="hidden" name="courseid" value="<?= $courseid ?>">
@@ -145,6 +149,7 @@ $coursename = $course->getCourseName();
 
         })
     </script>
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
