@@ -503,5 +503,28 @@ class EnrollmentDAO
         $pdo = null;
         return false;
     }
+
+    public function checkIfInClass($courseid, $classid, $username)
+    {
+        $status = "Pending";
+        $conn_manager = new ConnectionManager();
+        $pdo = $conn_manager->getConnection("enrolment");
+        $sql = "select * from enrolment where courseid=:courseid and classid=:classid and username=:username and enrolmentStatus=:status";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":courseid", $courseid);
+        $stmt->bindParam(":classid", $classid);
+        $stmt->bindParam(":status", $status);
+        $check = 0;
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $check=1;
+        }
+        
+        $stmt = null;
+        $pdo = null;
+        return $check;
+        
+    }
 }
 ?>

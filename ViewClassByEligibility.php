@@ -165,7 +165,7 @@ foreach ($enrolments as $enrol) {
                                             <div class='col-2'>";
 
                                 $withdrawPageHref = "withdrawpage.php?courseid=$courseid&classid={$class->getClassID()}";
-                                if ($students == 0) {
+                                if ($dao2->checkIfInClass($courseid, $classid, $username) ==0) {
                                     echo "<button type='button' class='btn btn-secondary' disabled>Withdraw</button>";
                                 } else {
                                     echo "<a class='btn btn-success' href='$withdrawPageHref' role='button'>Withdraw</a>";
@@ -174,7 +174,7 @@ foreach ($enrolments as $enrol) {
                                 <div class='col-2'>";
 
                                 $enrolPageHref = "enrolpage.php?courseid=$courseid&classid={$class->getClassID()}";
-                                if ($remainingSlot == 0 || $students == 1) {
+                                if ($remainingSlot == 0 || $dao2->checkIfInClass($courseid, $classid, $username) ==1) {
                                     echo "<button type='button' class='btn btn-secondary' disabled>Enrol</button>";
                                 } else {
                                     echo "<a class='btn btn-success' href='$enrolPageHref' role='button'>Enrol</a>";
