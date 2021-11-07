@@ -55,7 +55,7 @@ foreach ($enrolments as $enrol) {
         }
 
 
-        $getQuizzes = $quizDAO->retrieveClassQuiz($classID);            //get quizes for that classid 
+        $getQuizzes = $quizDAO->retrieveClassQuiz($classID);  //get quizes for that classid
     // var_dump($getQuizzes);
         $quizAttempts = [];
         foreach ($getQuizzes as $getQuiz) {
