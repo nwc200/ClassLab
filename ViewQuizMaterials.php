@@ -27,7 +27,7 @@ foreach ($enrolments as $enrol) {
     $classID = $enrolDAO->getLearnerClassID($courseID, $username); //get class id
     $sectionIDs = $enrolDAO->retrieveClassSection($classID); //get section ids
 
-    $getQuizzes = $quizDAO->retrieveClassQuiz($classID);  //get quizes for that classid 
+    $getQuizzes = $quizDAO->retrieveClassQuiz($classID);  //get quizes for that classid
 
     $quizAttempts = [];
     foreach ($getQuizzes as $getQuiz) {

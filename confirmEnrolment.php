@@ -86,20 +86,16 @@
 
                 
                     if ($dao->addPendingEnrolment($name, $courseid, $classid) ) {
-
                         echo "<div class='alert alert-success' role='alert'>
                         Enrolment Success! Enrollment application will be send to the HR for approval.
                     </div>";
-                    //var_dump( $dao->retrieveEnrolment($courseid, $classid) );
-                    
-
-                } else {
+                    } else {
                         echo "<div class='alert alert-danger' role='alert'>
                         Enrolment failure! Please try again. 
                     </div>";
-                }
+                    }
                
-                ?>
+                    ?>
                     <a class="btn btn-primary" href="ViewCourseByEligibility.php" role="button">Back to Home</a>
                 </div>
             </div>

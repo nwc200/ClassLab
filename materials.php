@@ -19,54 +19,54 @@ $zero = 0;
 
 
 foreach ($enrolments as $enrol) {
-  $courseID = $enrol->getCourseID();
-  $courses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
-  $courseName = $courses->getCourseName();
-  $classID = $enrolDAO->getLearnerClassID($courseID, $username); //get class id
-  $sectionIDs = $enrolDAO->retrieveClassSection($classID); //get section ids
+    $courseID = $enrol->getCourseID();
+    $courses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
+    $courseName = $courses->getCourseName();
+    $classID = $enrolDAO->getLearnerClassID($courseID, $username); //get class id
+    $sectionIDs = $enrolDAO->retrieveClassSection($classID); //get section ids
 
-  $arraySecName = [];
-  $arrayMaterials = [];
-  $materialNumArr = [];
-  $getMaterialsNum = [];
-  $getCompletedArr = [];
+    $arraySecName = [];
+    $arrayMaterials = [];
+    $materialNumArr = [];
+    $getMaterialsNum = [];
+    $getCompletedArr = [];
   // $retrieveQuiz = [];
 
-  foreach ($sectionIDs as $sec) { //$sec is individual section num
-    $sectionNames = $enrolDAO->retrieveClassSectionName($classID, $sec); //get section name
-    array_push($arraySecName, $sectionNames);
+    foreach ($sectionIDs as $sec) { //$sec is individual section num
+        $sectionNames = $enrolDAO->retrieveClassSectionName($classID, $sec); //get section name
+        array_push($arraySecName, $sectionNames);
 
-    $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
-    array_push($arrayMaterials, $materials);
+        $materials = $enrolDAO->retrieveClassSectionMaterials($classID, $sec); // get section materials -- section 1, 2 materials
+        array_push($arrayMaterials, $materials);
 
-    // $quizzez = [];
-    // $getQuiz = $enrolDAO->retrieveClassQuiz($classID, $sec);  // retrieve quiz information for the section
-    // array_push($retrieveQuiz, $getQuiz);
-    // var_dump($getQuiz);
+      // $quizzez = [];
+      // $getQuiz = $enrolDAO->retrieveClassQuiz($classID, $sec);  // retrieve quiz information for the section
+      // array_push($retrieveQuiz, $getQuiz);
+      // var_dump($getQuiz);
 
-    // var_dump($materials);
-    $material = [];
-    $completed = [];
-    for ($i = 0; $i < count($materials); $i++) {
-      $materialNum = $materials[$i]->getMaterialNum(); //get materials id by section num
-      array_push($material, $materialNum);
-      // $getMaterials = [$classID, $sec, $materialNum]; //array of materialnum with classid & section num
+      // var_dump($materials);
+          $material = [];
+          $completed = [];
+        for ($i = 0; $i < count($materials); $i++) {
+              $materialNum = $materials[$i]->getMaterialNum(); //get materials id by section num
+              array_push($material, $materialNum);
+              // $getMaterials = [$classID, $sec, $materialNum]; //array of materialnum with classid & section num
 
-      $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, $materialNum); //get completed
-      array_push($completed, $getCompleted);
+              $getCompleted = $enrolDAO->retrieveSectionMaterialsProgress($username, $classID, $sec, $materialNum); //get completed
+              array_push($completed, $getCompleted);
 
 
-      // echo "<br>";
+            // echo "<br>";
+        }
+          array_push($getMaterialsNum, $material);
+          array_push($getCompletedArr, $completed);
     }
-    array_push($getMaterialsNum, $material);
-    array_push($getCompletedArr, $completed);
-  }
-  // var_dump($getCompletedArr);
-  // var_dump($getMaterialsNum);
+    // var_dump($getCompletedArr);
+    // var_dump($getMaterialsNum);
 
-  $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $arraySecName, $arrayMaterials, $getMaterialsNum, $getCompletedArr];
+    $userCourses->$counter = [$courseID, $courseName, $classID, $sectionIDs, $arraySecName, $arrayMaterials, $getMaterialsNum, $getCompletedArr];
 
-  $counter++;
+    $counter++;
 }
 // var_dump($userCourses);
 // var_dump($retrieveQuiz);
@@ -81,25 +81,25 @@ $whichMaterial = '';
 $noOfMaterials = 0;
 
 for ($j = 0; $j < count($firstpage[7]); $j++) { //can alr know got how many sections
-  for ($k = 0; $k < count($firstpage[7][$j]); $k++) { //completed inside the sections
-    // var_dump($firstpage[7][$j][$k]);
-    $noOfMaterials = count($firstpage[7][$j]);
-    // echo"$noOfMaterials";
-    if ($noOfMaterials > 0) {
-      if (($firstpage[7][$j][$k]) == 0) {  //knows which section arr, which material is not completed
-        $whichSection = $j + 1;
-        $whichMaterial = $k;
-        // echo $j, $k; 
-        break;
-      } else {
-        $whichSection = $k + 1;
-        $whichMaterial = 0;
-      }
-    } else {
-      $whichSection = $j;
-      $whichMaterial = 0;
+    for ($k = 0; $k < count($firstpage[7][$j]); $k++) { //completed inside the sections
+      // var_dump($firstpage[7][$j][$k]);
+        $noOfMaterials = count($firstpage[7][$j]);
+      // echo"$noOfMaterials";
+        if ($noOfMaterials > 0) {
+            if (($firstpage[7][$j][$k]) == 0) {  //knows which section arr, which material is not completed
+                      $whichSection = $j + 1;
+                      $whichMaterial = $k;
+                      // echo $j, $k;
+                      break;
+            } else {
+                  $whichSection = $k + 1;
+                  $whichMaterial = 0;
+            }
+        } else {
+            $whichSection = $j;
+            $whichMaterial = 0;
+        }
     }
-  }
 }
 
 // echo $whichSection;

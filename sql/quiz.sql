@@ -148,16 +148,16 @@ values (2, 2, 3, "False", true);
 
 /* Quiz Question 6 */
 insert into quizAnswer
-values (1, 2, 4, "256-bit Encryption (FIPS 140-2 compliant)", true);
+values (1, 2, 4, "256-bit Encryption (FIPS 140-2 compliant)", false);
 
 insert into quizAnswer
-values (2, 2, 4, "Secure Email", true);
+values (2, 2, 4, "Secure Email", false);
 
 insert into quizAnswer
 values (3, 2, 4, "Secure Print", true);
 
 insert into quizAnswer
-values (4, 2, 4, "User permissions", true);
+values (4, 2, 4, "User permissions", false);
 
 /* Quiz Question 7 */
 insert into quizAnswer

@@ -11,7 +11,7 @@ $materialNum = $_GET['materialNum'];
 $zero = $_GET['whichCourse'];
 
 
-for($i=1; $i<$materialNum+1; $i++){
+for ($i=1; $i<$materialNum+1; $i++) {
     $get = $enrolDAO->insertProgress($classID, $sectionNum, $i, $username, true);
 }
 // $get = $enrolDAO->updateMaterialProgress($classID, $sectionNum, $materialNum);

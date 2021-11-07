@@ -9,7 +9,6 @@ require_once "objects/autoload.php";
 $_SESSION["username"] = "Yu Hao";
 $username = $_SESSION["username"];
 $courseid = $_GET["courseid"];
-//echo("<script> console.log('testing: " . $courseid . "');</script>");
 
 $dao = new CourseDAO();
 $course = $dao->retrieve($courseid);
@@ -115,7 +114,7 @@ $today_date = date("Y-m-d");
                     $dao2 = new EnrollmentDAO();
                     foreach ($classes as $class) {
                         $classid = $class->getClassID();
-                        $students = $dao2->retrieveEnrolment($courseid, $class->getClassID());
+                        $students = $dao2->retrievePendingEnrolment($courseid, $class->getClassID());
 
                         $remainingSlot = (int)$class->getClassSize()-$students;
                         $enrolPageHref = "enrolpage.php?courseid=$courseid&classid=$classid";

@@ -85,8 +85,6 @@ $enrolmentstatus = "Pending";
                 $enrolmentstatus = "Pending";
 
                 if ($dao->withdrawSelfEnrol($name, $classid, $enrolmentstatus)) {
-
-
                     echo "<div class='alert alert-success' role='alert'>
                         Withdrawal Success! Your enrolment application had been withdrawn.
                     </div>";

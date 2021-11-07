@@ -128,16 +128,15 @@
                             echo "<br> 
                             </div>
                                 <div class='col-auto mt-4'>
-                                    <a class='btn btn-success' href='$nextPageHref' role='button'>View Course</a>
+                                    <a class='btn btn-success' href='$nextPageHref' role='button'>View Class</a>
                                 </div>
                             </div>
                             <hr>";
                         } else {
-
                             echo" <br> 
                             </div>
                                 <div class='col-auto mt-4'>
-                                 <a class='btn btn-secondary disabled'> View Course</a>
+                                 <a class='btn btn-secondary disabled'> View Class</a>
                                 </div>
                             </div>
                             <hr>
