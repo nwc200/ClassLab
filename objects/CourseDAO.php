@@ -149,7 +149,6 @@ class CourseDAO
         $classes = [];
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         while ($row = $stmt->fetch()) {
-            
             $schedule = $row["endDate"] . $row["endTime"];
             if ($schedule > $today) {
                 $classes[] = new Class1($row["classID"], $row["classSize"], $row["trainerUserName"], $row["startDate"], $row["endDate"], $row["startTime"], $row["endTime"], $row["selfEnrollmentStart"], $row["selfEnrollmentEnd"]);

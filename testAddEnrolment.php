@@ -15,8 +15,7 @@ if ( $dao->addPendingEnrolment($name, $courseID, $classID) ) {
     Enrolment Success! Enrollment application will be send to the HR for approval.
         </font>";
     var_dump( $dao->retrieveEnrolment($courseID, $classID) );
-}
-else {
+} else {
     echo "<font color='red'>Enrolment failure! Please try again.</font>";
 }
 
@@ -30,7 +29,6 @@ if ( $dao->addPendingEnrolment($name, $courseID, $classID) ) {
     Enrolment Success! Enrollment application will be send to the HR for approval.
         </font>";
     var_dump( $dao->retrieveEnrolment($courseID, $classID) );
-}
-else {
+} else {
     echo "<font color='red'>Enrolment failure! Please try again.</font>";
 }
