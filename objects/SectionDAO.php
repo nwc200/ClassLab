@@ -213,7 +213,7 @@ class SectionDAO
         $pdo = $conn_manager->getConnection("section");
 
 
-        $sql = "SELECT completed FROM `materialprogress` 
+        $sql = "SELECT completed FROM `materialProgress` 
             WHERE classID=:classID and sectionNum=:sectionNum and materialNum=:materialNum and userName=:userName
             ";
         $stmt = $pdo->prepare($sql);
@@ -242,7 +242,7 @@ class SectionDAO
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("section");
 
-        $sql = "UPDATE `materialprogress` 
+        $sql = "UPDATE `materialProgress` 
                 SET completed = 1
                 WHERE classID=:classID AND sectionNum=:sectionNum AND materialNum=:materialNum";
 
@@ -285,7 +285,7 @@ class SectionDAO
         $conn_manager = new ConnectionManager();
         $pdo = $conn_manager->getConnection("section");
 
-        $sql = "INSERT INTO `materialprogress` 
+        $sql = "INSERT INTO `materialProgress` 
                 values (:classID, :sectionNum, :materialNum, :userName,:completed)";
 
         $stmt = $pdo->prepare($sql);
