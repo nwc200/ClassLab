@@ -71,10 +71,10 @@ if ( isset($_POST['submit']) ) {
         for ($a=0; $a<count($quizquestionans); $a++) {
             for ($b=0; $b<count($quizquestionans[$a]); $b++) {
                 if ($quizquestionanscorrect[$a] == $b) {
-                    $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], true);
+                    $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], 1);
                     var_dump($addanswer);
                 } else {
-                    $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], false);
+                    $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], 0);
                     var_dump($addanswer);
                 }
             }
@@ -102,9 +102,9 @@ if ( isset($_POST['submit']) ) {
             for ($a=0; $a<count($quizquestionans); $a++) {
                 for ($b=0; $b<count($quizquestionans[$a]); $b++) {
                     if ($quizquestionanscorrect[$a] == $b) {
-                        $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], true);
+                        $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], 1);
                     } else {
-                        $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], false);
+                        $addanswer = $dao->addQuizAnswer($b+1, $quizid, $a+1, $quizquestionans[$a][$b], 0);
                     }
                 }
             }
