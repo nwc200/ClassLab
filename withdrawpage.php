@@ -1,7 +1,6 @@
 <?php
 require_once 'objects/autoload.php';
 
-
 $_SESSION["username"] = "Yu Hao";
 $username = $_SESSION["username"];
 $courseid = $_GET["courseid"];
@@ -12,26 +11,6 @@ $courses = $dao->retrieveAll();
 $course = $dao->retrieve($courseid);
 $coursename = $course->getCourseName();
 
-
-$status = 'Approved';
-$enrolDAO = new SectionDAO();
-$enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); 
-$userCourses = (object)[];
-$counter = 0;
-if (isset($_GET['whichCourse'])) {
-    $zero = $_GET['whichCourse'];
-}
-
-foreach ($enrolments as $enrol) {
-    $getCourse= $enrol->getCourse();
-    $courseID = $getCourse->getCourseID();
-    $getcourses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
-    $courseName = $getcourses->getCourseName();
-    $classID = $enrolDAO->getLearnerClassID($courseID, $username);
-    $userCourses->$counter = [$courseName, $classID];
-    $counter++;
-}
-    // var_dump($userCourses);
 ?>
 
 
@@ -67,21 +46,6 @@ foreach ($enrolments as $enrol) {
                         <a class="nav-link" href="ViewCourseByEligibility.php" >View Course <span
                                 class="sr-only">(current)</span></a>
                     </li>
-                    
-
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Courses Enrolled
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div v-for="(each, i) in usercourses">
-                                <a class="dropdown-item" :value="i" @click='test([i])'> {{usercourses[i][1]}} - Class
-                                    {{usercourses[i][2]}}</a>
-                            </div>
-                        </div>
-                    </div>
-
                 </ul>
                 Learner: <?=$username?>
 
@@ -116,7 +80,6 @@ foreach ($enrolments as $enrol) {
                                 {$class->getSelfEnrollmentStart()} ~ {$class->getSelfEnrollmentEnd()}<br>
                             </div>
                         </div>";
-
 
                 ?>
 

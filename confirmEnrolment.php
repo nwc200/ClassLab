@@ -6,30 +6,6 @@ $username = $_SESSION["username"];
 $courseid = $_GET['courseid'];
 $classid = $_GET['classid'];
 $name = $username;
-
-$dao2 = new CourseDAO();
-$courses = $dao2->retrieveAll();
-
-$status = 'Approved';
-$enrolDAO = new SectionDAO();
-$enrolments = $enrolDAO->retrieveUserApprovedEnrolment($username, $status); 
-$userCourses = (object)[];
-$counter = 0;
-if (isset($_GET['whichCourse'])) {
-    $zero = $_GET['whichCourse'];
-}
-
-foreach ($enrolments as $enrol) {
-    $getCourse= $enrol->getCourse();
-    $courseID = $getCourse->getCourseID();
-    $getcourses = $enrolDAO->retrieveCourses($courseID); //return user enrolled courses
-    $courseName = $getcourses->getCourseName();
-    $classID = $enrolDAO->getLearnerClassID($courseID, $username);
-    $userCourses->$counter = [$courseName, $classID];
-    $counter++;
-}
-// var_dump($userCourses);
-    
     
 ?>
 <!DOCTYPE html>
@@ -65,18 +41,7 @@ foreach ($enrolments as $enrol) {
                     <a class="nav-link active" href="ViewCourseByEligibility.php" active>View Course <span
                                 class="sr-only">(current)</span></a>
                     </li>
-                   
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Courses Enrolled
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div v-for="(each, i) in usercourses">
-                                <a :value="i" :href="'ViewCourseMaterials.php?whichCourse='+i" class="dropdown-item" > {{usercourses[i][0]}} - Class
-                                    {{usercourses[i][1]}}</a>
-                            </div>
-                        </div>
+                  
                     
                 </ul>
                 Learner: <?=$username?>
@@ -113,15 +78,6 @@ foreach ($enrolments as $enrol) {
             </div>
         </div>
     </main>
-     <script>
-        var app = new Vue({
-            el: "#app",
-            data: {
-                usercourses: <?php print json_encode($userCourses) ?>,
-            }
-
-        })
-        </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
